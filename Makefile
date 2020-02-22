@@ -16,12 +16,12 @@ pubpatch:
 	@./node_modules/.bin/np --no-release-draft patch
 
 .PHONY: pubminor
-pubpatch:
+pubminor:
 	@echo "==> Publishing minor version"
 	@./node_modules/.bin/np --no-release-draft minor
 
 .PHONY: pubmajor
-pubpatch:
+pubmajor:
 	@echo "==> Publishing major version"
 	@./node_modules/.bin/np --no-release-draft major
 
