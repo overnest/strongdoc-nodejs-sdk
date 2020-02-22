@@ -10,6 +10,21 @@ BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 MKFILE_PATH ?= $(abspath $(lastword $(MAKEFILE_LIST)))
 CUR_DIR ?= $(patsubst %/,%,$(dir $(MKFILE_PATH)))
 
+.PHONY: pubpatch
+pubpatch:
+	@echo "==> Publishing patched version"
+	@./node_modules/.bin/np --no-release-draft patch
+
+.PHONY: pubminor
+pubpatch:
+	@echo "==> Publishing minor version"
+	@./node_modules/.bin/np --no-release-draft minor
+
+.PHONY: pubmajor
+pubpatch:
+	@echo "==> Publishing major version"
+	@./node_modules/.bin/np --no-release-draft major
+
 .PHONY: clean
 clean:
 	@echo "==> Cleaning Repo"
