@@ -3,6 +3,7 @@ const path = require('path');
 const grpc = require('grpc');
 const service = require('./proto/strongdoc_grpc_pb');
 const login = require('./api/login');
+const config = require('./api/config')
 const accounts = require('./api/accounts');
 const document = require('./api/document');
 const search = require('./api/search');
@@ -21,11 +22,16 @@ async function main() {
 
     try {
         client = new sd.StrongDoc(sd.StrongDoc.ServciceLocation.LOCAL);
-        resp = await accounts.registerOrganization(client, organization, "", 
-            adminName, adminPassword, adminEmail);
-        orgId = resp.getOrgID();
-        userId = resp.getUserID();
+        // resp = await accounts.registerOrganization(client, organization, "",
+        //     adminName, adminPassword, adminEmail);
+        // orgId = resp.getOrgID();
+        // userId = resp.getUserID();
+        orgId = organization;
+        userId = adminEmail;
         var token = await login.login(client, adminEmail, adminPassword, organization);
+
+        let configStatus = await config.getConfiguration(client)
+        console.log(configStatus)
 
         resp = await document.uploadDocument(client, "BedMounts.pdf", plaintext);
         upDocId = resp.getDocID();
@@ -50,17 +56,19 @@ async function main() {
                 throw Error("The search result does not match.")
             }          
         });
+        console.log("Done!")
+
     } catch (e) {
         console.log("Error Thrown ", e);
     } finally {
-        if (token != undefined) {
-            try {
-                success = await accounts.removeOrganization(client, true);
-                console.log("Organization remove: ", success);
-            } catch(e) {
-                console.log("Error Thrown For removeOrganization", e);
-            }
-        }
+        // if (token != undefined) {
+        //     try {
+        //         success = await accounts.removeOrganization(client, true);
+        //         console.log("Organization remove: ", success);
+        //     } catch(e) {
+        //         console.log("Error Thrown For removeOrganization", e);
+        //     }
+        // }
     }
 
     if (client != undefined) {

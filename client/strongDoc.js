@@ -70,7 +70,7 @@ class StrongDoc extends service.StrongDocServiceClient {
         req.setUserid(userID);
         req.setPassword(password);
         req.setOrgid(orgID);
-        result = await this.loginSync(req);
+        let result = await this.loginSync(req);
         const resp = new msg.LoginResponse(result.array);
         if (resp && resp.getToken()) {
             this.authMeta = misc.getAuthMeta(resp.getToken());
