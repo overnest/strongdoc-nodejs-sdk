@@ -80,6 +80,7 @@ class StrongDoc extends service.StrongDocServiceClient {
         return null;
     }
 
+
     /**
      * Returns the authentication meta data header. If the user logged in using the
      * client, this header will be stored with the client.

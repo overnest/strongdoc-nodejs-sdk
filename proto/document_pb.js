@@ -2278,6 +2278,7 @@ proto.proto.GetDocumentsSizeResponse.prototype.getSize = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
+
 /** @param {number} value */
 proto.proto.GetDocumentsSizeResponse.prototype.setSize = function(value) {
   jspb.Message.setProto3IntField(this, 1, value);

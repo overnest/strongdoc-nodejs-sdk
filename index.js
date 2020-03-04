@@ -13,6 +13,10 @@ const sd = require('./client/strongDoc');
 const adminName     = "adminUserName"
 const adminPassword = "adminUserPassword"
 const adminEmail    = "adminUser@somewhere.com"
+
+const userName     = "userUserName"
+const userPassword = "userUserPassword"
+const userEmail    = "userUser@somewhere.com"
 const organization  = "OrganizationOne"
 
 async function main() {
@@ -50,12 +54,46 @@ async function main() {
             throw Error("The decrypted text does not match original plaintext")
         }
 
+        // let userID = await accounts.registerUser(client, userName, userPassword, userEmail, false);
+        // console.log("userID: " + userID);
+
+        let shareDocumentRes = await document.shareDocument(client, upDocId, userEmail);
+        console.log("shareDocument: " + shareDocumentRes);
+        let unshareDocumentRes = await document.unshareDocument(client, upDocId, userEmail);
+        console.log("unshareDocument: " + unshareDocumentRes);
+
+        // todo: change userEmail back to userID
+        let promoteUserRes = await accounts.promoteUser(client, userEmail);
+        console.log("promoteUser: " + promoteUserRes);
+        let demoteUserRes = await accounts.demoteUser(client, userEmail);
+        console.log("demoteUser: " + demoteUserRes);
+        let removeUserRes = await accounts.removeUser(client, userEmail);
+        console.log("removeUserRes: " + removeUserRes);
+
+        const users = await accounts.listUsers(client);
+        users.forEach(user => {
+            console.log(user.toString());
+        });
+        // shareResult = await document.shareDocument(client, docID, userID);
+
+        // docsResp = await document.listDocuments(client)
+        // docsList = docsResp.documentsList
+        // docsList.forEach((doc => {
+        //     console.log(doc.toString())
+        // }));
+
+        // for (d in docs) {
+        //     console.log(d.docName)
+        // }
+
         resp = await search.search(client, token, "bed mounts");
         resp.getHitsList().forEach(function(hit){
             if (hit.getDocID() != upDocId && hit.getDocID() != encDocId) {
                 throw Error("The search result does not match.")
             }          
         });
+        let status = await login.logout(client, token);
+        console.log(status);
         console.log("Done!")
 
     } catch (e) {

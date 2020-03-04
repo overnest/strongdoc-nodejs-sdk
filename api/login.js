@@ -1,4 +1,5 @@
 const misc = require('../util/misc');
+const msg = require('../proto/accounts_pb');
 
 /**
  * Verifies the user and organization identity, and returns a JWT token for future API use.
@@ -14,5 +15,23 @@ const login = async (client, userID, password, orgID) => {
     misc.checkClient(client, false);
     return client.loginInternal(userID, password, orgID);
 };
+/**
+ * Ends session and retires JWT token.
+ *
+ * @function
+ * @private
+ * @param {StrongDoc} client - The StrongDoc client used to call this API.
+ * @return {string} - Status of logout function.
+ */
+const logout = async (client) => {
+    misc.checkClient(client, true);
+    const authMeta = client.getAuthMeta();
+    const req = new msg.LogoutRequest();
+    let result = await client.logoutSync(req, authMeta);
+    const resp = new msg.LogoutResponse(result.array);
+    return resp.getStatus();
+    return client.logoutInternal();
+};
 
 exports.login = login;
+exports.logout = logout;
