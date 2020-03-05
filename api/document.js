@@ -2,6 +2,7 @@ const msg = require('../proto/document_pb');
 const msgenc = require('../proto/documentNoStore_pb');
 const promisify = require('../util/promisifyStream');
 const misc = require('../util/misc');
+const { Readable } = require('stream');
 
 /**
  * Uploads a document to the service for storage.
@@ -62,7 +63,7 @@ const uploadDocument = async (client, docName, plaintext) => {
     }
 
     return (new UploadDocumentResponse(resp.getDocid(), resp.getBytes()));
-}
+};
 
 /**
  * The response returned from the upload document API call.
@@ -134,7 +135,106 @@ const downloadDocument = async (client, docID) => {
     }
 
     return plaintext;
-}
+};
+/**
+ * Download a document from the service.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docID - The ID of the document.
+ * @return {!stream} - The stream that yields data from the downloaded document.
+ */
+const downloadDocumentStream = (client, docID) => {
+    misc.checkClient(client, true);
+
+    const authMeta = client.getAuthMeta();
+
+    const req = new msg.DownloadDocStreamReq();
+    req.setDocid(docID);
+    const grpcstream = promisify.down(client.downloadDocumentStream(req, authMeta));
+    return new downloadStream(grpcstream, docID)
+};
+
+// /**
+//  * Download a document from the service.
+//  *
+//  * @function
+//  * @param {!stream} stream - The StrongDoc client used to call this API.
+//  * @param {!Buffer} buf - An empty file you want to fill with the data.
+//  * @param {!number} n - Number of bytes read.
+//  * @return {!Buffer} - The downloaded document.
+//  */
+// const read = async (stream, buf, n) => {
+//     try {
+//         const resp = await stream.readAsync();
+//         if (resp === promisify.end) {
+//             return;
+//         }
+//
+//         if (resp.getPlaintext() != "") {
+//             let n = resp.getPlaintext.length
+//             buf = Buffer.concat([buf, resp.getPlaintext()]);
+//         }
+//         return n
+//     } catch (err) {
+//         throw err;
+//     } finally {
+//     }
+// };
+
+// readableStream.on('readable', function() {
+//     while ((chunk=readableStream.read()) != null) {
+//         data += chunk;
+//     }
+// });
+
+class downloadStream {
+    constructor(grpcstream, docID) {
+        this.grpcstream = grpcstream;
+        this.chunk = Buffer.alloc(0);
+        this.grpcEOF = false;
+        this.docID = docID;
+    }
+    read = async (buffer) => {
+        try {
+            if (this.chunk.length > 0) {
+                // drain buffer into given buffer and return it
+                return this.fillBuffer(buffer)
+            }
+
+            if (this.grpcEOF) {
+                return -1;
+            }
+            let resp = await this.grpcstream.readAsync();
+            if (resp === promisify.end) {
+                this.grpcEOF = true;
+                return -1;
+            }
+
+            if (resp.getPlaintext() !== '') {
+                this.chunk = Buffer.from(resp.getPlaintext());
+                return this.fillBuffer(buffer)
+            }
+            return 0
+        } catch (err) {
+            throw err;
+        } finally {
+        }
+    };
+    fillBuffer = (buffer) => {
+        let buflen = buffer.length;
+        let chunklen = this.chunk.length;
+        if (chunklen < buflen) {
+            let n = this.chunk.copy(buffer);
+            this.chunk = Buffer.alloc(0);
+            return n;
+        } else {
+            let n = this.chunk.copy(buffer, 0, 0, buffer.length);
+            this.chunk = this.chunk.slice(buffer.length);
+            return n;
+        }
+    };
+};
 
 /**
  * Encrypts a document using the service, but do not store it. Instead 
@@ -359,7 +459,7 @@ class DocumentResult {
      * @public
      */
     toString() {
-        const div = "\n"
+        const div = "\n";
         return this._docID + div + this._docName + div + this.docID
     }
 }
@@ -372,3 +472,4 @@ exports.decryptDocument = decryptDocument;
 exports.listDocuments = listDocuments;
 exports.shareDocument = shareDocument;
 exports.unshareDocument = unshareDocument;
+exports.downloadDocumentStream = downloadDocumentStream;

@@ -10,14 +10,19 @@ const search = require('./api/search');
 const sd = require('./client/strongDoc');
 
 
-const adminName     = "adminUserName"
-const adminPassword = "adminUserPassword"
-const adminEmail    = "adminUser@somewhere.com"
+const adminName     = "adminUserName";
+const adminPassword = "adminUserPassword";
+const adminEmail    = "adminUser@somewhere.com";
 
-const userName     = "userUserName"
-const userPassword = "userUserPassword"
-const userEmail    = "userUser@somewhere.com"
-const organization  = "OrganizationOne"
+const adminName2     = "adminUserNameTwo";
+const adminPassword2 = "adminUserPasswordTwo";
+const adminEmail2    = "adminUserTwo@somewhere.com";
+
+const userName     = "userUserName";
+const userPassword = "userUserPassword";
+const userEmail    = "userUser@somewhere.com";
+const organization  = "OrganizationOne";
+const organization2  = "OrganizationTwo";
 
 async function main() {
     const plaintext = fs.readFileSync(path.join(__dirname, 
@@ -32,6 +37,12 @@ async function main() {
         // userId = resp.getUserID();
         orgId = organization;
         userId = adminEmail;
+
+        // resp = await accounts.registerOrganization(client, organization2, "",
+        //     adminName2, adminPassword2, adminEmail2);
+        // orgId = organization2;
+        // userId = adminEmail2;
+
         var token = await login.login(client, adminEmail, adminPassword, organization);
 
         let configStatus = await config.getConfiguration(client)
@@ -40,7 +51,27 @@ async function main() {
         resp = await document.uploadDocument(client, "BedMounts.pdf", plaintext);
         upDocId = resp.getDocID();
 
-        downPlaintext = await document.downloadDocument(client, upDocId);
+        // downPlaintext = await document.downloadDocument(client, upDocId);
+        // if (Buffer.compare(plaintext, downPlaintext) != 0) {
+        //     throw Error("The downloaded text does not match original plaintext")
+        // }
+
+        let downStream = document.downloadDocumentStream(client, upDocId);
+        let buf = Buffer.alloc(10000);
+        let downPlaintext = Buffer.alloc(0);
+        let totalRead = 0;
+        let n = 0;
+        while (true) {
+            n = await downStream.read(buf)
+            if (n !== -1) {
+                downPlaintext = Buffer.concat([downPlaintext, buf.slice(0, n)]);
+                console.log("n: " + n);
+            } else {
+                break
+            }
+        }
+        console.log(plaintext.length)
+        console.log(downPlaintext.length)
         if (Buffer.compare(plaintext, downPlaintext) != 0) {
             throw Error("The downloaded text does not match original plaintext")
         }
@@ -54,8 +85,14 @@ async function main() {
             throw Error("The decrypted text does not match original plaintext")
         }
 
-        // let userID = await accounts.registerUser(client, userName, userPassword, userEmail, false);
-        // console.log("userID: " + userID);
+        let userID = await accounts.registerUser(client, userName, userPassword, userEmail, false);
+        console.log("userID: " + userID);
+
+        let addSharableOrgRes = await accounts.addSharableOrg(client, organization2);
+        let setMultiLevelSharingRes = await accounts.setMultiLevelSharing(client, true);
+        console.log("setMultiLevelSharingRes: " + setMultiLevelSharingRes);
+        let removeSharableOrgRes = await accounts.removeSharableOrg(client, organization2);
+        console.log("removeSharableOrgRes: " + removeSharableOrgRes);
 
         let shareDocumentRes = await document.shareDocument(client, upDocId, userEmail);
         console.log("shareDocument: " + shareDocumentRes);

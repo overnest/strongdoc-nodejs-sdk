@@ -4,7 +4,7 @@ const misc = require('../util/misc')
 /**
  * Registers a new organization. A new administrator user will also be created.
  * New users can be added using this administrator account.
- * 
+ *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
  * @param {!string} orgName - The organization name to create
@@ -14,7 +14,7 @@ const misc = require('../util/misc')
  * @param {!string} adminEmail - The organization administrator email
  * @return {RegisterOrganizationResponse} - The register organization response.
  */
-const registerOrganization = async (client, orgName, orgAddr, adminName, 
+const registerOrganization = async (client, orgName, orgAddr, adminName,
     adminPassword, adminEmail) => {
     misc.checkClient(client, false);
 
@@ -29,7 +29,7 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
 
     result = await client.registerOrganizationSync(req);
     resp = new msg.RegisterOrganizationResponse(result.array);
-    return (new RegisterOrganizationResponse(resp.getOrgid(), resp.getUserid())); 
+    return (new RegisterOrganizationResponse(resp.getOrgid(), resp.getUserid()));
 };
 
 
@@ -68,13 +68,13 @@ class RegisterOrganizationResponse {
 }
 
 /**
- * Removes an organization, deleting all data stored with the organization. 
+ * Removes an organization, deleting all data stored with the organization.
  * This requires an administrator priviledge.
- * 
+ *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!boolean} force - If this is false, removal will fail if there 
- *                          are still data stored with the organization. 
+ * @param {!boolean} force - If this is false, removal will fail if there
+ *                          are still data stored with the organization.
  *                          This prevents accidental deletion.
  * @return {!boolean} - Whether the removal was a success
  */
@@ -159,6 +159,34 @@ const demoteUser = async (client, userID) => {
     return resp.getSuccess();
 };
 
+const addSharableOrg = async (client, orgID) => {
+    misc.checkClient(client, true);
+    const req = new msg.AddSharableOrgRequest();
+    req.setNeworgid(orgID);
+    result = await client.addSharableOrgSync(req, client.getAuthMeta());
+    resp = new msg.AddSharableOrgResponse(result.array);
+    return resp.getSuccess();
+};
+
+const removeSharableOrg = async (client, orgID) => {
+    misc.checkClient(client, true);
+    const req = new msg.RemoveSharableOrgRequest();
+    req.setRemoveorgid(orgID);
+    result = await client.removeSharableOrgSync(req, client.getAuthMeta());
+    resp = new msg.RemoveSharableOrgResponse(result.array);
+    return resp.getSuccess();
+};
+
+const setMultiLevelSharing = async (client, isEnable) => {
+    misc.checkClient(client, true);
+    const req = new msg.SetMultiLevelSharingRequest();
+    req.setEnable(isEnable);
+    result = await client.setMultiLevelSharingSync(req, client.getAuthMeta());
+    resp = new msg.SetMultiLevelSharingResponse(result.array);
+    return resp.getSuccess();
+};
+
+
 /**
  * Lists user, TODO: add more detail
  *
@@ -222,3 +250,6 @@ exports.removeUser = removeUser;
 exports.promoteUser = promoteUser;
 exports.demoteUser = demoteUser;
 exports.listUsers = listUsers;
+exports.addSharableOrg = addSharableOrg;
+exports.removeSharableOrg = removeSharableOrg;
+exports.setMultiLevelSharing = setMultiLevelSharing;
