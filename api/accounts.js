@@ -12,10 +12,12 @@ const misc = require('../util/misc')
  * @param {!string} adminName - The organization administrator name
  * @param {!string} adminPassword - The organization administrator password
  * @param {!string} adminEmail - The organization administrator email
+ * @param {!string} source - The source of the subscription
+ * @param {!string} sourceData - Data relating to the source
  * @return {RegisterOrganizationResponse} - The register organization response.
  */
 const registerOrganization = async (client, orgName, orgAddr, adminName,
-    adminPassword, adminEmail) => {
+    adminPassword, adminEmail, source, sourceData) => {
     misc.checkClient(client, false);
 
     const req = new msg.RegisterOrganizationRequest();
@@ -26,6 +28,8 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
     req.setEmail(adminEmail);
     req.setSharableorgsList(null);
     req.setMultilevelshare(false);
+    req.setSource(source);
+    req.setSourcedata(sourceData);
 
     result = await client.registerOrganizationSync(req);
     resp = new msg.RegisterOrganizationResponse(result.array);
@@ -69,7 +73,7 @@ class RegisterOrganizationResponse {
 
 /**
  * Removes an organization, deleting all data stored with the organization.
- * This requires an administrator priviledge.
+ * This requires an administrator privilege.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
@@ -89,12 +93,15 @@ const removeOrganization = async (client, force) => {
 };
 
 /**
- * Removes user, TODO: add more detail
+ * Registers a user in the organization.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!boolean} docID -
- * @return {!boolean} - Whether the removal was a success
+ * @param {!string} username - the username of the new user
+ * @param {!string} password - the password of the new user
+ * @param {!string} email - the email of the new user
+ * @param {!boolean} isAdmin - whether the new user should be an organization administrator
+ * @return {!string} userID - ID of the user.
  */
 const registerUser = async (client, username, password, email, isAdmin) => {
     misc.checkClient(client, true);
@@ -102,19 +109,19 @@ const registerUser = async (client, username, password, email, isAdmin) => {
     req.setUsername(username);
     req.setPassword(password);
     req.setEmail(email);
-    req.setAdmin(isAdmin)
+    req.setAdmin(isAdmin);
     result = await client.registerUserSync(req, client.getAuthMeta());
     resp = new msg.RegisterUserResponse(result.array);
     return resp.getUserid();
 };
 
 /**
- * Removes user, TODO: add more detail
+ * Removes user from the organization.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!boolean} docID -
- * @return {!boolean} - Whether the removal was a success
+ * @param {!boolean} userID - ID of the user.
+ * @return {!number} - the number of users that were removed.
  */
 const removeUser = async (client, userID) => {
     misc.checkClient(client, true);
@@ -126,11 +133,11 @@ const removeUser = async (client, userID) => {
 };
 
 /**
- * Promotes user, TODO: add more detail
+ * Promotes a regular user to administrator privilege level.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!boolean} docID -
+ * @param {!boolean} userID - ID of the user
  * @return {!boolean} - Whether the removal was a success
  */
 const promoteUser = async (client, userID) => {
@@ -143,11 +150,11 @@ const promoteUser = async (client, userID) => {
 };
 
 /**
- * Demotes user, TODO: add more detail
+ * Demotes user, a regular user from administrator privilege level.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!boolean} docID -
+ * @param {!boolean} userID - ID of the user
  * @return {!boolean} - Whether the removal was a success
  */
 const demoteUser = async (client, userID) => {
@@ -159,6 +166,14 @@ const demoteUser = async (client, userID) => {
     return resp.getSuccess();
 };
 
+/**
+ * Adds a sharable Organization.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!boolean} orgID - ID of the organization
+ * @return {!boolean} - Whether the removal was a success
+ */
 const addSharableOrg = async (client, orgID) => {
     misc.checkClient(client, true);
     const req = new msg.AddSharableOrgRequest();
@@ -168,6 +183,14 @@ const addSharableOrg = async (client, orgID) => {
     return resp.getSuccess();
 };
 
+/**
+ * Removes a sharable Organization.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!boolean} orgID - ID of the organization
+ * @return {!boolean} - Whether the removal was a success
+ */
 const removeSharableOrg = async (client, orgID) => {
     misc.checkClient(client, true);
     const req = new msg.RemoveSharableOrgRequest();
@@ -177,6 +200,14 @@ const removeSharableOrg = async (client, orgID) => {
     return resp.getSuccess();
 };
 
+/**
+ * Sets Multi-level Sharing.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!boolean} isEnable - whether to enable or disable Multi-level Sharing
+ * @return {!boolean} - Whether the removal was a success
+ */
 const setMultiLevelSharing = async (client, isEnable) => {
     misc.checkClient(client, true);
     const req = new msg.SetMultiLevelSharingRequest();
@@ -188,12 +219,11 @@ const setMultiLevelSharing = async (client, isEnable) => {
 
 
 /**
- * Lists user, TODO: add more detail
+ * Lists users in the organization.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!boolean} docID -
- * @return {!boolean} - Whether the removal was a success
+ * @return {!array of User} - Array of objects containing data for each user in the organization.
  */
 const listUsers = async (client) => {
     misc.checkClient(client, true);

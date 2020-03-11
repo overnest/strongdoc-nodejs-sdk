@@ -78,6 +78,11 @@ class DocumentResult {
     getScore() {
         return this.score;
     }
+
+    toString() {
+        let div = ' | ';
+        return this.docID + div + this.score.toString();
+    }
 }
 
 exports.search = search;

@@ -3,9 +3,10 @@ const msgenc = require('../proto/documentNoStore_pb');
 const promisify = require('../util/promisifyStream');
 const misc = require('../util/misc');
 const { Readable } = require('stream');
+const util = require('util');
 
 /**
- * Uploads a document to the service for storage.
+ * UploadDocument uploads a document to Strongdoc-provided storage.
  * 
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
@@ -19,7 +20,7 @@ const uploadDocument = async (client, docName, plaintext) => {
         throw "plaintext is not an instance of Buffer.";
     }
 
-    var stream, resp;
+    let stream, resp;
     const authMeta = client.getAuthMeta();
 
     try {
@@ -32,7 +33,7 @@ const uploadDocument = async (client, docName, plaintext) => {
         const cb = function(err, resp) {
             if (err) rejectProm(err);
             else resolveProm(resp);
-        }
+        };
 
         stream = client.uploadDocumentStream(authMeta, cb);
 
@@ -101,7 +102,76 @@ class UploadDocumentResponse {
 }
 
 /**
- * Download a document from the service.
+ * UploadDocumentStream encrypts a document with Strongdoc and stores it in Strongdoc-provided storage.
+ * It accepts a generator yielding the text of the document and the document name.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docName - The name of the document.
+ * @param {!Buffer} dataStream - A generator yielding the text of the document.
+ * @return {!UploadDocumentResponse} - The upload response.
+ */
+const uploadDocumentStream = async (client, docName, dataStream) => {
+    misc.checkClient(client, true);
+
+    let stream, resp;
+    const authMeta = client.getAuthMeta();
+
+    try {
+        let resolveProm, rejectProm;
+        let promise = new Promise((resolve, reject) => {
+            resolveProm = resolve;
+            rejectProm = reject;
+        });
+
+        const cb = function(err, resp) {
+            if (err) rejectProm(err);
+            else resolveProm(resp);
+        };
+
+        stream = client.uploadDocumentStream(authMeta, cb);
+
+        // Send the document name first
+        const req = new msg.UploadDocStreamReq();
+        req.setDocname(docName);
+        stream.write(req);
+
+        blockSize = 10000;
+
+        // Send the plaintext in chunks
+        for await (let chunk of dataStream) {
+            if (!(chunk instanceof Buffer)) {
+                throw "chunk is not an instance of Buffer.";
+            }
+            while (true) {
+                if (chunk.length < blockSize) {
+                    req.setPlaintext(chunk);
+                    stream.write(req);
+                    break
+                } else {
+                    req.setPlaintext(chunk.slice(0, blockSize));
+                    chunk = chunk.slice(blockSize);
+                    stream.write(req);
+                }
+            }
+        }
+
+        stream.end();
+        resp = await promise;
+
+    } catch (err) {
+        throw err;
+    } finally {
+        if (stream !== undefined) {
+            stream.end();
+        }
+    }
+
+    return (new UploadDocumentResponse(resp.getDocid(), resp.getBytes()));
+};
+
+/**
+ * DownloadDocument downloads a document stored in Strongdoc-provided storage.
  * 
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
@@ -137,12 +207,13 @@ const downloadDocument = async (client, docID) => {
     return plaintext;
 };
 /**
- * Download a document from the service.
+ * DownloadDocumentStream decrypts any document previously stored on Strongdoc-provided storage,
+ * and makes the plaintext available via a Readable interface.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
  * @param {!string} docID - The ID of the document.
- * @return {!stream} - The stream that yields data from the downloaded document.
+ * @return {DownStream} - A Readable stream that yields data from the downloaded document.
  */
 const downloadDocumentStream = (client, docID) => {
     misc.checkClient(client, true);
@@ -152,94 +223,41 @@ const downloadDocumentStream = (client, docID) => {
     const req = new msg.DownloadDocStreamReq();
     req.setDocid(docID);
     const grpcstream = promisify.down(client.downloadDocumentStream(req, authMeta));
-    return new downloadStream(grpcstream, docID)
-};
-
-// /**
-//  * Download a document from the service.
-//  *
-//  * @function
-//  * @param {!stream} stream - The StrongDoc client used to call this API.
-//  * @param {!Buffer} buf - An empty file you want to fill with the data.
-//  * @param {!number} n - Number of bytes read.
-//  * @return {!Buffer} - The downloaded document.
-//  */
-// const read = async (stream, buf, n) => {
-//     try {
-//         const resp = await stream.readAsync();
-//         if (resp === promisify.end) {
-//             return;
-//         }
-//
-//         if (resp.getPlaintext() != "") {
-//             let n = resp.getPlaintext.length
-//             buf = Buffer.concat([buf, resp.getPlaintext()]);
-//         }
-//         return n
-//     } catch (err) {
-//         throw err;
-//     } finally {
-//     }
-// };
-
-// readableStream.on('readable', function() {
-//     while ((chunk=readableStream.read()) != null) {
-//         data += chunk;
-//     }
-// });
-
-class downloadStream {
-    constructor(grpcstream, docID) {
-        this.grpcstream = grpcstream;
-        this.chunk = Buffer.alloc(0);
-        this.grpcEOF = false;
-        this.docID = docID;
-    }
-    read = async (buffer) => {
-        try {
-            if (this.chunk.length > 0) {
-                // drain buffer into given buffer and return it
-                return this.fillBuffer(buffer)
-            }
-
-            if (this.grpcEOF) {
-                return -1;
-            }
-            let resp = await this.grpcstream.readAsync();
-            if (resp === promisify.end) {
-                this.grpcEOF = true;
-                return -1;
-            }
-
-            if (resp.getPlaintext() !== '') {
-                this.chunk = Buffer.from(resp.getPlaintext());
-                return this.fillBuffer(buffer)
-            }
-            return 0
-        } catch (err) {
-            throw err;
-        } finally {
-        }
-    };
-    fillBuffer = (buffer) => {
-        let buflen = buffer.length;
-        let chunklen = this.chunk.length;
-        if (chunklen < buflen) {
-            let n = this.chunk.copy(buffer);
-            this.chunk = Buffer.alloc(0);
-            return n;
-        } else {
-            let n = this.chunk.copy(buffer, 0, 0, buffer.length);
-            this.chunk = this.chunk.slice(buffer.length);
-            return n;
-        }
-    };
+    return new DownStream(docID, grpcstream)
 };
 
 /**
- * Encrypts a document using the service, but do not store it. Instead 
- * return the encrypted ciphertext.
- * 
+ * The response returned from the download document API call.
+ * @class DownStream
+ * @hideconstructor
+ */
+var DownStream = function(docID, grpcstream, options) {
+    Readable.call(this, options); // pass through the options to the Readable constructor
+    /**
+     * @constructs
+     * @private
+     * @param {!string} grpcstream - A stream object which yields the downloaded document data.
+     * @param {!Buffer} docID - The ID of the document.
+     */
+    this.grpcstream = grpcstream;
+    this.docID = docID;
+};
+
+util.inherits(DownStream, Readable); // inherit the prototype methods
+
+DownStream.prototype._read = async function() {
+    let resp = await this.grpcstream.readAsync();
+    if (resp === promisify.end) {
+        this.push(null);
+    } else if (resp.getPlaintext() !== '') {
+        this.push(resp.getPlaintext());
+    }
+};
+
+/**
+ * Encrypts a document using the service, but does not store it. Instead
+ * returns the encrypted ciphertext.
+ *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
  * @param {!string} docName - The name of the document.
@@ -264,9 +282,9 @@ const encryptDocument = async (client, docName, plaintext) => {
         const resp = await stream.writeAsync(req);
         docID = resp.getDocid();
 
-        blockSize = 10000;
+        let blockSize = 10000;
         // Send the plaintext in chunks
-        for (i=0; i < plaintext.length; i += blockSize) {
+        for (let i = 0; i < plaintext.length; i += blockSize) {
             const req = new msgenc.EncryptDocStreamReq();
             if (plaintext.length - i < blockSize) {
                 req.setPlaintext(plaintext.slice(i));
@@ -283,7 +301,7 @@ const encryptDocument = async (client, docName, plaintext) => {
     }
 
     return (new EncryptDocumentResponse(docID, ciphertext));
-}
+};
 
 /**
  * The response returned from the encrypt document API call.
@@ -321,6 +339,66 @@ class EncryptDocumentResponse {
 }
 
 /**
+ * EncryptDocumentStream encrypts a document with Strongdoc and makes the encrypted ciphertext available via an
+ * Readable interface. It accepts an generator yielding the plaintext and the document name.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docName - The name of the document.
+ * @param {!Buffer} plaintextStream - A generator yielding the text of the document.
+ * @return {!EncryptDocumentResponse} - The encrypt document response,
+ * contains the docId and the generator yielding the ciphertext.
+ */
+const encryptDocumentStream = async (client, docName, plaintextStream) => {
+    misc.checkClient(client, true);
+
+    const authMeta = client.getAuthMeta();
+    const stream = promisify.bidirect(client.encryptDocumentStream(authMeta));
+    var docID;
+
+    try {
+        // Send the document name first and get the document ID back.
+        const req = new msgenc.EncryptDocStreamReq();
+        req.setDocname(docName);
+        const resp = await stream.writeAsync(req);
+        docID = resp.getDocid();
+
+        const blockSize = 10000;
+
+        async function* encryptStream(dataStream) {
+            for await (let chunk of dataStream) {
+                for (let i = 0; i < chunk.length; i += blockSize) {
+                    const req = new msgenc.EncryptDocStreamReq();
+                    if (chunk.length - i < blockSize) {
+                        req.setPlaintext(chunk.slice(i));
+                    } else {
+                        req.setPlaintext(chunk.slice(i, i + blockSize));
+                    }
+                    const resp = await stream.writeAsync(req);
+                    yield resp.getCiphertext();
+                }
+            }
+        }
+        return new EncryptStreamResponse(docID, Readable.from(encryptStream(plaintextStream)));
+    } catch (err) {
+        throw err;
+    }
+};
+
+/**
+ * The response returned from the EncryptStream API call.
+ * @class EncryptStreamResponse
+ * @hideconstructor
+ */
+class EncryptStreamResponse {
+    constructor(docID, encryptStream) {
+        this.encryptStream = encryptStream;
+        this.docID = docID;
+    }
+}
+
+
+/**
  * Decrypt a document using the service. The user must provide the ciphertext
  * returned during the encryptDocument API call.
  * 
@@ -346,7 +424,7 @@ const decryptDocument = async (client, docID, ciphertext) => {
         req.setDocid(docID);
         const resp = await stream.writeAsync(req);
         respDocID = resp.getDocid();
-        if (docID != respDocID) {
+        if (docID !== respDocID) {
             throw Error("Requested docID " + docID + " but received " + respDocID);
         }
 
@@ -360,7 +438,7 @@ const decryptDocument = async (client, docID, ciphertext) => {
                 req.setCiphertext(ciphertext.slice(i, i+blockSize));
             }
             const resp = await stream.writeAsync(req);
-            if (resp.getPlaintext() != "") {
+            if (resp.getPlaintext() !== "") {
                 plaintext = Buffer.concat([plaintext, resp.getPlaintext()]);
             }
         }
@@ -373,15 +451,59 @@ const decryptDocument = async (client, docID, ciphertext) => {
     return plaintext;
 };
 
-const listDocuments = async (client) => {
+/**
+ * Decrypts any document previously stored on Strongdoc-provided storage, and makes
+ * the plaintext available via an generator interface.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docID - The ID of the document.
+ * @param {!Readable} cipherStream - A generator yielding the document ciphertext to be decrypted.
+ * @return {!Readable} - A generator yielding the decrypted plaintext content of the document.
+ */
+const decryptDocumentStream = async (client, docID, cipherStream) => {
     misc.checkClient(client, true);
+
     const authMeta = client.getAuthMeta();
-    const req = new msg.ListDocumentsRequest();
-    result = await client.listDocumentsSync(req, authMeta);
-    resp = new msg.ListDocumentsResponse(result.array);
-    return (new ListDocumentsResp(resp));
+    const stream = promisify.bidirect(client.decryptDocumentStream(authMeta));
+
+    try {
+        // Send the document name first and get the document ID back.
+        const req = new msgenc.DecryptDocStreamReq();
+        req.setDocid(docID);
+        const resp = await stream.writeAsync(req);
+
+        const blockSize = 10000;
+
+        async function* decryptStream(dataStream) {
+            for await (let chunk of dataStream) {
+                for (let i = 0; i < chunk.length; i += blockSize) {
+                    const req = new msgenc.DecryptDocStreamReq();
+                    if (chunk.length - i < blockSize) {
+                        req.setCiphertext(chunk.slice(i));
+                    } else {
+                        req.setCiphertext(chunk.slice(i, i + blockSize));
+                    }
+                    const resp = await stream.writeAsync(req);
+                    yield resp.getPlaintext();
+                }
+            }
+        }
+        return Readable.from(decryptStream(cipherStream));
+    } catch (err) {
+        throw err;
+    }
 };
 
+/**
+ * Shares a document with another user.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docID - The ID of the document.
+ * @param {!string} userID - The ID of the user.
+ * @return {!boolean} - The success message.
+ */
 const shareDocument = async (client, docID, userID) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
@@ -393,6 +515,15 @@ const shareDocument = async (client, docID, userID) => {
     return resp.getSuccess();
 };
 
+/**
+ * Unshares a document with another user.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docID - The ID of the document.
+ * @param {!string} userID - The ID of the user.
+ * @return {!number} count - The number of documents unshared.
+ */
 const unshareDocument = async (client, docID, userID) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
@@ -402,6 +533,22 @@ const unshareDocument = async (client, docID, userID) => {
     result = await client.unshareDocumentSync(req, authMeta);
     resp = new msg.UnshareDocumentResponse(result.array);
     return resp.getCount();
+};
+
+/**
+ * listDocuments returns a slice of Document objects, representing the documents accessible by the user.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @return {!ListDocumentsResp} - The listDocuments response.
+ */
+const listDocuments = async (client) => {
+    misc.checkClient(client, true);
+    const authMeta = client.getAuthMeta();
+    const req = new msg.ListDocumentsRequest();
+    result = await client.listDocumentsSync(req, authMeta);
+    resp = new msg.ListDocumentsResponse(result.array);
+    return (new ListDocumentsResp(resp));
 };
 
 /**
@@ -464,6 +611,24 @@ class DocumentResult {
     }
 }
 
+/**
+ * removeDocument removes a document from Strongdoc-provided storage.
+ *
+ * @function
+ * @param {!StrongDoc} client - The StrongDoc client used to call this API.
+ * @param {!string} docID - The ID of the document.
+ * @return {!boolean} - The status of the request.
+ */
+const removeDocument = async (client, docID) => {
+    misc.checkClient(client, true);
+    const authMeta = client.getAuthMeta();
+    const req = new msg.RemoveDocumentRequest();
+    req.setDocid(docID);
+    result = await client.removeDocumentSync(req, authMeta);
+    resp = new msg.RemoveDocumentResponse(result.array);
+    return resp.getStatus();
+};
+
 
 exports.uploadDocument = uploadDocument;
 exports.downloadDocument = downloadDocument;
@@ -473,3 +638,7 @@ exports.listDocuments = listDocuments;
 exports.shareDocument = shareDocument;
 exports.unshareDocument = unshareDocument;
 exports.downloadDocumentStream = downloadDocumentStream;
+exports.uploadDocumentStream = uploadDocumentStream;
+exports.removeDocument = removeDocument;
+exports.encryptDocumentStream = encryptDocumentStream;
+exports.decryptDocumentStream = decryptDocumentStream;
