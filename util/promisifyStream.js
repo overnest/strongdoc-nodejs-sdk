@@ -67,7 +67,40 @@ const down = function (stream) {
   return stream;
 };
 
+const promisifyRequestStream = (createStream, context) => (...args) => {
+    return new StreamWrapper(createStream, context, ...args)
+  }
+
+
+class StreamWrapper {
+
+  constructor(createStream, context, ...args) {
+    this.stream = createStream.call(context, ...args, this.callBack.bind(this))
+    
+    this.promise = new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    })
+  }
+
+  callBack(err, response) {
+    if (err) this.reject(err)
+    else this.resolve(response)
+  }
+
+  write(...args){
+    this.stream.write(...args)
+  }
+
+  end() {
+    this.stream.end()
+    return this.promise
+  }
+}
+
 exports.bidirect = bidirect;
 exports.down = down;
+exports.promisifyRequestStream = promisifyRequestStream;
 exports.end = end;
+
 

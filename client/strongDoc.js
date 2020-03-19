@@ -6,6 +6,7 @@ const bluebird = require('bluebird');
 const service = require('../proto/strongdoc_grpc_pb')
 const msg = require('../proto/accounts_pb');
 const misc = require('../util/misc');
+const { promisifyRequestStream } = require('../util/promisifyStream')
 
 /**
  * This is the StrongDoc client that implements all the StrongDoc services.
@@ -45,12 +46,17 @@ class StrongDoc extends service.StrongDocServiceClient {
         super(location.host, ssl);
 
         for (var method in this.$method_definitions) {
+            //console.log(method)
             var def = this.$method_definitions[method];
             if (def.requestStream === false && def.responseStream === false) {
                 // For non-streaming API functions(uni-directional), use bluebird to promisify 
                 // it. The new function name will be the original function name plus "Sync".
                 // The new functions will return a promise, and the calling code must use "await".
                 this[method+"Sync"] = bluebird.promisify(this[method], {context: this});
+            }
+
+            if (def.requestStream === true) {
+                this[method+"Async"] = promisifyRequestStream(this[method], this);
             }
         }
     }

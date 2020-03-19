@@ -111,7 +111,7 @@ class UploadDocumentResponse {
  * @param {!Buffer} dataStream - A generator yielding the text of the document.
  * @return {!UploadDocumentResponse} - The upload response.
  */
-const uploadDocumentStream = async (client, docName, dataStream) => {
+const uploadDocumentStreamOrig = async (client, docName, dataStream) => {
     misc.checkClient(client, true);
 
     let stream, resp;
@@ -154,6 +154,59 @@ const uploadDocumentStream = async (client, docName, dataStream) => {
                     stream.write(req);
                 }
             }
+        }
+
+        stream.end();
+        resp = await promise;
+
+    } catch (err) {
+        throw err;
+    } finally {
+        if (stream !== undefined) {
+            stream.end();
+        }
+    }
+
+    return (new UploadDocumentResponse(resp.getDocid(), resp.getBytes()));
+};
+
+
+//NEW UPLOAD
+const uploadDocumentStream = async (client, docName, dataStream) => {
+    misc.checkClient(client, true);
+
+    let stream, resp;
+    const authMeta = client.getAuthMeta();
+
+    try {
+        let resolveProm, rejectProm;
+        let promise = new Promise((resolve, reject) => {
+            resolveProm = resolve;
+            rejectProm = reject;
+        });
+
+        const cb = function(err, resp) {
+            if (err) rejectProm(err);
+            else resolveProm(resp);
+        };
+
+        stream = client.uploadDocumentStream(authMeta, cb);
+
+        // Send the document name first
+        const req = new msg.UploadDocStreamReq();
+        req.setDocname(docName);
+        stream.write(req);
+
+        
+
+        // Send the plaintext in chunks
+        for await (let chunk of dataStream) {
+            if (!(chunk instanceof Buffer)) {
+                throw "chunk is not an instance of Buffer.";
+            }
+            const req = new msg.UploadDocStreamReq();
+            req.setPlaintext(chunk);
+            stream.write(req);
         }
 
         stream.end();
