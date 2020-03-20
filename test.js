@@ -15,6 +15,8 @@ const adminName     = "adminUserName" + rand,
       adminPassword = "adminUserPassword" + rand,
       adminEmail    = `adminUserName${rand}@somewhere.com`;
 
+const adminName2 = "admin2", adminPassword2 = "adminPassword2", adminEmail2 = "admin2@somewhere.com";
+
 const userName     = "userUserName" + rand,
       userPassword = "userUserPassword" + rand,
       userEmail    = `userUserName${rand}@somewhere.com`;
@@ -23,7 +25,7 @@ const organization  = "OrganizationOne" + rand;
 const organization2 = "OrganizationTwo";
 
 const testSource = "Test";
-const testSourceData = "{\"registrationToken\": \"node1\"}";
+const testSourceData = "{\"registrationToken\": \"node1\"}", testSourceData2 = "{\"registrationToken\": \"org2\"}"
 
 async function main() {
     const filepath = path.join(__dirname,
@@ -33,7 +35,7 @@ async function main() {
 
     try {
         client = new sd.StrongDoc(sd.StrongDoc.ServciceLocation.LOCAL);
-        return;
+        
         console.log('client')
         resp = await accounts.registerOrganization(client, organization, "",
             adminName, adminPassword, adminEmail, testSource, testSourceData);
@@ -42,10 +44,8 @@ async function main() {
         userId = resp.getUserID();
 
         //
-        // resp = await accounts.registerOrganization(client, organization2, "",
-        //     adminName2, adminPassword2, adminEmail2, testSource, testSourceData2);
-        // orgId = organization2;
-        // userId = adminEmail2;
+        await accounts.registerOrganization(client, organization2, "",
+            adminName2, adminPassword2, adminEmail2, testSource, testSourceData2);
 
 
         var token = await login.login(client, adminEmail, adminPassword, organization);
@@ -60,22 +60,25 @@ async function main() {
         res = await document.uploadDocumentStream(client, docName, readStream);
         console.log("uploadDocumentStream: " + res.getDocID());
 
-        // let downPlaintext = await document.downloadDocument(client, upDocId);
 
         let downStream = document.downloadDocumentStream(client, upDocId);
-        let downPlaintext = Buffer.alloc(0);
+        let downStrmPlaintext = Buffer.alloc(0);
         for await (let chunk of downStream) {
-            downPlaintext = Buffer.concat([downPlaintext, chunk])
+            downStrmPlaintext = Buffer.concat([downStrmPlaintext, chunk])
         }
-        if (Buffer.compare(plaintext, downPlaintext) != 0) {
+        if (Buffer.compare(plaintext, downStrmPlaintext) != 0) {
             throw Error("The downloaded text does not match original plaintext")
         }
 
-        // console.log(plaintext.length);
-        // console.log(downPlaintext.length);
-        // if (Buffer.compare(plaintext, downPlaintext) != 0) {
-        //     console.log("The downloaded text does not match original plaintext")
-        // }
+        let downPlaintext = await document.downloadDocument(client, upDocId);
+
+        console.log(plaintext.length);
+        console.log(downPlaintext.length);
+        if (Buffer.compare(plaintext, downPlaintext) != 0) {
+            console.log("The downloaded text does not match original plaintext")
+        }
+
+        return
 
         // resp = await document.encryptDocument(client, docName, plaintext);
         // encDocId = resp.getDocID();
@@ -164,7 +167,7 @@ async function main() {
         if (token != undefined) {
             try {
                 success = await accounts.removeOrganization(client, true);
-                console.log("Organization remove: ", success);
+                console.log("OrganizationOne remove: ", success);
             } catch(e) {
                 console.log("Error Thrown For removeOrganization", e);
             }
