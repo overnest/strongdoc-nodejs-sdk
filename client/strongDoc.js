@@ -99,4 +99,4 @@ class StrongDoc extends service.StrongDocServiceClient {
     }
 }
 
-exports.StrongDoc = StrongDoc;
+module.exports = StrongDoc;

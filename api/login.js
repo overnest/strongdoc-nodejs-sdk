@@ -30,7 +30,6 @@ const logout = async (client) => {
     let result = await client.logoutSync(req, authMeta);
     const resp = new msg.LogoutResponse(result.array);
     return resp.getStatus();
-    return client.logoutInternal();
 };
 
 exports.login = login;

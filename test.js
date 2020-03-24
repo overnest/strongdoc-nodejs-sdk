@@ -1,15 +1,13 @@
 const fs = require('fs');
 const path = require('path');
-const grpc = require('grpc');
-const service = require('./proto/strongdoc_grpc_pb');
-const login = require('./api/login');
-const accounts = require('./api/accounts');
-const document = require('./api/document');
-//const billing = require('./api/billing');
-const search = require('./api/search');
-const sd = require('./client/strongDoc');
 
-const rand = Math.floor(Math.random() * 100)
+const {StrongDoc, auth, accounts, document, billing, search} = require('./index')
+
+const stream = require('stream');
+const bluebird = require('bluebird');
+const pipeline = bluebird.promisify(stream.pipeline);
+
+const rand = Math.floor(Math.random() * 1000)
 
 const adminName     = "adminUserName" + rand,
       adminPassword = "adminUserPassword" + rand,
@@ -24,7 +22,7 @@ const userName     = "userUserName" + rand,
 const organization  = "OrganizationOne" + rand;
 const organization2 = "OrganizationTwo";
 
-const testSource = "Test";
+const testSource = "Test Active";
 const testSourceData = "{\"registrationToken\": \"node1\"}", testSourceData2 = "{\"registrationToken\": \"org2\"}"
 
 async function main() {
@@ -34,7 +32,8 @@ async function main() {
     var client;
 
     try {
-        client = new sd.StrongDoc(sd.StrongDoc.ServciceLocation.LOCAL);
+        console.log(StrongDoc)
+        client = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
         
         console.log('client')
         resp = await accounts.registerOrganization(client, organization, "",
@@ -44,11 +43,10 @@ async function main() {
         userId = resp.getUserID();
 
         //
-        await accounts.registerOrganization(client, organization2, "",
-            adminName2, adminPassword2, adminEmail2, testSource, testSourceData2);
+        await registerSecondOrganization(client)
 
 
-        var token = await login.login(client, adminEmail, adminPassword, organization);
+        var token = await auth.login(client, adminEmail, adminPassword, organization);
         console.log('token: ', token.substring(0, 20), '...');
 
         let docName = "BedMounts.pdf";
@@ -56,7 +54,7 @@ async function main() {
         let upDocId = resp.getDocID();
         console.log('uploadDocument. docID: ', upDocId);
 
-        let readStream = fs.createReadStream(filepath);
+        const readStream = fs.createReadStream(filepath);
         res = await document.uploadDocumentStream(client, docName, readStream);
         console.log("uploadDocumentStream: " + res.getDocID());
 
@@ -78,31 +76,52 @@ async function main() {
             console.log("The downloaded text does not match original plaintext")
         }
 
-        return
+        
+        //ENCRYPT AND DECRYPT DOCUMENT
+        resp = await document.encryptDocument(client, docName, plaintext);
+        encDocId = resp.getDocID();
+        console.log('encrypted docID: ', encDocId)
+        let encCiphertext = resp.getCiphertext();
+        let decPlaintext = await document.decryptDocument(client, encDocId, encCiphertext);
+        if (Buffer.compare(plaintext, decPlaintext) != 0) {
+            console.log("ERROR!!!!!!    The decrypted text does not match original plaintext")
+        }
+        //END
 
-        // resp = await document.encryptDocument(client, docName, plaintext);
-        // encDocId = resp.getDocID();
-        // encCiphertext = resp.getCiphertext();
-
-        // let encryptStreamRes = await document.encryptDocumentStream(client, docName, readStream);
-        // let encCiphertext = Buffer.alloc(0);
-        // console.log("starting iteration")
+        const fileStreamForEncrypt = fs.createReadStream(filepath);
+        let encryptStreamRes = await document.encryptDocumentStream(client, docName, fileStreamForEncrypt);
+        // let encStrmCiphertext = Buffer.alloc(0);
         // for await (let chunk of encryptStreamRes.encryptStream) {
         //     console.log("chunklen: " + chunk.length.toString());
-        //     encCiphertext = Buffer.concat([encCiphertext, chunk])
+        //     encStrmCiphertext = Buffer.concat([encStrmCiphertext, chunk])
         // }
-        // console.log('encCiphertext len = ' + encCiphertext.length.toString());
-        // // decPlaintext = await document.decryptDocument(client, encryptStreamRes.docID, encCiphertext);
-        // let decryptStream = await document.decryptDocumentStream(client, encryptStreamRes.docID, encryptStreamRes.encryptStream);
-        //
-        // decPlaintext = Buffer.alloc(0);
-        // for await (let chunk of decryptStream) {
-        //     console.log("chunklen: " + chunk.length.toString());
-        //     decPlaintext = Buffer.concat([decPlaintext, chunk])
+        // console.log('encStrmCiphertext len = ' + encStrmCiphertext.length);
+        
+        // let decStrmPlaintext = await document.decryptDocument(client, encryptStreamRes.docID, encStrmCiphertext);
+        // if (Buffer.compare(plaintext, decStrmPlaintext) != 0) {
+        //     console.log("ERROR!!!!!!    The decrypted text does not match original plaintext")
+        // } else {
+        //     console.log('success')
         // }
-        // if (Buffer.compare(plaintext, decPlaintext) != 0) {
-        //     console.log("The decrypted text does not match original plaintext")
-        // }
+        const writable = fs.createWriteStream('./testdocs/encrypted_doc');
+        await pipeline(encryptStreamRes.encryptStream, writable);
+        const encryptedReadable = fs.createReadStream('./testdocs/encrypted_doc');
+
+        let decryptStream = await document.decryptDocumentStream(client, encryptStreamRes.docID, encryptedReadable);
+        
+        let decStrmPlaintext = Buffer.alloc(0);
+        for await (let chunk of decryptStream) {
+            console.log("chunklen: " + chunk.length.toString());
+            decStrmPlaintext = Buffer.concat([decStrmPlaintext, chunk])
+        }
+        if (Buffer.compare(plaintext, decStrmPlaintext) != 0) {
+            console.log("ERROR!!!!!!    The decrypted streamed text does not match original plaintext")
+        } else {
+            console.log('success')
+        }
+
+
+        
         let userID = await accounts.registerUser(client, userName, userPassword, userEmail, false);
         console.log("userID: " + userID);
 
@@ -130,46 +149,44 @@ async function main() {
 
         const users = await accounts.listUsers(client);
         users.forEach(user => {
-            console.log(user.toString());
+            console.log('user:', user);
         });
         // shareResult = await document.shareDocument(client, docID, userID);
 
-        docsResp = await document.listDocuments(client);
-        docsList = docsResp.documentsList;
-        docsList.forEach((doc => {
-            //console.log(doc.toString())
+        const docsResp = await document.listDocuments(client);
+        docsResp.documentsList.forEach((doc => {
+            console.log('doc: ', doc)
         }));
-
-        for (d in docsList) {
-            console.log(d.docName)
-        }
 
         resp = await search.search(client, token, "bed mounts");
         resp.getHitsList().forEach(hit => {
-            console.log(hit.toString());
+            console.log('search result hit: ', hit);
         });
-        resp.getHitsList().forEach(function(hit){
-            if (hit.getDocID() != upDocId && hit.getDocID() != encDocId) {
-                throw Error("The search result does not match.")
-            }
-        });
+        
 
-        // let removeDocRes = await document.removeDocument(client, upDocId);
-        // console.log("removeDocRes: " + removeDocRes);
+        let removeDocRes = await document.removeDocument(client, upDocId);
+        console.log("removeDocRes: " + removeDocRes);
+        console.log("Done!")
 
-        // let status = await login.logout(client, token);
-        // console.log(status);
-        // console.log("Done!")
+        let status = await auth.logout(client, token);
+        console.log("logout status: ", status);
+        console.log('waiting 2 seconds');
+        await wait(2);
+        var client2 = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
+        var token2 = await auth.login(client2, adminEmail, adminPassword, organization);
+        console.log('logged in for account deletion')
+
 
     } catch (e) {
         console.log("Error Thrown ", e);
     } finally {
-        if (token != undefined) {
+        if (token2 != undefined) {
             try {
-                success = await accounts.removeOrganization(client, true);
-                console.log("OrganizationOne remove: ", success);
+                success = await accounts.removeOrganization(client2, true);
+                console.log("test org OrganizationOne removed: ", success);
+                
             } catch(e) {
-                console.log("Error Thrown For removeOrganization", e);
+                console.log("Error Thrown For test cleanup", e);
             }
         }
 
@@ -179,6 +196,20 @@ async function main() {
         client.close();
     }
 }
+
+async function registerSecondOrganization (client) {
+    try {
+        await accounts.registerOrganization(client, organization2, "",
+            adminName2, adminPassword2, adminEmail2, testSource, testSourceData2);
+    }catch(err) {
+       if (err.message.includes('6 ALREADY_EXISTS')) console.log('Org 2 already exists. Continuing tests')
+       else throw err
+    }
+}
+
+const wait = seconds => new Promise((resolve) => {
+    setTimeout(() => resolve(), seconds * 1000)
+})
 
 if (require.main === module) {
     main();

@@ -18,38 +18,80 @@ const getBillingDetails = async (client) => {
     return new BillingDetails(resp);
 };
 
+/**
+ * @typedef BillingDetails
+ * @type {object}
+ * @property {number} totalCost - Total cost incurred during the requested billing period
+ */
+
 class BillingDetails {
     constructor(response) {
-        self.currentPeriod = new BillingPeriod(response.getCurrentperiod());
-        self.totalCost = response.getTotalcost();
-        self.documents = new Cost(response.getDocuments());
-        self.index = new Cost(response.getIndex());
-        self.traffic = new Traffic(response.getTraffic());
-        self.nextPeriod = new BillingPeriod(response.getNextperiod());
+        this.currentPeriod = new BillingPeriod(response.getCurrentperiod());
+        this.totalCost = response.getTotalcost();
+        this.documents = new Cost(response.getDocuments());
+        this.index = new Cost(response.getIndex());
+        this.traffic = new Traffic(response.getTraffic());
+        sethislf.nextPeriod = new BillingPeriod(response.getNextperiod());
     }
 }
 
 class Traffic {
     constructor(protoTraffic) {
-        self.cost = protoTraffic.getCost();
-        self.incoming = protoTraffic.getIncoming();
-        self.outgoing = protoTraffic.getOutgoing();
+        this.cost = protoTraffic.getCost();
+        this.incoming = protoTraffic.getIncoming();
+        this.outgoing = protoTraffic.getOutgoing();
     }
 }
 
 class Cost {
     constructor(protoIndex) {
-        self.size = protoIndex.getSize();
-        self.cost = protoIndex.getCost();
+        this.size = protoIndex.getSize();
+        this.cost = protoIndex.getCost();
     }
 }
 
 class BillingPeriod {
     constructor(protoBillingPeriod) {
-        self.periodStart = protoBillingPeriod.getPeriodstart();
-        self.periodEnd = protoBillingPeriod.getPeriodend();
-        self.CurrentPeriod = protoBillingPeriod.getFrequency();
+        this.periodStart = protoBillingPeriod.getPeriodstart();
+        this.periodEnd = protoBillingPeriod.getPeriodend();
+        this.CurrentPeriod = protoBillingPeriod.getFrequency();
     }
+}
+
+const getBillingFrequencyList = async (client) => {
+    misc.checkClient(client, true);
+    const authMeta = client.getAuthMeta();
+    const req = msg.GetBillingFrequencyListRequest()
+    let result = await client.GetBillingFrequencyListSync(req, authMeta);
+    const resp = new msg.GetBillingFrequencyListResponse(result.array);
+    return resp.getBillingFrequencyList().map(bf => new BillingFrequency(bf))
+}
+
+/**
+ * @class BillingFrequency
+ */
+class BillingFrequency {
+    constructor(bf) {
+        this.frequency = bf.getFrequency();
+        this.validFrom = bf.getValidFrom();
+        this.validTo = bf.getValidTo();
+    }
+}
+/**
+ * 
+ * @param {StrongDoc} client 
+ * @param {number} timeIntervalFrequency 
+ * @param {TimeStamp} validFrom 
+ */
+const setNextBillingFrequency = async (client, timeIntervalFrequency, validFrom) => {
+    misc.checkClient(client, true);
+    const authMeta = client.getAuthMeta();
+    const req = msg.SetNextBillingFrequencyRequest()
+    req.setFrequency(timeIntervalFrequency)
+    req.setValidFrom(validFrom)
+    let result = await client.SetNextBillingFrequencySync(req, authMeta);
+    const resp = new msg.SetNextBillingFrequencyResponse(result.array);
+    return new BillingFrequency(resp.getNextBillingFrequency())
 }
 
 

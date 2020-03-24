@@ -1,5 +1,5 @@
 const grpc = require('grpc');
-const sd = require('../client/strongDoc');
+const StrongDoc = require('../client/strongDoc');
 
 const getAuthMeta = (token) => {
     const meta = new grpc.Metadata();
@@ -11,7 +11,7 @@ const checkClient = (client, needToken) => {
     if (!client) {
         throw "Client can not be null.";
     }
-    if (!(client instanceof sd.StrongDoc)) {
+    if (!(client instanceof StrongDoc)) {
         throw "Client is not an instance of strongDoc client.";
     }
     if (needToken && !client.getAuthMeta()) {

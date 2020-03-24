@@ -1,3 +1,11 @@
 /strongdoc-nodejs-sdk.iml
 /.idea/
 *.DS_Store
+
+node_modules/**
+
+#for the download of encrypted info. Not needed.
+testdocs/encrypted_doc
+
+#temporary for troubleshoot race condition
+testauth.js

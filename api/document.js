@@ -338,22 +338,19 @@ const encryptDocumentStream = async (client, docName, plaintextStream) => {
         req.setDocname(docName);
         const resp = await stream.writeAsync(req);
         docID = resp.getDocid();
+        console.log("DOC ID: ", docID)
 
-        const blockSize = 10000;
 
         async function* encryptStream(dataStream) {
+            console.log("generator")
             for await (let chunk of dataStream) {
-                for (let i = 0; i < chunk.length; i += blockSize) {
-                    const req = new msgenc.EncryptDocStreamReq();
-                    if (chunk.length - i < blockSize) {
-                        req.setPlaintext(chunk.slice(i));
-                    } else {
-                        req.setPlaintext(chunk.slice(i, i + blockSize));
-                    }
-                    const resp = await stream.writeAsync(req);
-                    yield resp.getCiphertext();
-                }
+                console.log('chunk')
+                const req = new msgenc.EncryptDocStreamReq();
+                req.setPlaintext(chunk);
+                const resp = await stream.writeAsync(req);
+                yield resp.getCiphertext();
             }
+            stream.end()
         }
         return new EncryptStreamResponse(docID, Readable.from(encryptStream(plaintextStream)));
     } catch (err) {
@@ -449,21 +446,14 @@ const decryptDocumentStream = async (client, docID, cipherStream) => {
         req.setDocid(docID);
         const resp = await stream.writeAsync(req);
 
-        const blockSize = 10000;
-
         async function* decryptStream(dataStream) {
             for await (let chunk of dataStream) {
-                for (let i = 0; i < chunk.length; i += blockSize) {
-                    const req = new msgenc.DecryptDocStreamReq();
-                    if (chunk.length - i < blockSize) {
-                        req.setCiphertext(chunk.slice(i));
-                    } else {
-                        req.setCiphertext(chunk.slice(i, i + blockSize));
-                    }
-                    const resp = await stream.writeAsync(req);
-                    yield resp.getPlaintext();
-                }
+                const req = new msgenc.DecryptDocStreamReq();
+                req.setCiphertext(chunk);
+                const resp = await stream.writeAsync(req);
+                yield resp.getPlaintext(); 
             }
+            stream.end()
         }
         return Readable.from(decryptStream(cipherStream));
     } catch (err) {
