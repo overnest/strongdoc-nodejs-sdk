@@ -10,11 +10,11 @@ const {StrongDoc, auth, accounts, document, billing, search} = require('../index
 const pipeline = bluebird.promisify(stream.pipeline);
 const filepath = path.join(__dirname,'./testdocs/BedMounts.pdf');
 const encryptedFilepath = path.join(__dirname,'./testdocs/encrypted_doc');
+const SERVER = StrongDoc.ServciceLocation.LOCAL;
 var client, token;
 
 before(async function() {
-  client = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
-  console.log('client1: ', !!client)
+  client = new StrongDoc(SERVER);
   await accounts.registerOrganization(client, org1.name, "", 
     admin1.name, admin1.password, admin1.email, org1.source, org1.sourceData);
 
@@ -180,7 +180,7 @@ after(async function() {
   await wait(1100);
 
   try {
-    client = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
+    client = new StrongDoc(SERVER);
     await auth.login(client, admin1.email, admin1.password, org1.name);
     const success = await accounts.removeOrganization(client, true);
     console.log('removed org1: ', success)
@@ -189,7 +189,7 @@ after(async function() {
   }
 
   try{
-    client = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
+    client = new StrongDoc(SERVER);
     await auth.login(client, admin2.email, admin2.password, org2.name);
     const success2 = await accounts.removeOrganization(client, true);
     console.log('removed org2:', success2);
