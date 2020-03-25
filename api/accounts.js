@@ -31,9 +31,9 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
     req.setSource(source);
     req.setSourcedata(sourceData);
 
-    result = await client.registerOrganizationSync(req);
-    resp = new msg.RegisterOrganizationResponse(result.array);
-    return (new RegisterOrganizationResponse(resp.getOrgid(), resp.getUserid()));
+    const result = await client.registerOrganizationSync(req);
+    const resp = new msg.RegisterOrganizationResponse(result.array);
+    return new RegisterOrganizationResponse(resp.getOrgid(), resp.getUserid());
 };
 
 

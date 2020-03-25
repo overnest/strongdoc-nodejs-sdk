@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const {StrongDoc, auth, accounts, document, billing, search} = require('./index')
+const {StrongDoc, auth, accounts, document, billing, search} = require('../index')
 
 const stream = require('stream');
 const bluebird = require('bluebird');
@@ -158,7 +158,7 @@ async function main() {
             console.log('doc: ', doc)
         }));
 
-        resp = await search.search(client, token, "bed mounts");
+        resp = await search.search(client, "bed mounts");
         resp.getHitsList().forEach(hit => {
             console.log('search result hit: ', hit);
         });

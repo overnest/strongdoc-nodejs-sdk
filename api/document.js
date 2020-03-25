@@ -338,13 +338,11 @@ const encryptDocumentStream = async (client, docName, plaintextStream) => {
         req.setDocname(docName);
         const resp = await stream.writeAsync(req);
         docID = resp.getDocid();
-        console.log("DOC ID: ", docID)
 
 
         async function* encryptStream(dataStream) {
-            console.log("generator")
+            
             for await (let chunk of dataStream) {
-                console.log('chunk')
                 const req = new msgenc.EncryptDocStreamReq();
                 req.setPlaintext(chunk);
                 const resp = await stream.writeAsync(req);
