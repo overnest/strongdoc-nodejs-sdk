@@ -23,7 +23,6 @@ before(async function() {
 })
 
 
-
 describe('Login', function() {
   it('should return a JWT', async function() {
     token = await auth.login(client, admin1.email, admin1.password, org1.name);
@@ -164,6 +163,20 @@ describe('Accounts', function(){
     })
   })
 })
+
+describe('Search', function() {
+  it('should return search results', async function() {
+    const results = await search.search(client, "bed mounts");
+    assert.equal(results.getHitsList().length > 0, true);
+  });
+});
+
+describe.skip('Billing', function() {
+  it('should return billing details', async function() {
+    const results = await billing.getBillingDetails(client);
+    assert.equal(1,1)
+  });
+});
 
 describe('Logout', function() {
   it('should return logout status', async function() {
