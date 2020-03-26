@@ -15,11 +15,16 @@ var client, token;
 
 before(async function() {
   client = new StrongDoc(SERVER);
-  await accounts.registerOrganization(client, org1.name, "", 
-    admin1.name, admin1.password, admin1.email, org1.source, org1.sourceData);
 
-  await accounts.registerOrganization(client, org2.name, "", 
-  admin2.name, admin2.password, admin2.email, org2.source, org2.sourceData);
+  // try {
+  //   await createTestOrgs()
+  //   return
+  // } catch(err) {
+  //   console.log('error creating test orgs. Removing orgs and trying again.');
+  // }
+
+  // await removeTestOrgs()
+  await createTestOrgs()
 })
 
 
@@ -189,7 +194,18 @@ describe('Logout', function() {
 
 after(async function() {
   console.log('Done. removing accounts and test data');
+  return removeTestOrgs()
+})
 
+const createTestOrgs = async () => {
+  await accounts.registerOrganization(client, org1.name, "", 
+    admin1.name, admin1.password, admin1.email, org1.source, org1.sourceData);
+
+  await accounts.registerOrganization(client, org2.name, "", 
+  admin2.name, admin2.password, admin2.email, org2.source, org2.sourceData);
+}
+
+const removeTestOrgs = async () => {
   await wait(1100);
 
   try {
@@ -209,6 +225,6 @@ after(async function() {
   } catch(err) {
     console.log('could not remove org2: ', err)
   }
-})
+}
 
 const wait = milSec => new Promise(resolve => setTimeout(() => resolve(), milSec))

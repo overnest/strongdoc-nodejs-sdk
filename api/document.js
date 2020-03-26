@@ -471,11 +471,11 @@ const decryptDocumentStream = async (client, docID, cipherStream) => {
 const shareDocument = async (client, docID, userID) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = new msg.ShareDocumentRequest();
+    const req = new msg.ShareDocumentReq();
     req.setDocid(docID);
     req.setUserid(userID);
     result = await client.shareDocumentSync(req, authMeta);
-    resp = new msg.ShareDocumentResponse(result.array);
+    resp = new msg.ShareDocumentResp(result.array);
     return resp.getSuccess();
 };
 
@@ -491,11 +491,11 @@ const shareDocument = async (client, docID, userID) => {
 const unshareDocument = async (client, docID, userID) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = new msg.UnshareDocumentRequest();
+    const req = new msg.UnshareDocumentReq();
     req.setDocid(docID);
     req.setUserid(userID);
     result = await client.unshareDocumentSync(req, authMeta);
-    resp = new msg.UnshareDocumentResponse(result.array);
+    resp = new msg.UnshareDocumentResp(result.array);
     return resp.getCount();
 };
 
@@ -509,9 +509,9 @@ const unshareDocument = async (client, docID, userID) => {
 const listDocuments = async (client) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = new msg.ListDocumentsRequest();
+    const req = new msg.ListDocumentsReq();
     result = await client.listDocumentsSync(req, authMeta);
-    resp = new msg.ListDocumentsResponse(result.array);
+    resp = new msg.ListDocumentsResp(result.array);
     return (new ListDocumentsResp(resp));
 };
 
@@ -586,10 +586,10 @@ class DocumentResult {
 const removeDocument = async (client, docID) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = new msg.RemoveDocumentRequest();
+    const req = new msg.RemoveDocumentReq();
     req.setDocid(docID);
     result = await client.removeDocumentSync(req, authMeta);
-    resp = new msg.RemoveDocumentResponse(result.array);
+    resp = new msg.RemoveDocumentResp(result.array);
     return resp.getStatus();
 };
 

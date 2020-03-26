@@ -14,10 +14,10 @@ const search = async (client, query) => {
     misc.checkClient(client, true);
 
     const authMeta = client.getAuthMeta();
-    const req = new msg.SearchRequest();
+    const req = new msg.SearchReq();
     req.setQuery(query);
     result = await client.searchSync(req, authMeta);
-    resp = new msg.SearchResponse(result.array);
+    resp = new msg.SearchResp(result.array);
     return (new SearchResponse(resp));
 };
 

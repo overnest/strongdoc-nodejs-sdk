@@ -3,32 +3,34 @@
 'use strict';
 var grpc = require('grpc');
 var strongdoc_pb = require('./strongdoc_pb.js');
+var google_api_annotations_pb = require('./google/api/annotations_pb.js');
+var protoc$gen$swagger_options_annotations_pb = require('./protoc-gen-swagger/options/annotations_pb.js');
 var document_pb = require('./document_pb.js');
 var documentNoStore_pb = require('./documentNoStore_pb.js');
 var search_pb = require('./search_pb.js');
 var accounts_pb = require('./accounts_pb.js');
-var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+var billing_pb = require('./billing_pb.js');
 
-function serialize_proto_AddSharableOrgRequest(arg) {
-  if (!(arg instanceof accounts_pb.AddSharableOrgRequest)) {
-    throw new Error('Expected argument of type proto.AddSharableOrgRequest');
+function serialize_proto_AddSharableOrgReq(arg) {
+  if (!(arg instanceof accounts_pb.AddSharableOrgReq)) {
+    throw new Error('Expected argument of type proto.AddSharableOrgReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_AddSharableOrgRequest(buffer_arg) {
-  return accounts_pb.AddSharableOrgRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_AddSharableOrgReq(buffer_arg) {
+  return accounts_pb.AddSharableOrgReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_AddSharableOrgResponse(arg) {
-  if (!(arg instanceof accounts_pb.AddSharableOrgResponse)) {
-    throw new Error('Expected argument of type proto.AddSharableOrgResponse');
+function serialize_proto_AddSharableOrgResp(arg) {
+  if (!(arg instanceof accounts_pb.AddSharableOrgResp)) {
+    throw new Error('Expected argument of type proto.AddSharableOrgResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_AddSharableOrgResponse(buffer_arg) {
-  return accounts_pb.AddSharableOrgResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_AddSharableOrgResp(buffer_arg) {
+  return accounts_pb.AddSharableOrgResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_DecryptDocReq(arg) {
@@ -75,26 +77,26 @@ function deserialize_proto_DecryptDocStreamResp(buffer_arg) {
   return documentNoStore_pb.DecryptDocStreamResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_DemoteUserRequest(arg) {
-  if (!(arg instanceof accounts_pb.DemoteUserRequest)) {
-    throw new Error('Expected argument of type proto.DemoteUserRequest');
+function serialize_proto_DemoteUserReq(arg) {
+  if (!(arg instanceof accounts_pb.DemoteUserReq)) {
+    throw new Error('Expected argument of type proto.DemoteUserReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_DemoteUserRequest(buffer_arg) {
-  return accounts_pb.DemoteUserRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_DemoteUserReq(buffer_arg) {
+  return accounts_pb.DemoteUserReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_DemoteUserResponse(arg) {
-  if (!(arg instanceof accounts_pb.DemoteUserResponse)) {
-    throw new Error('Expected argument of type proto.DemoteUserResponse');
+function serialize_proto_DemoteUserResp(arg) {
+  if (!(arg instanceof accounts_pb.DemoteUserResp)) {
+    throw new Error('Expected argument of type proto.DemoteUserResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_DemoteUserResponse(buffer_arg) {
-  return accounts_pb.DemoteUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_DemoteUserResp(buffer_arg) {
+  return accounts_pb.DemoteUserResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_DownloadDocReq(arg) {
@@ -185,466 +187,422 @@ function deserialize_proto_EncryptDocStreamResp(buffer_arg) {
   return documentNoStore_pb.EncryptDocStreamResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetBillingDetailsRequest(arg) {
-  if (!(arg instanceof strongdoc_pb.GetBillingDetailsRequest)) {
-    throw new Error('Expected argument of type proto.GetBillingDetailsRequest');
+function serialize_proto_GetAccountInfoReq(arg) {
+  if (!(arg instanceof accounts_pb.GetAccountInfoReq)) {
+    throw new Error('Expected argument of type proto.GetAccountInfoReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetBillingDetailsRequest(buffer_arg) {
-  return strongdoc_pb.GetBillingDetailsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_GetAccountInfoReq(buffer_arg) {
+  return accounts_pb.GetAccountInfoReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetBillingDetailsResponse(arg) {
-  if (!(arg instanceof strongdoc_pb.GetBillingDetailsResponse)) {
-    throw new Error('Expected argument of type proto.GetBillingDetailsResponse');
+function serialize_proto_GetAccountInfoResp(arg) {
+  if (!(arg instanceof accounts_pb.GetAccountInfoResp)) {
+    throw new Error('Expected argument of type proto.GetAccountInfoResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetBillingDetailsResponse(buffer_arg) {
-  return strongdoc_pb.GetBillingDetailsResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_GetAccountInfoResp(buffer_arg) {
+  return accounts_pb.GetAccountInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetBillingPeriodRequest(arg) {
-  if (!(arg instanceof strongdoc_pb.GetBillingPeriodRequest)) {
-    throw new Error('Expected argument of type proto.GetBillingPeriodRequest');
+function serialize_proto_GetBillingDetailsReq(arg) {
+  if (!(arg instanceof billing_pb.GetBillingDetailsReq)) {
+    throw new Error('Expected argument of type proto.GetBillingDetailsReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetBillingPeriodRequest(buffer_arg) {
-  return strongdoc_pb.GetBillingPeriodRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_GetBillingDetailsReq(buffer_arg) {
+  return billing_pb.GetBillingDetailsReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetBillingPeriodResponse(arg) {
-  if (!(arg instanceof strongdoc_pb.GetBillingPeriodResponse)) {
-    throw new Error('Expected argument of type proto.GetBillingPeriodResponse');
+function serialize_proto_GetBillingDetailsResp(arg) {
+  if (!(arg instanceof billing_pb.GetBillingDetailsResp)) {
+    throw new Error('Expected argument of type proto.GetBillingDetailsResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetBillingPeriodResponse(buffer_arg) {
-  return strongdoc_pb.GetBillingPeriodResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_GetBillingDetailsResp(buffer_arg) {
+  return billing_pb.GetBillingDetailsResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetConfigurationReq(arg) {
-  if (!(arg instanceof strongdoc_pb.GetConfigurationReq)) {
-    throw new Error('Expected argument of type proto.GetConfigurationReq');
+function serialize_proto_GetBillingFrequencyListReq(arg) {
+  if (!(arg instanceof billing_pb.GetBillingFrequencyListReq)) {
+    throw new Error('Expected argument of type proto.GetBillingFrequencyListReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetConfigurationReq(buffer_arg) {
-  return strongdoc_pb.GetConfigurationReq.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_GetBillingFrequencyListReq(buffer_arg) {
+  return billing_pb.GetBillingFrequencyListReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetConfigurationResp(arg) {
-  if (!(arg instanceof strongdoc_pb.GetConfigurationResp)) {
-    throw new Error('Expected argument of type proto.GetConfigurationResp');
+function serialize_proto_GetBillingFrequencyListResp(arg) {
+  if (!(arg instanceof billing_pb.GetBillingFrequencyListResp)) {
+    throw new Error('Expected argument of type proto.GetBillingFrequencyListResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetConfigurationResp(buffer_arg) {
-  return strongdoc_pb.GetConfigurationResp.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_GetBillingFrequencyListResp(buffer_arg) {
+  return billing_pb.GetBillingFrequencyListResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetDocumentsSizeRequest(arg) {
-  if (!(arg instanceof document_pb.GetDocumentsSizeRequest)) {
-    throw new Error('Expected argument of type proto.GetDocumentsSizeRequest');
+function serialize_proto_ListDocumentsReq(arg) {
+  if (!(arg instanceof document_pb.ListDocumentsReq)) {
+    throw new Error('Expected argument of type proto.ListDocumentsReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetDocumentsSizeRequest(buffer_arg) {
-  return document_pb.GetDocumentsSizeRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_ListDocumentsReq(buffer_arg) {
+  return document_pb.ListDocumentsReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetDocumentsSizeResponse(arg) {
-  if (!(arg instanceof document_pb.GetDocumentsSizeResponse)) {
-    throw new Error('Expected argument of type proto.GetDocumentsSizeResponse');
+function serialize_proto_ListDocumentsResp(arg) {
+  if (!(arg instanceof document_pb.ListDocumentsResp)) {
+    throw new Error('Expected argument of type proto.ListDocumentsResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetDocumentsSizeResponse(buffer_arg) {
-  return document_pb.GetDocumentsSizeResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_ListDocumentsResp(buffer_arg) {
+  return document_pb.ListDocumentsResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetIndexSizeRequest(arg) {
-  if (!(arg instanceof search_pb.GetIndexSizeRequest)) {
-    throw new Error('Expected argument of type proto.GetIndexSizeRequest');
+function serialize_proto_ListUsersReq(arg) {
+  if (!(arg instanceof accounts_pb.ListUsersReq)) {
+    throw new Error('Expected argument of type proto.ListUsersReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetIndexSizeRequest(buffer_arg) {
-  return search_pb.GetIndexSizeRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_ListUsersReq(buffer_arg) {
+  return accounts_pb.ListUsersReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_GetIndexSizeResponse(arg) {
-  if (!(arg instanceof search_pb.GetIndexSizeResponse)) {
-    throw new Error('Expected argument of type proto.GetIndexSizeResponse');
+function serialize_proto_ListUsersResp(arg) {
+  if (!(arg instanceof accounts_pb.ListUsersResp)) {
+    throw new Error('Expected argument of type proto.ListUsersResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_GetIndexSizeResponse(buffer_arg) {
-  return search_pb.GetIndexSizeResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_ListUsersResp(buffer_arg) {
+  return accounts_pb.ListUsersResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_ListDocumentsRequest(arg) {
-  if (!(arg instanceof document_pb.ListDocumentsRequest)) {
-    throw new Error('Expected argument of type proto.ListDocumentsRequest');
+function serialize_proto_LoginReq(arg) {
+  if (!(arg instanceof accounts_pb.LoginReq)) {
+    throw new Error('Expected argument of type proto.LoginReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_ListDocumentsRequest(buffer_arg) {
-  return document_pb.ListDocumentsRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_LoginReq(buffer_arg) {
+  return accounts_pb.LoginReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_ListDocumentsResponse(arg) {
-  if (!(arg instanceof document_pb.ListDocumentsResponse)) {
-    throw new Error('Expected argument of type proto.ListDocumentsResponse');
+function serialize_proto_LoginResp(arg) {
+  if (!(arg instanceof accounts_pb.LoginResp)) {
+    throw new Error('Expected argument of type proto.LoginResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_ListDocumentsResponse(buffer_arg) {
-  return document_pb.ListDocumentsResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_LoginResp(buffer_arg) {
+  return accounts_pb.LoginResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_ListUsersRequest(arg) {
-  if (!(arg instanceof accounts_pb.ListUsersRequest)) {
-    throw new Error('Expected argument of type proto.ListUsersRequest');
+function serialize_proto_LogoutReq(arg) {
+  if (!(arg instanceof accounts_pb.LogoutReq)) {
+    throw new Error('Expected argument of type proto.LogoutReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_ListUsersRequest(buffer_arg) {
-  return accounts_pb.ListUsersRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_LogoutReq(buffer_arg) {
+  return accounts_pb.LogoutReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_ListUsersResponse(arg) {
-  if (!(arg instanceof accounts_pb.ListUsersResponse)) {
-    throw new Error('Expected argument of type proto.ListUsersResponse');
+function serialize_proto_LogoutResp(arg) {
+  if (!(arg instanceof accounts_pb.LogoutResp)) {
+    throw new Error('Expected argument of type proto.LogoutResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_ListUsersResponse(buffer_arg) {
-  return accounts_pb.ListUsersResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_LogoutResp(buffer_arg) {
+  return accounts_pb.LogoutResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_LoginRequest(arg) {
-  if (!(arg instanceof accounts_pb.LoginRequest)) {
-    throw new Error('Expected argument of type proto.LoginRequest');
+function serialize_proto_PromoteUserReq(arg) {
+  if (!(arg instanceof accounts_pb.PromoteUserReq)) {
+    throw new Error('Expected argument of type proto.PromoteUserReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_LoginRequest(buffer_arg) {
-  return accounts_pb.LoginRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_PromoteUserReq(buffer_arg) {
+  return accounts_pb.PromoteUserReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_LoginResponse(arg) {
-  if (!(arg instanceof accounts_pb.LoginResponse)) {
-    throw new Error('Expected argument of type proto.LoginResponse');
+function serialize_proto_PromoteUserResp(arg) {
+  if (!(arg instanceof accounts_pb.PromoteUserResp)) {
+    throw new Error('Expected argument of type proto.PromoteUserResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_LoginResponse(buffer_arg) {
-  return accounts_pb.LoginResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_PromoteUserResp(buffer_arg) {
+  return accounts_pb.PromoteUserResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_LogoutRequest(arg) {
-  if (!(arg instanceof accounts_pb.LogoutRequest)) {
-    throw new Error('Expected argument of type proto.LogoutRequest');
+function serialize_proto_RegisterOrganizationReq(arg) {
+  if (!(arg instanceof accounts_pb.RegisterOrganizationReq)) {
+    throw new Error('Expected argument of type proto.RegisterOrganizationReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_LogoutRequest(buffer_arg) {
-  return accounts_pb.LogoutRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RegisterOrganizationReq(buffer_arg) {
+  return accounts_pb.RegisterOrganizationReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_LogoutResponse(arg) {
-  if (!(arg instanceof accounts_pb.LogoutResponse)) {
-    throw new Error('Expected argument of type proto.LogoutResponse');
+function serialize_proto_RegisterOrganizationResp(arg) {
+  if (!(arg instanceof accounts_pb.RegisterOrganizationResp)) {
+    throw new Error('Expected argument of type proto.RegisterOrganizationResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_LogoutResponse(buffer_arg) {
-  return accounts_pb.LogoutResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RegisterOrganizationResp(buffer_arg) {
+  return accounts_pb.RegisterOrganizationResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_PromoteUserRequest(arg) {
-  if (!(arg instanceof accounts_pb.PromoteUserRequest)) {
-    throw new Error('Expected argument of type proto.PromoteUserRequest');
+function serialize_proto_RegisterUserReq(arg) {
+  if (!(arg instanceof accounts_pb.RegisterUserReq)) {
+    throw new Error('Expected argument of type proto.RegisterUserReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_PromoteUserRequest(buffer_arg) {
-  return accounts_pb.PromoteUserRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RegisterUserReq(buffer_arg) {
+  return accounts_pb.RegisterUserReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_PromoteUserResponse(arg) {
-  if (!(arg instanceof accounts_pb.PromoteUserResponse)) {
-    throw new Error('Expected argument of type proto.PromoteUserResponse');
+function serialize_proto_RegisterUserResp(arg) {
+  if (!(arg instanceof accounts_pb.RegisterUserResp)) {
+    throw new Error('Expected argument of type proto.RegisterUserResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_PromoteUserResponse(buffer_arg) {
-  return accounts_pb.PromoteUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RegisterUserResp(buffer_arg) {
+  return accounts_pb.RegisterUserResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RegisterOrganizationRequest(arg) {
-  if (!(arg instanceof accounts_pb.RegisterOrganizationRequest)) {
-    throw new Error('Expected argument of type proto.RegisterOrganizationRequest');
+function serialize_proto_RemoveDocumentReq(arg) {
+  if (!(arg instanceof document_pb.RemoveDocumentReq)) {
+    throw new Error('Expected argument of type proto.RemoveDocumentReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RegisterOrganizationRequest(buffer_arg) {
-  return accounts_pb.RegisterOrganizationRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveDocumentReq(buffer_arg) {
+  return document_pb.RemoveDocumentReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RegisterOrganizationResponse(arg) {
-  if (!(arg instanceof accounts_pb.RegisterOrganizationResponse)) {
-    throw new Error('Expected argument of type proto.RegisterOrganizationResponse');
+function serialize_proto_RemoveDocumentResp(arg) {
+  if (!(arg instanceof document_pb.RemoveDocumentResp)) {
+    throw new Error('Expected argument of type proto.RemoveDocumentResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RegisterOrganizationResponse(buffer_arg) {
-  return accounts_pb.RegisterOrganizationResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveDocumentResp(buffer_arg) {
+  return document_pb.RemoveDocumentResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RegisterUserRequest(arg) {
-  if (!(arg instanceof accounts_pb.RegisterUserRequest)) {
-    throw new Error('Expected argument of type proto.RegisterUserRequest');
+function serialize_proto_RemoveOrganizationReq(arg) {
+  if (!(arg instanceof accounts_pb.RemoveOrganizationReq)) {
+    throw new Error('Expected argument of type proto.RemoveOrganizationReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RegisterUserRequest(buffer_arg) {
-  return accounts_pb.RegisterUserRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveOrganizationReq(buffer_arg) {
+  return accounts_pb.RemoveOrganizationReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RegisterUserResponse(arg) {
-  if (!(arg instanceof accounts_pb.RegisterUserResponse)) {
-    throw new Error('Expected argument of type proto.RegisterUserResponse');
+function serialize_proto_RemoveOrganizationResp(arg) {
+  if (!(arg instanceof accounts_pb.RemoveOrganizationResp)) {
+    throw new Error('Expected argument of type proto.RemoveOrganizationResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RegisterUserResponse(buffer_arg) {
-  return accounts_pb.RegisterUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveOrganizationResp(buffer_arg) {
+  return accounts_pb.RemoveOrganizationResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveDocumentRequest(arg) {
-  if (!(arg instanceof document_pb.RemoveDocumentRequest)) {
-    throw new Error('Expected argument of type proto.RemoveDocumentRequest');
+function serialize_proto_RemoveSharableOrgReq(arg) {
+  if (!(arg instanceof accounts_pb.RemoveSharableOrgReq)) {
+    throw new Error('Expected argument of type proto.RemoveSharableOrgReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveDocumentRequest(buffer_arg) {
-  return document_pb.RemoveDocumentRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveSharableOrgReq(buffer_arg) {
+  return accounts_pb.RemoveSharableOrgReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveDocumentResponse(arg) {
-  if (!(arg instanceof document_pb.RemoveDocumentResponse)) {
-    throw new Error('Expected argument of type proto.RemoveDocumentResponse');
+function serialize_proto_RemoveSharableOrgResp(arg) {
+  if (!(arg instanceof accounts_pb.RemoveSharableOrgResp)) {
+    throw new Error('Expected argument of type proto.RemoveSharableOrgResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveDocumentResponse(buffer_arg) {
-  return document_pb.RemoveDocumentResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveSharableOrgResp(buffer_arg) {
+  return accounts_pb.RemoveSharableOrgResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveOrganizationRequest(arg) {
-  if (!(arg instanceof accounts_pb.RemoveOrganizationRequest)) {
-    throw new Error('Expected argument of type proto.RemoveOrganizationRequest');
+function serialize_proto_RemoveUserReq(arg) {
+  if (!(arg instanceof accounts_pb.RemoveUserReq)) {
+    throw new Error('Expected argument of type proto.RemoveUserReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveOrganizationRequest(buffer_arg) {
-  return accounts_pb.RemoveOrganizationRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveUserReq(buffer_arg) {
+  return accounts_pb.RemoveUserReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveOrganizationResponse(arg) {
-  if (!(arg instanceof accounts_pb.RemoveOrganizationResponse)) {
-    throw new Error('Expected argument of type proto.RemoveOrganizationResponse');
+function serialize_proto_RemoveUserResp(arg) {
+  if (!(arg instanceof accounts_pb.RemoveUserResp)) {
+    throw new Error('Expected argument of type proto.RemoveUserResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveOrganizationResponse(buffer_arg) {
-  return accounts_pb.RemoveOrganizationResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_RemoveUserResp(buffer_arg) {
+  return accounts_pb.RemoveUserResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveSharableOrgRequest(arg) {
-  if (!(arg instanceof accounts_pb.RemoveSharableOrgRequest)) {
-    throw new Error('Expected argument of type proto.RemoveSharableOrgRequest');
+function serialize_proto_SearchReq(arg) {
+  if (!(arg instanceof search_pb.SearchReq)) {
+    throw new Error('Expected argument of type proto.SearchReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveSharableOrgRequest(buffer_arg) {
-  return accounts_pb.RemoveSharableOrgRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_SearchReq(buffer_arg) {
+  return search_pb.SearchReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveSharableOrgResponse(arg) {
-  if (!(arg instanceof accounts_pb.RemoveSharableOrgResponse)) {
-    throw new Error('Expected argument of type proto.RemoveSharableOrgResponse');
+function serialize_proto_SearchResp(arg) {
+  if (!(arg instanceof search_pb.SearchResp)) {
+    throw new Error('Expected argument of type proto.SearchResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveSharableOrgResponse(buffer_arg) {
-  return accounts_pb.RemoveSharableOrgResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_SearchResp(buffer_arg) {
+  return search_pb.SearchResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveUserRequest(arg) {
-  if (!(arg instanceof accounts_pb.RemoveUserRequest)) {
-    throw new Error('Expected argument of type proto.RemoveUserRequest');
+function serialize_proto_SetMultiLevelSharingReq(arg) {
+  if (!(arg instanceof accounts_pb.SetMultiLevelSharingReq)) {
+    throw new Error('Expected argument of type proto.SetMultiLevelSharingReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveUserRequest(buffer_arg) {
-  return accounts_pb.RemoveUserRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_SetMultiLevelSharingReq(buffer_arg) {
+  return accounts_pb.SetMultiLevelSharingReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_RemoveUserResponse(arg) {
-  if (!(arg instanceof accounts_pb.RemoveUserResponse)) {
-    throw new Error('Expected argument of type proto.RemoveUserResponse');
+function serialize_proto_SetMultiLevelSharingResp(arg) {
+  if (!(arg instanceof accounts_pb.SetMultiLevelSharingResp)) {
+    throw new Error('Expected argument of type proto.SetMultiLevelSharingResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_RemoveUserResponse(buffer_arg) {
-  return accounts_pb.RemoveUserResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_SetMultiLevelSharingResp(buffer_arg) {
+  return accounts_pb.SetMultiLevelSharingResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_SearchRequest(arg) {
-  if (!(arg instanceof search_pb.SearchRequest)) {
-    throw new Error('Expected argument of type proto.SearchRequest');
+function serialize_proto_SetNextBillingFrequencyReq(arg) {
+  if (!(arg instanceof billing_pb.SetNextBillingFrequencyReq)) {
+    throw new Error('Expected argument of type proto.SetNextBillingFrequencyReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_SearchRequest(buffer_arg) {
-  return search_pb.SearchRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_SetNextBillingFrequencyReq(buffer_arg) {
+  return billing_pb.SetNextBillingFrequencyReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_SearchResponse(arg) {
-  if (!(arg instanceof search_pb.SearchResponse)) {
-    throw new Error('Expected argument of type proto.SearchResponse');
+function serialize_proto_SetNextBillingFrequencyResp(arg) {
+  if (!(arg instanceof billing_pb.SetNextBillingFrequencyResp)) {
+    throw new Error('Expected argument of type proto.SetNextBillingFrequencyResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_SearchResponse(buffer_arg) {
-  return search_pb.SearchResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_SetNextBillingFrequencyResp(buffer_arg) {
+  return billing_pb.SetNextBillingFrequencyResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_SetBillingPeriodRequest(arg) {
-  if (!(arg instanceof strongdoc_pb.SetBillingPeriodRequest)) {
-    throw new Error('Expected argument of type proto.SetBillingPeriodRequest');
+function serialize_proto_ShareDocumentReq(arg) {
+  if (!(arg instanceof document_pb.ShareDocumentReq)) {
+    throw new Error('Expected argument of type proto.ShareDocumentReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_SetBillingPeriodRequest(buffer_arg) {
-  return strongdoc_pb.SetBillingPeriodRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_ShareDocumentReq(buffer_arg) {
+  return document_pb.ShareDocumentReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_SetBillingPeriodResponse(arg) {
-  if (!(arg instanceof strongdoc_pb.SetBillingPeriodResponse)) {
-    throw new Error('Expected argument of type proto.SetBillingPeriodResponse');
+function serialize_proto_ShareDocumentResp(arg) {
+  if (!(arg instanceof document_pb.ShareDocumentResp)) {
+    throw new Error('Expected argument of type proto.ShareDocumentResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_SetBillingPeriodResponse(buffer_arg) {
-  return strongdoc_pb.SetBillingPeriodResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_ShareDocumentResp(buffer_arg) {
+  return document_pb.ShareDocumentResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_SetMultiLevelSharingRequest(arg) {
-  if (!(arg instanceof accounts_pb.SetMultiLevelSharingRequest)) {
-    throw new Error('Expected argument of type proto.SetMultiLevelSharingRequest');
+function serialize_proto_UnshareDocumentReq(arg) {
+  if (!(arg instanceof document_pb.UnshareDocumentReq)) {
+    throw new Error('Expected argument of type proto.UnshareDocumentReq');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_SetMultiLevelSharingRequest(buffer_arg) {
-  return accounts_pb.SetMultiLevelSharingRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_UnshareDocumentReq(buffer_arg) {
+  return document_pb.UnshareDocumentReq.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_proto_SetMultiLevelSharingResponse(arg) {
-  if (!(arg instanceof accounts_pb.SetMultiLevelSharingResponse)) {
-    throw new Error('Expected argument of type proto.SetMultiLevelSharingResponse');
+function serialize_proto_UnshareDocumentResp(arg) {
+  if (!(arg instanceof document_pb.UnshareDocumentResp)) {
+    throw new Error('Expected argument of type proto.UnshareDocumentResp');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_proto_SetMultiLevelSharingResponse(buffer_arg) {
-  return accounts_pb.SetMultiLevelSharingResponse.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
-function serialize_proto_ShareDocumentRequest(arg) {
-  if (!(arg instanceof document_pb.ShareDocumentRequest)) {
-    throw new Error('Expected argument of type proto.ShareDocumentRequest');
-  }
-  return Buffer.from(arg.serializeBinary());
-}
-
-function deserialize_proto_ShareDocumentRequest(buffer_arg) {
-  return document_pb.ShareDocumentRequest.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
-function serialize_proto_ShareDocumentResponse(arg) {
-  if (!(arg instanceof document_pb.ShareDocumentResponse)) {
-    throw new Error('Expected argument of type proto.ShareDocumentResponse');
-  }
-  return Buffer.from(arg.serializeBinary());
-}
-
-function deserialize_proto_ShareDocumentResponse(buffer_arg) {
-  return document_pb.ShareDocumentResponse.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
-function serialize_proto_UnshareDocumentRequest(arg) {
-  if (!(arg instanceof document_pb.UnshareDocumentRequest)) {
-    throw new Error('Expected argument of type proto.UnshareDocumentRequest');
-  }
-  return Buffer.from(arg.serializeBinary());
-}
-
-function deserialize_proto_UnshareDocumentRequest(buffer_arg) {
-  return document_pb.UnshareDocumentRequest.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
-function serialize_proto_UnshareDocumentResponse(arg) {
-  if (!(arg instanceof document_pb.UnshareDocumentResponse)) {
-    throw new Error('Expected argument of type proto.UnshareDocumentResponse');
-  }
-  return Buffer.from(arg.serializeBinary());
-}
-
-function deserialize_proto_UnshareDocumentResponse(buffer_arg) {
-  return document_pb.UnshareDocumentResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_UnshareDocumentResp(buffer_arg) {
+  return document_pb.UnshareDocumentResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_UploadDocReq(arg) {
@@ -694,168 +652,168 @@ function deserialize_proto_UploadDocStreamResp(buffer_arg) {
 
 var StrongDocServiceService = exports.StrongDocServiceService = {
   // Registers a new organization
-//
-// The user who created the organization is automatically an administrator
-// 
-// Does not require Login
-registerOrganization: {
+  //
+  // The user who created the organization is automatically an administrator
+  //
+  // Does not require Login
+  registerOrganization: {
     path: '/proto.StrongDocService/RegisterOrganization',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.RegisterOrganizationRequest,
-    responseType: accounts_pb.RegisterOrganizationResponse,
-    requestSerialize: serialize_proto_RegisterOrganizationRequest,
-    requestDeserialize: deserialize_proto_RegisterOrganizationRequest,
-    responseSerialize: serialize_proto_RegisterOrganizationResponse,
-    responseDeserialize: deserialize_proto_RegisterOrganizationResponse,
+    requestType: accounts_pb.RegisterOrganizationReq,
+    responseType: accounts_pb.RegisterOrganizationResp,
+    requestSerialize: serialize_proto_RegisterOrganizationReq,
+    requestDeserialize: deserialize_proto_RegisterOrganizationReq,
+    responseSerialize: serialize_proto_RegisterOrganizationResp,
+    responseDeserialize: deserialize_proto_RegisterOrganizationResp,
   },
   // Remove an organization and its search indexes
-//
-// Requires Administrator privilege. Only an administrator can remove the whole organization
-//
-// Requires Login
-removeOrganization: {
+  //
+  // Requires Administrator privilege. Only an administrator can remove the whole organization
+  //
+  // Requires Login
+  removeOrganization: {
     path: '/proto.StrongDocService/RemoveOrganization',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.RemoveOrganizationRequest,
-    responseType: accounts_pb.RemoveOrganizationResponse,
-    requestSerialize: serialize_proto_RemoveOrganizationRequest,
-    requestDeserialize: deserialize_proto_RemoveOrganizationRequest,
-    responseSerialize: serialize_proto_RemoveOrganizationResponse,
-    responseDeserialize: deserialize_proto_RemoveOrganizationResponse,
+    requestType: accounts_pb.RemoveOrganizationReq,
+    responseType: accounts_pb.RemoveOrganizationResp,
+    requestSerialize: serialize_proto_RemoveOrganizationReq,
+    requestDeserialize: deserialize_proto_RemoveOrganizationReq,
+    responseSerialize: serialize_proto_RemoveOrganizationResp,
+    responseDeserialize: deserialize_proto_RemoveOrganizationResp,
   },
   // Register new user
-// 
-// Creates new user if it doesn't already exist. If the user already exist, and
-// error is thrown
-//
-// Requires administrator privilege
-registerUser: {
+  //
+  // Creates new user if it doesn't already exist. If the user already exist, and
+  // error is thrown
+  //
+  // Requires administrator privilege
+  registerUser: {
     path: '/proto.StrongDocService/RegisterUser',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.RegisterUserRequest,
-    responseType: accounts_pb.RegisterUserResponse,
-    requestSerialize: serialize_proto_RegisterUserRequest,
-    requestDeserialize: deserialize_proto_RegisterUserRequest,
-    responseSerialize: serialize_proto_RegisterUserResponse,
-    responseDeserialize: deserialize_proto_RegisterUserResponse,
+    requestType: accounts_pb.RegisterUserReq,
+    responseType: accounts_pb.RegisterUserResp,
+    requestSerialize: serialize_proto_RegisterUserReq,
+    requestDeserialize: deserialize_proto_RegisterUserReq,
+    responseSerialize: serialize_proto_RegisterUserResp,
+    responseDeserialize: deserialize_proto_RegisterUserResp,
   },
-  // rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {
-//   option (google.api.http) = {
-//     post: "/v1/account/getuserinfo"
-//     body: "*"
-//   };
-//   option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-//     security: {
-//       security_requirement: {
-//         key: "ApiKeyAuth";
-//         value: {};
-//       }
-//     };
-//   };
-// }
-//
-// List the users of the organization
-//
-// Requires Login
-listUsers: {
+  // rpc GetUserInfo(GetUserInfoReq) returns (GetUserInfoResp) {
+  //   option (google.api.http) = {
+  //     post: "/v1/account/getuserinfo"
+  //     body: "*"
+  //   };
+  //   option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+  //     security: {
+  //       security_requirement: {
+  //         key: "ApiKeyAuth";
+  //         value: {};
+  //       }
+  //     };
+  //   };
+  // }
+  //
+  // List the users of the organization
+  //
+  // Requires Login
+  listUsers: {
     path: '/proto.StrongDocService/ListUsers',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.ListUsersRequest,
-    responseType: accounts_pb.ListUsersResponse,
-    requestSerialize: serialize_proto_ListUsersRequest,
-    requestDeserialize: deserialize_proto_ListUsersRequest,
-    responseSerialize: serialize_proto_ListUsersResponse,
-    responseDeserialize: deserialize_proto_ListUsersResponse,
+    requestType: accounts_pb.ListUsersReq,
+    responseType: accounts_pb.ListUsersResp,
+    requestSerialize: serialize_proto_ListUsersReq,
+    requestDeserialize: deserialize_proto_ListUsersReq,
+    responseSerialize: serialize_proto_ListUsersResp,
+    responseDeserialize: deserialize_proto_ListUsersResp,
   },
   // Remove user from organization
-//
-// Removes the user from the organization. The users documents still exists, 
-// but belong to the organization, only accessible by organization admin.
-//
-// Requires administrator privilege.
-removeUser: {
+  //
+  // Removes the user from the organization. The users documents still exists,
+  // but belong to the organization, only accessible by organization admin.
+  //
+  // Requires administrator privilege.
+  removeUser: {
     path: '/proto.StrongDocService/RemoveUser',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.RemoveUserRequest,
-    responseType: accounts_pb.RemoveUserResponse,
-    requestSerialize: serialize_proto_RemoveUserRequest,
-    requestDeserialize: deserialize_proto_RemoveUserRequest,
-    responseSerialize: serialize_proto_RemoveUserResponse,
-    responseDeserialize: deserialize_proto_RemoveUserResponse,
+    requestType: accounts_pb.RemoveUserReq,
+    responseType: accounts_pb.RemoveUserResp,
+    requestSerialize: serialize_proto_RemoveUserReq,
+    requestDeserialize: deserialize_proto_RemoveUserReq,
+    responseSerialize: serialize_proto_RemoveUserResp,
+    responseDeserialize: deserialize_proto_RemoveUserResp,
   },
   // Promote a regular user to administrator at the organization
-//
-// Requires administrator privilege.
-promoteUser: {
+  //
+  // Requires administrator privilege.
+  promoteUser: {
     path: '/proto.StrongDocService/PromoteUser',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.PromoteUserRequest,
-    responseType: accounts_pb.PromoteUserResponse,
-    requestSerialize: serialize_proto_PromoteUserRequest,
-    requestDeserialize: deserialize_proto_PromoteUserRequest,
-    responseSerialize: serialize_proto_PromoteUserResponse,
-    responseDeserialize: deserialize_proto_PromoteUserResponse,
+    requestType: accounts_pb.PromoteUserReq,
+    responseType: accounts_pb.PromoteUserResp,
+    requestSerialize: serialize_proto_PromoteUserReq,
+    requestDeserialize: deserialize_proto_PromoteUserReq,
+    responseSerialize: serialize_proto_PromoteUserResp,
+    responseDeserialize: deserialize_proto_PromoteUserResp,
   },
   // Demote administrator to regular user at the organization. Attempting to
-// demote the last administrator of an organization will fail
-//
-// Requires administrator privilege.
-demoteUser: {
+  // demote the last administrator of an organization will fail
+  //
+  // Requires administrator privilege.
+  demoteUser: {
     path: '/proto.StrongDocService/DemoteUser',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.DemoteUserRequest,
-    responseType: accounts_pb.DemoteUserResponse,
-    requestSerialize: serialize_proto_DemoteUserRequest,
-    requestDeserialize: deserialize_proto_DemoteUserRequest,
-    responseSerialize: serialize_proto_DemoteUserResponse,
-    responseDeserialize: deserialize_proto_DemoteUserResponse,
+    requestType: accounts_pb.DemoteUserReq,
+    responseType: accounts_pb.DemoteUserResp,
+    requestSerialize: serialize_proto_DemoteUserReq,
+    requestDeserialize: deserialize_proto_DemoteUserReq,
+    responseSerialize: serialize_proto_DemoteUserResp,
+    responseDeserialize: deserialize_proto_DemoteUserResp,
   },
   // List the documents the user can access
-//
-// Administrators can see all documents belonging to the organization
-//
-// Requires Login
-listDocuments: {
+  //
+  // Administrators can see all documents belonging to the organization
+  //
+  // Requires Login
+  listDocuments: {
     path: '/proto.StrongDocService/ListDocuments',
     requestStream: false,
     responseStream: false,
-    requestType: document_pb.ListDocumentsRequest,
-    responseType: document_pb.ListDocumentsResponse,
-    requestSerialize: serialize_proto_ListDocumentsRequest,
-    requestDeserialize: deserialize_proto_ListDocumentsRequest,
-    responseSerialize: serialize_proto_ListDocumentsResponse,
-    responseDeserialize: deserialize_proto_ListDocumentsResponse,
+    requestType: document_pb.ListDocumentsReq,
+    responseType: document_pb.ListDocumentsResp,
+    requestSerialize: serialize_proto_ListDocumentsReq,
+    requestDeserialize: deserialize_proto_ListDocumentsReq,
+    responseSerialize: serialize_proto_ListDocumentsResp,
+    responseDeserialize: deserialize_proto_ListDocumentsResp,
   },
   // Remove document the user can access
-//
-// Admin user can remove document for the whole organization
-// Regular user only can remove document for him/herself
-//
-// Requires Login
-removeDocument: {
+  //
+  // Admin user can remove document for the whole organization
+  // Regular user only can remove document for him/herself
+  //
+  // Requires Login
+  removeDocument: {
     path: '/proto.StrongDocService/RemoveDocument',
     requestStream: false,
     responseStream: false,
-    requestType: document_pb.RemoveDocumentRequest,
-    responseType: document_pb.RemoveDocumentResponse,
-    requestSerialize: serialize_proto_RemoveDocumentRequest,
-    requestDeserialize: deserialize_proto_RemoveDocumentRequest,
-    responseSerialize: serialize_proto_RemoveDocumentResponse,
-    responseDeserialize: deserialize_proto_RemoveDocumentResponse,
+    requestType: document_pb.RemoveDocumentReq,
+    responseType: document_pb.RemoveDocumentResp,
+    requestSerialize: serialize_proto_RemoveDocumentReq,
+    requestDeserialize: deserialize_proto_RemoveDocumentReq,
+    responseSerialize: serialize_proto_RemoveDocumentResp,
+    responseDeserialize: deserialize_proto_RemoveDocumentResp,
   },
   // Upload document
-//
-// User can upload document to the organization for storage
-// 
-// Requires Login 
-uploadDocumentStream: {
+  //
+  // User can upload document to the organization for storage
+  //
+  // Requires Login
+  uploadDocumentStream: {
     path: '/proto.StrongDocService/UploadDocumentStream',
     requestStream: true,
     responseStream: false,
@@ -866,14 +824,14 @@ uploadDocumentStream: {
     responseSerialize: serialize_proto_UploadDocStreamResp,
     responseDeserialize: deserialize_proto_UploadDocStreamResp,
   },
-  // This is not available through gRPC REST gateway, 
-// since REST api does not support streaming protocol
-// Upload document
-//
-// User can upload document to the organization for storage
-// 
-// Requires Login 
-uploadDocument: {
+  // This is not available through gRPC REST gateway,
+  // since REST api does not support streaming protocol
+  // Upload document
+  //
+  // User can upload document to the organization for storage
+  //
+  // Requires Login
+  uploadDocument: {
     path: '/proto.StrongDocService/UploadDocument',
     requestStream: false,
     responseStream: false,
@@ -885,11 +843,11 @@ uploadDocument: {
     responseDeserialize: deserialize_proto_UploadDocResp,
   },
   // Download document stream
-//
-// User can download the documents
-// 
-// Requires Login 
-downloadDocumentStream: {
+  //
+  // User can download the documents
+  //
+  // Requires Login
+  downloadDocumentStream: {
     path: '/proto.StrongDocService/DownloadDocumentStream',
     requestStream: false,
     responseStream: true,
@@ -900,14 +858,14 @@ downloadDocumentStream: {
     responseSerialize: serialize_proto_DownloadDocStreamResp,
     responseDeserialize: deserialize_proto_DownloadDocStreamResp,
   },
-  // This is not available through gRPC REST gateway, 
-// since REST api does not support streaming protocol
-// Download document
-//
-// User can download the documents
-// 
-// Requires Login 
-downloadDocument: {
+  // This is not available through gRPC REST gateway,
+  // since REST api does not support streaming protocol
+  // Download document
+  //
+  // User can download the documents
+  //
+  // Requires Login
+  downloadDocument: {
     path: '/proto.StrongDocService/DownloadDocument',
     requestStream: false,
     responseStream: false,
@@ -919,10 +877,10 @@ downloadDocument: {
     responseDeserialize: deserialize_proto_DownloadDocResp,
   },
   // Encrypt document stream encrypts the document and returns the ciphertext
-// back to the user without storing it.
-// 
-// Requires Login 
-encryptDocumentStream: {
+  // back to the user without storing it.
+  //
+  // Requires Login
+  encryptDocumentStream: {
     path: '/proto.StrongDocService/EncryptDocumentStream',
     requestStream: true,
     responseStream: true,
@@ -933,13 +891,13 @@ encryptDocumentStream: {
     responseSerialize: serialize_proto_EncryptDocStreamResp,
     responseDeserialize: deserialize_proto_EncryptDocStreamResp,
   },
-  // This is not available through gRPC REST gateway, 
-// since REST api does not support streaming protocol
-// Encrypt document encrypts the document and returns the ciphertext
-// back to the user without storing it.
-// 
-// Requires Login 
-encryptDocument: {
+  // This is not available through gRPC REST gateway,
+  // since REST api does not support streaming protocol
+  // Encrypt document encrypts the document and returns the ciphertext
+  // back to the user without storing it.
+  //
+  // Requires Login
+  encryptDocument: {
     path: '/proto.StrongDocService/EncryptDocument',
     requestStream: false,
     responseStream: false,
@@ -950,11 +908,11 @@ encryptDocument: {
     responseSerialize: serialize_proto_EncryptDocResp,
     responseDeserialize: deserialize_proto_EncryptDocResp,
   },
-  // Decrypt document stream decrypts the ciphertext passed in and returns 
-// decrypted plain text back to the user without storing it
-// 
-// Requires Login 
-decryptDocumentStream: {
+  // Decrypt document stream decrypts the ciphertext passed in and returns
+  // decrypted plain text back to the user without storing it
+  //
+  // Requires Login
+  decryptDocumentStream: {
     path: '/proto.StrongDocService/DecryptDocumentStream',
     requestStream: true,
     responseStream: true,
@@ -965,11 +923,11 @@ decryptDocumentStream: {
     responseSerialize: serialize_proto_DecryptDocStreamResp,
     responseDeserialize: deserialize_proto_DecryptDocStreamResp,
   },
-  // This is not available through gRPC REST gateway, 
-// since REST api does not support streaming protocol
-// Decrypt document decrypts the ciphertext passed in and returns 
-// decrypted plain text back to the user without storing it
-decryptDocument: {
+  // This is not available through gRPC REST gateway,
+  // since REST api does not support streaming protocol
+  // Decrypt document decrypts the ciphertext passed in and returns
+  // decrypted plain text back to the user without storing it
+  decryptDocument: {
     path: '/proto.StrongDocService/DecryptDocument',
     requestStream: false,
     responseStream: false,
@@ -981,213 +939,182 @@ decryptDocument: {
     responseDeserialize: deserialize_proto_DecryptDocResp,
   },
   // Share a document to another user
-//
-// Requires Login
-shareDocument: {
+  //
+  // Requires Login
+  shareDocument: {
     path: '/proto.StrongDocService/ShareDocument',
     requestStream: false,
     responseStream: false,
-    requestType: document_pb.ShareDocumentRequest,
-    responseType: document_pb.ShareDocumentResponse,
-    requestSerialize: serialize_proto_ShareDocumentRequest,
-    requestDeserialize: deserialize_proto_ShareDocumentRequest,
-    responseSerialize: serialize_proto_ShareDocumentResponse,
-    responseDeserialize: deserialize_proto_ShareDocumentResponse,
+    requestType: document_pb.ShareDocumentReq,
+    responseType: document_pb.ShareDocumentResp,
+    requestSerialize: serialize_proto_ShareDocumentReq,
+    requestDeserialize: deserialize_proto_ShareDocumentReq,
+    responseSerialize: serialize_proto_ShareDocumentResp,
+    responseDeserialize: deserialize_proto_ShareDocumentResp,
   },
   // Unshare a document that had previously been shared to a user
-//
-// Requires Login
-unshareDocument: {
+  //
+  // Requires Login
+  unshareDocument: {
     path: '/proto.StrongDocService/UnshareDocument',
     requestStream: false,
     responseStream: false,
-    requestType: document_pb.UnshareDocumentRequest,
-    responseType: document_pb.UnshareDocumentResponse,
-    requestSerialize: serialize_proto_UnshareDocumentRequest,
-    requestDeserialize: deserialize_proto_UnshareDocumentRequest,
-    responseSerialize: serialize_proto_UnshareDocumentResponse,
-    responseDeserialize: deserialize_proto_UnshareDocumentResponse,
-  },
-  // Obtain the size of the user's stored documents
-//
-// Admin user can see the size of the documents which belong to the company
-// 
-// Requires Login
-getDocumentsSize: {
-    path: '/proto.StrongDocService/GetDocumentsSize',
-    requestStream: false,
-    responseStream: false,
-    requestType: document_pb.GetDocumentsSizeRequest,
-    responseType: document_pb.GetDocumentsSizeResponse,
-    requestSerialize: serialize_proto_GetDocumentsSizeRequest,
-    requestDeserialize: deserialize_proto_GetDocumentsSizeRequest,
-    responseSerialize: serialize_proto_GetDocumentsSizeResponse,
-    responseDeserialize: deserialize_proto_GetDocumentsSizeResponse,
+    requestType: document_pb.UnshareDocumentReq,
+    responseType: document_pb.UnshareDocumentResp,
+    requestSerialize: serialize_proto_UnshareDocumentReq,
+    requestDeserialize: deserialize_proto_UnshareDocumentReq,
+    responseSerialize: serialize_proto_UnshareDocumentResp,
+    responseDeserialize: deserialize_proto_UnshareDocumentResp,
   },
   // Obtain an authentication token to be used with other APIs
-//
-// An authentication token will be returned after user has been validated
-// The returned token will be used as a Bearer Token and need to be set in 
-// the request header
-login: {
+  //
+  // An authentication token will be returned after user has been validated
+  // The returned token will be used as a Bearer Token and need to be set in
+  // the request header
+  login: {
     path: '/proto.StrongDocService/Login',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.LoginRequest,
-    responseType: accounts_pb.LoginResponse,
-    requestSerialize: serialize_proto_LoginRequest,
-    requestDeserialize: deserialize_proto_LoginRequest,
-    responseSerialize: serialize_proto_LoginResponse,
-    responseDeserialize: deserialize_proto_LoginResponse,
+    requestType: accounts_pb.LoginReq,
+    responseType: accounts_pb.LoginResp,
+    requestSerialize: serialize_proto_LoginReq,
+    requestDeserialize: deserialize_proto_LoginReq,
+    responseSerialize: serialize_proto_LoginResp,
+    responseDeserialize: deserialize_proto_LoginResp,
   },
   // Logout current user
-//
-// Requires Login
-logout: {
+  //
+  // Requires Login
+  logout: {
     path: '/proto.StrongDocService/Logout',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.LogoutRequest,
-    responseType: accounts_pb.LogoutResponse,
-    requestSerialize: serialize_proto_LogoutRequest,
-    requestDeserialize: deserialize_proto_LogoutRequest,
-    responseSerialize: serialize_proto_LogoutResponse,
-    responseDeserialize: deserialize_proto_LogoutResponse,
+    requestType: accounts_pb.LogoutReq,
+    responseType: accounts_pb.LogoutResp,
+    requestSerialize: serialize_proto_LogoutReq,
+    requestDeserialize: deserialize_proto_LogoutReq,
+    responseSerialize: serialize_proto_LogoutResp,
+    responseDeserialize: deserialize_proto_LogoutResp,
   },
   // Search within a list of user's accessible documents
-//
-// The response will include a list document id and its score when matches are found
-// 
-// Requires Login
-search: {
+  //
+  // The response will include a list document id and its score when matches are found
+  //
+  // Requires Login
+  search: {
     path: '/proto.StrongDocService/Search',
     requestStream: false,
     responseStream: false,
-    requestType: search_pb.SearchRequest,
-    responseType: search_pb.SearchResponse,
-    requestSerialize: serialize_proto_SearchRequest,
-    requestDeserialize: deserialize_proto_SearchRequest,
-    responseSerialize: serialize_proto_SearchResponse,
-    responseDeserialize: deserialize_proto_SearchResponse,
-  },
-  // Obtain size of the organization's indexes
-//
-// Requires Login
-getIndexSize: {
-    path: '/proto.StrongDocService/GetIndexSize',
-    requestStream: false,
-    responseStream: false,
-    requestType: search_pb.GetIndexSizeRequest,
-    responseType: search_pb.GetIndexSizeResponse,
-    requestSerialize: serialize_proto_GetIndexSizeRequest,
-    requestDeserialize: deserialize_proto_GetIndexSizeRequest,
-    responseSerialize: serialize_proto_GetIndexSizeResponse,
-    responseDeserialize: deserialize_proto_GetIndexSizeResponse,
+    requestType: search_pb.SearchReq,
+    responseType: search_pb.SearchResp,
+    requestSerialize: serialize_proto_SearchReq,
+    requestDeserialize: deserialize_proto_SearchReq,
+    responseSerialize: serialize_proto_SearchResp,
+    responseDeserialize: deserialize_proto_SearchResp,
   },
   // Add a sharable organization to the user's organization.
-//
-// Requires Administrator privilege.
-// Requires Login
-addSharableOrg: {
+  //
+  // Requires Administrator privilege.
+  // Requires Login
+  addSharableOrg: {
     path: '/proto.StrongDocService/AddSharableOrg',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.AddSharableOrgRequest,
-    responseType: accounts_pb.AddSharableOrgResponse,
-    requestSerialize: serialize_proto_AddSharableOrgRequest,
-    requestDeserialize: deserialize_proto_AddSharableOrgRequest,
-    responseSerialize: serialize_proto_AddSharableOrgResponse,
-    responseDeserialize: deserialize_proto_AddSharableOrgResponse,
+    requestType: accounts_pb.AddSharableOrgReq,
+    responseType: accounts_pb.AddSharableOrgResp,
+    requestSerialize: serialize_proto_AddSharableOrgReq,
+    requestDeserialize: deserialize_proto_AddSharableOrgReq,
+    responseSerialize: serialize_proto_AddSharableOrgResp,
+    responseDeserialize: deserialize_proto_AddSharableOrgResp,
   },
   // Remove a sharable organization from the user's organization.
-//
-// Requires Administrator privilege.
-// Requires Login
-removeSharableOrg: {
+  //
+  // Requires Administrator privilege.
+  // Requires Login
+  removeSharableOrg: {
     path: '/proto.StrongDocService/RemoveSharableOrg',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.RemoveSharableOrgRequest,
-    responseType: accounts_pb.RemoveSharableOrgResponse,
-    requestSerialize: serialize_proto_RemoveSharableOrgRequest,
-    requestDeserialize: deserialize_proto_RemoveSharableOrgRequest,
-    responseSerialize: serialize_proto_RemoveSharableOrgResponse,
-    responseDeserialize: deserialize_proto_RemoveSharableOrgResponse,
+    requestType: accounts_pb.RemoveSharableOrgReq,
+    responseType: accounts_pb.RemoveSharableOrgResp,
+    requestSerialize: serialize_proto_RemoveSharableOrgReq,
+    requestDeserialize: deserialize_proto_RemoveSharableOrgReq,
+    responseSerialize: serialize_proto_RemoveSharableOrgResp,
+    responseDeserialize: deserialize_proto_RemoveSharableOrgResp,
   },
   // Update the organization's multi-level sharing setting
-//
-// Requires Administrator privilege.
-// Requires Login
-setMultiLevelSharing: {
+  //
+  // Requires Administrator privilege.
+  // Requires Login
+  setMultiLevelSharing: {
     path: '/proto.StrongDocService/SetMultiLevelSharing',
     requestStream: false,
     responseStream: false,
-    requestType: accounts_pb.SetMultiLevelSharingRequest,
-    responseType: accounts_pb.SetMultiLevelSharingResponse,
-    requestSerialize: serialize_proto_SetMultiLevelSharingRequest,
-    requestDeserialize: deserialize_proto_SetMultiLevelSharingRequest,
-    responseSerialize: serialize_proto_SetMultiLevelSharingResponse,
-    responseDeserialize: deserialize_proto_SetMultiLevelSharingResponse,
+    requestType: accounts_pb.SetMultiLevelSharingReq,
+    responseType: accounts_pb.SetMultiLevelSharingResp,
+    requestSerialize: serialize_proto_SetMultiLevelSharingReq,
+    requestDeserialize: deserialize_proto_SetMultiLevelSharingReq,
+    responseSerialize: serialize_proto_SetMultiLevelSharingResp,
+    responseDeserialize: deserialize_proto_SetMultiLevelSharingResp,
   },
-  // List all items of the cost breakdown and also other details such as the billing period
-//
-// Requires Administrator privilege
-// Requires Login
-getBillingDetails: {
+  // List all items of the cost breakdown and also other details such as the billing frequency
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  getBillingDetails: {
     path: '/proto.StrongDocService/GetBillingDetails',
     requestStream: false,
     responseStream: false,
-    requestType: strongdoc_pb.GetBillingDetailsRequest,
-    responseType: strongdoc_pb.GetBillingDetailsResponse,
-    requestSerialize: serialize_proto_GetBillingDetailsRequest,
-    requestDeserialize: deserialize_proto_GetBillingDetailsRequest,
-    responseSerialize: serialize_proto_GetBillingDetailsResponse,
-    responseDeserialize: deserialize_proto_GetBillingDetailsResponse,
+    requestType: billing_pb.GetBillingDetailsReq,
+    responseType: billing_pb.GetBillingDetailsResp,
+    requestSerialize: serialize_proto_GetBillingDetailsReq,
+    requestDeserialize: deserialize_proto_GetBillingDetailsReq,
+    responseSerialize: serialize_proto_GetBillingDetailsResp,
+    responseDeserialize: deserialize_proto_GetBillingDetailsResp,
   },
-  // Obtain the billing period
-//
-// Requires Administrator privilege
-// Requires Login
-getBillingPeriod: {
-    path: '/proto.StrongDocService/GetBillingPeriod',
+  // Obtain the list of billing frequencies (past, current and future)
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  getBillingFrequencyList: {
+    path: '/proto.StrongDocService/GetBillingFrequencyList',
     requestStream: false,
     responseStream: false,
-    requestType: strongdoc_pb.GetBillingPeriodRequest,
-    responseType: strongdoc_pb.GetBillingPeriodResponse,
-    requestSerialize: serialize_proto_GetBillingPeriodRequest,
-    requestDeserialize: deserialize_proto_GetBillingPeriodRequest,
-    responseSerialize: serialize_proto_GetBillingPeriodResponse,
-    responseDeserialize: deserialize_proto_GetBillingPeriodResponse,
+    requestType: billing_pb.GetBillingFrequencyListReq,
+    responseType: billing_pb.GetBillingFrequencyListResp,
+    requestSerialize: serialize_proto_GetBillingFrequencyListReq,
+    requestDeserialize: deserialize_proto_GetBillingFrequencyListReq,
+    responseSerialize: serialize_proto_GetBillingFrequencyListResp,
+    responseDeserialize: deserialize_proto_GetBillingFrequencyListResp,
   },
-  // Change the billing period
-//
-// Requires Administrator privilege
-// Requires Login
-setBillingPeriod: {
-    path: '/proto.StrongDocService/SetBillingPeriod',
+  // Change the next billing frequency
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  setNextBillingFrequency: {
+    path: '/proto.StrongDocService/SetNextBillingFrequency',
     requestStream: false,
     responseStream: false,
-    requestType: strongdoc_pb.SetBillingPeriodRequest,
-    responseType: strongdoc_pb.SetBillingPeriodResponse,
-    requestSerialize: serialize_proto_SetBillingPeriodRequest,
-    requestDeserialize: deserialize_proto_SetBillingPeriodRequest,
-    responseSerialize: serialize_proto_SetBillingPeriodResponse,
-    responseDeserialize: deserialize_proto_SetBillingPeriodResponse,
+    requestType: billing_pb.SetNextBillingFrequencyReq,
+    responseType: billing_pb.SetNextBillingFrequencyResp,
+    requestSerialize: serialize_proto_SetNextBillingFrequencyReq,
+    requestDeserialize: deserialize_proto_SetNextBillingFrequencyReq,
+    responseSerialize: serialize_proto_SetNextBillingFrequencyResp,
+    responseDeserialize: deserialize_proto_SetNextBillingFrequencyResp,
   },
-  // Show current server configuration
-//
-// Requires Administrator privilege. Only an administrator can see server configuration
-// Requires Login
-getConfiguration: {
-    path: '/proto.StrongDocService/GetConfiguration',
+  // Obtain information about the account
+  //
+  // Requires Login
+  getAccountInfo: {
+    path: '/proto.StrongDocService/GetAccountInfo',
     requestStream: false,
     responseStream: false,
-    requestType: strongdoc_pb.GetConfigurationReq,
-    responseType: strongdoc_pb.GetConfigurationResp,
-    requestSerialize: serialize_proto_GetConfigurationReq,
-    requestDeserialize: deserialize_proto_GetConfigurationReq,
-    responseSerialize: serialize_proto_GetConfigurationResp,
-    responseDeserialize: deserialize_proto_GetConfigurationResp,
+    requestType: accounts_pb.GetAccountInfoReq,
+    responseType: accounts_pb.GetAccountInfoResp,
+    requestSerialize: serialize_proto_GetAccountInfoReq,
+    requestDeserialize: deserialize_proto_GetAccountInfoReq,
+    responseSerialize: serialize_proto_GetAccountInfoResp,
+    responseDeserialize: deserialize_proto_GetAccountInfoResp,
   },
 };
 

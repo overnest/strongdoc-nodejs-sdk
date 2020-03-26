@@ -12,9 +12,9 @@ const misc = require('../util/misc');
 const getBillingDetails = async (client) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = new msg.GetBillingDetailsRequest();
+    const req = new msg.GetBillingDetailsReq();
     let result = await client.getBillingDetailsSync(req, authMeta);
-    const resp = new msg.GetBillingDetailsResponse(result.array);
+    const resp = new msg.GetBillingDetailsResp(result.array);
     return new BillingDetails(resp);
 };
 
@@ -61,9 +61,9 @@ class BillingPeriod {
 const getBillingFrequencyList = async (client) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = msg.GetBillingFrequencyListRequest()
+    const req = msg.GetBillingFrequencyListReq()
     let result = await client.GetBillingFrequencyListSync(req, authMeta);
-    const resp = new msg.GetBillingFrequencyListResponse(result.array);
+    const resp = new msg.GetBillingFrequencyListResp(result.array);
     return resp.getBillingFrequencyList().map(bf => new BillingFrequency(bf))
 }
 
@@ -86,11 +86,11 @@ class BillingFrequency {
 const setNextBillingFrequency = async (client, timeIntervalFrequency, validFrom) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = msg.SetNextBillingFrequencyRequest()
+    const req = msg.SetNextBillingFrequencyReq()
     req.setFrequency(timeIntervalFrequency)
     req.setValidFrom(validFrom)
     let result = await client.SetNextBillingFrequencySync(req, authMeta);
-    const resp = new msg.SetNextBillingFrequencyResponse(result.array);
+    const resp = new msg.SetNextBillingFrequencyRes(result.array);
     return new BillingFrequency(resp.getNextBillingFrequency())
 }
 

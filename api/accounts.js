@@ -20,7 +20,7 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
     adminPassword, adminEmail, source, sourceData) => {
     misc.checkClient(client, false);
 
-    const req = new msg.RegisterOrganizationRequest();
+    const req = new msg.RegisterOrganizationReq();
     req.setOrgname(orgName);
     req.setOrgaddr(orgAddr);
     req.setUsername(adminName);
@@ -32,7 +32,7 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
     req.setSourcedata(sourceData);
 
     const result = await client.registerOrganizationSync(req);
-    const resp = new msg.RegisterOrganizationResponse(result.array);
+    const resp = new msg.RegisterOrganizationResp(result.array);
     return new RegisterOrganizationResponse(resp.getOrgid(), resp.getUserid());
 };
 
@@ -85,10 +85,10 @@ class RegisterOrganizationResponse {
 const removeOrganization = async (client, force) => {
     misc.checkClient(client, true);
 
-    const req = new msg.RemoveOrganizationRequest();
+    const req = new msg.RemoveOrganizationReq();
     req.setForce(force);
     result = await client.removeOrganizationSync(req, client.getAuthMeta());
-    resp = new msg.RemoveOrganizationResponse(result.array);
+    resp = new msg.RemoveOrganizationResp(result.array);
     return resp.getSuccess();
 };
 
@@ -105,13 +105,13 @@ const removeOrganization = async (client, force) => {
  */
 const registerUser = async (client, username, password, email, isAdmin) => {
     misc.checkClient(client, true);
-    const req = new msg.RegisterUserRequest();
+    const req = new msg.RegisterUserReq();
     req.setUsername(username);
     req.setPassword(password);
     req.setEmail(email);
     req.setAdmin(isAdmin);
     result = await client.registerUserSync(req, client.getAuthMeta());
-    resp = new msg.RegisterUserResponse(result.array);
+    resp = new msg.RegisterUserResp(result.array);
     return resp.getUserid();
 };
 
@@ -125,10 +125,10 @@ const registerUser = async (client, username, password, email, isAdmin) => {
  */
 const removeUser = async (client, userID) => {
     misc.checkClient(client, true);
-    const req = new msg.RemoveUserRequest();
+    const req = new msg.RemoveUserReq();
     req.setUserid(userID);
     result = await client.removeUserSync(req, client.getAuthMeta());
-    resp = new msg.RemoveUserResponse(result.array);
+    resp = new msg.RemoveUserResp(result.array);
     return resp.getCount();
 };
 
@@ -142,10 +142,10 @@ const removeUser = async (client, userID) => {
  */
 const promoteUser = async (client, userID) => {
     misc.checkClient(client, true);
-    const req = new msg.PromoteUserRequest();
+    const req = new msg.PromoteUserReq();
     req.setUserid(userID);
     result = await client.promoteUserSync(req, client.getAuthMeta());
-    resp = new msg.PromoteUserResponse(result.array);
+    resp = new msg.PromoteUserResp(result.array);
     return resp.getSuccess();
 };
 
@@ -159,10 +159,10 @@ const promoteUser = async (client, userID) => {
  */
 const demoteUser = async (client, userID) => {
     misc.checkClient(client, true);
-    const req = new msg.DemoteUserRequest();
+    const req = new msg.DemoteUserReq();
     req.setUserid(userID);
     result = await client.demoteUserSync(req, client.getAuthMeta());
-    resp = new msg.DemoteUserResponse(result.array);
+    resp = new msg.DemoteUserResp(result.array);
     return resp.getSuccess();
 };
 
@@ -176,10 +176,10 @@ const demoteUser = async (client, userID) => {
  */
 const addSharableOrg = async (client, orgID) => {
     misc.checkClient(client, true);
-    const req = new msg.AddSharableOrgRequest();
+    const req = new msg.AddSharableOrgReq();
     req.setNeworgid(orgID);
     result = await client.addSharableOrgSync(req, client.getAuthMeta());
-    resp = new msg.AddSharableOrgResponse(result.array);
+    resp = new msg.AddSharableOrgResp(result.array);
     return resp.getSuccess();
 };
 
@@ -193,10 +193,10 @@ const addSharableOrg = async (client, orgID) => {
  */
 const removeSharableOrg = async (client, orgID) => {
     misc.checkClient(client, true);
-    const req = new msg.RemoveSharableOrgRequest();
+    const req = new msg.RemoveSharableOrgReq();
     req.setRemoveorgid(orgID);
     result = await client.removeSharableOrgSync(req, client.getAuthMeta());
-    resp = new msg.RemoveSharableOrgResponse(result.array);
+    resp = new msg.RemoveSharableOrgResp(result.array);
     return resp.getSuccess();
 };
 
@@ -210,10 +210,10 @@ const removeSharableOrg = async (client, orgID) => {
  */
 const setMultiLevelSharing = async (client, isEnable) => {
     misc.checkClient(client, true);
-    const req = new msg.SetMultiLevelSharingRequest();
+    const req = new msg.SetMultiLevelSharingReq();
     req.setEnable(isEnable);
     result = await client.setMultiLevelSharingSync(req, client.getAuthMeta());
-    resp = new msg.SetMultiLevelSharingResponse(result.array);
+    resp = new msg.SetMultiLevelSharingResp(result.array);
     return resp.getSuccess();
 };
 
@@ -227,9 +227,9 @@ const setMultiLevelSharing = async (client, isEnable) => {
  */
 const listUsers = async (client) => {
     misc.checkClient(client, true);
-    const req = new msg.ListUsersRequest();
+    const req = new msg.ListUsersReq();
     result = await client.listUsersSync(req, client.getAuthMeta());
-    resp = new msg.ListUsersResponse(result.array);
+    resp = new msg.ListUsersResp(result.array);
     let protoOrgusersList = resp.getOrgusersList();
     let usersList = new Array(0);
     protoOrgusersList.forEach(orgUser => {

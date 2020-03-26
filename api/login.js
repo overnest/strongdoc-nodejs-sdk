@@ -26,9 +26,9 @@ const login = async (client, userID, password, orgID) => {
 const logout = async (client) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = new msg.LogoutRequest();
+    const req = new msg.LogoutReq();
     let result = await client.logoutSync(req, authMeta);
-    const resp = new msg.LogoutResponse(result.array);
+    const resp = new msg.LogoutResp(result.array);
     return resp.getStatus();
 };
 

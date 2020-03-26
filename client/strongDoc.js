@@ -72,12 +72,12 @@ class StrongDoc extends service.StrongDocServiceClient {
      * @return {string} - The JWT token used to authenticate user/org when using StrongDoc APIs
      */
     async loginInternal(userID, password, orgID) {
-        const req = new msg.LoginRequest();
+        const req = new msg.LoginReq();
         req.setUserid(userID);
         req.setPassword(password);
         req.setOrgid(orgID);
         let result = await this.loginSync(req);
-        const resp = new msg.LoginResponse(result.array);
+        const resp = new msg.LoginResp(result.array);
         if (resp && resp.getToken()) {
             this.authMeta = misc.getAuthMeta(resp.getToken());
             return resp.getToken();
