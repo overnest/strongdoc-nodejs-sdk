@@ -176,11 +176,24 @@ describe('Search', function() {
   });
 });
 
-describe.skip('Billing', function() {
+describe('Billing', function() {
+  let billingDetails;
+
   it('should return billing details', async function() {
-    const results = await billing.getBillingDetails(client);
-    assert.equal(1,1)
+    billingDetails = await billing.getBillingDetails(client);
+    assert.equal(!!billingDetails, true)
   });
+
+  it('Can list billing frequency', async function() {
+    const list = await billing.getBillingFrequencyList(client);
+    assert.equal(list.length > 0, true)
+  })
+
+  it('Can set new billing frequency', async function() {
+    const periodEnd = new Date(billingDetails.periodEnd)
+    const billFreq = await billing.setNextBillingFrequency(client, 2, periodEnd)
+    assert.equal(billFreq.frequency, 2)
+  })
 });
 
 describe('Logout', function() {

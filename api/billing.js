@@ -25,46 +25,83 @@ const getBillingDetails = async (client) => {
  */
 
 class BillingDetails {
-    constructor(response) {
-        this.currentPeriod = new BillingPeriod(response.getCurrentperiod());
-        this.totalCost = response.getTotalcost();
-        this.documents = new Cost(response.getDocuments());
-        this.index = new Cost(response.getIndex());
-        this.traffic = new Traffic(response.getTraffic());
-        sethislf.nextPeriod = new BillingPeriod(response.getNextperiod());
+    constructor(res) {
+        this.periodStart = res.getPeriodstart() && res.getPeriodstart().toDate();
+        this.periodEnd = res.getPeriodend() && res.getPeriodend().toDate();
+        this.totalCost = res.getTotalcost();
+        this.documents = getDocumentCosts(res.getDocuments());
+        this.search = getSearchCosts(res.getSearch());
+        this.traffic = getTrafficCosts(res.getTraffic());
+        this.frequency = new BillingFrequency(res.getBillingfrequency());
     }
 }
 
-class Traffic {
-    constructor(protoTraffic) {
-        this.cost = protoTraffic.getCost();
-        this.incoming = protoTraffic.getIncoming();
-        this.outgoing = protoTraffic.getOutgoing();
-    }
-}
+/**
+ * @typedef DocumentCosts
+ * @type {object}
+ * @property {number} cost
+ * @property {number} size
+ * @property {string} tier
+ */
 
-class Cost {
-    constructor(protoIndex) {
-        this.size = protoIndex.getSize();
-        this.cost = protoIndex.getCost();
-    }
-}
+/**
+ * 
+ * @param {Object} documentCosts - documentCosts response
+ * @returns {DocumentCosts}
+ */
+const getDocumentCosts = (documentCosts) => ({
+    cost: documentCosts.getCost(),
+    size: documentCosts.getSize(),
+    tier: documentCosts.getTier()
+})
 
-class BillingPeriod {
-    constructor(protoBillingPeriod) {
-        this.periodStart = protoBillingPeriod.getPeriodstart();
-        this.periodEnd = protoBillingPeriod.getPeriodend();
-        this.CurrentPeriod = protoBillingPeriod.getFrequency();
-    }
-}
+ /**
+ * @typedef SearchCosts
+ * @type {object}
+ * @property {number} cost
+ * @property {number} size
+ * @property {string} tier
+ */
+
+/**
+ * 
+ * @param {Object} protoSearchResp 
+ * @returns {SearchCosts}
+ */
+const getSearchCosts = (protoSearchResp) => ({
+    cost: protoSearchResp.getCost(),
+    size: protoSearchResp.getSize(),
+    tier: protoSearchResp.getTier()
+})
+
+ /**
+ * @typedef TrafficCosts
+ * @type {Object}
+ * @property {number} cost
+ * @property {number} incoming
+ * @property {number} outgoing
+ */
+
+ /**
+  * @param {Object} protoTraffic
+  * @returns {TrafficCosts}
+  */
+  const getTrafficCosts = (protoTraffic) =>({
+      cost: protoTraffic.getCost(),
+      incoming: protoTraffic.getIncoming(),
+      outgoing: protoTraffic.getOutgoing(),
+      tier: protoTraffic.getTier()
+  })
+
+
 
 const getBillingFrequencyList = async (client) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = msg.GetBillingFrequencyListReq()
-    let result = await client.GetBillingFrequencyListSync(req, authMeta);
+    const req = new msg.GetBillingFrequencyListReq()
+    let result = await client.getBillingFrequencyListSync(req, authMeta);
     const resp = new msg.GetBillingFrequencyListResp(result.array);
-    return resp.getBillingFrequencyList().map(bf => new BillingFrequency(bf))
+    return resp.getBillingfrequencylistList().map(bf => new BillingFrequency(bf))
 }
 
 /**
@@ -73,26 +110,31 @@ const getBillingFrequencyList = async (client) => {
 class BillingFrequency {
     constructor(bf) {
         this.frequency = bf.getFrequency();
-        this.validFrom = bf.getValidFrom();
-        this.validTo = bf.getValidTo();
+        this.validFrom = bf.getValidfrom() && bf.getValidfrom().toDate();
+        this.validTo = bf.getValidto() && bf.getValidto().toDate();
     }
 }
 /**
  * 
  * @param {StrongDoc} client 
  * @param {number} timeIntervalFrequency 
- * @param {TimeStamp} validFrom 
+ * @param {Date} validFromDate 
  */
-const setNextBillingFrequency = async (client, timeIntervalFrequency, validFrom) => {
+const setNextBillingFrequency = async (client, timeIntervalFrequency, validFromDate) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
-    const req = msg.SetNextBillingFrequencyReq()
+    const req = new msg.SetNextBillingFrequencyReq()
     req.setFrequency(timeIntervalFrequency)
-    req.setValidFrom(validFrom)
-    let result = await client.SetNextBillingFrequencySync(req, authMeta);
-    const resp = new msg.SetNextBillingFrequencyRes(result.array);
-    return new BillingFrequency(resp.getNextBillingFrequency())
+
+    const timestamp = new global.proto.google.protobuf.Timestamp()
+    timestamp.fromDate(validFromDate)
+    req.setValidfrom(timestamp)
+    let result = await client.setNextBillingFrequencySync(req, authMeta);
+    const resp = new msg.SetNextBillingFrequencyResp(result.array);
+    return new BillingFrequency(resp.getNextbillingfrequency())
 }
 
 
 exports.getBillingDetails = getBillingDetails;
+exports.getBillingFrequencyList = getBillingFrequencyList;
+exports.setNextBillingFrequency = setNextBillingFrequency;
