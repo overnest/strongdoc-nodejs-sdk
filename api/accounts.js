@@ -30,6 +30,7 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
     req.setMultilevelshare(false);
     req.setSource(source);
     req.setSourcedata(sourceData);
+    
 
     const result = await client.registerOrganizationSync(req);
     const resp = new msg.RegisterOrganizationResp(result.array);
