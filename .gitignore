@@ -8,4 +8,4 @@ node_modules/**
 test/testdocs/encrypted_doc
 
 #temporary for troubleshoot race condition
-testauth.js
+local.js
