@@ -1,6 +1,6 @@
 {
   "name": "strongdoc-nodejs-sdk",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "StrongDoc SDK",
   "main": "index.js",
   "scripts": {

@@ -2,6 +2,7 @@
 /.idea/
 *.DS_Store
 
+node_modules/
 node_modules/**
 
 #for the download of encrypted info. Not needed.
