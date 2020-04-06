@@ -253,6 +253,50 @@ function deserialize_proto_GetBillingFrequencyListResp(buffer_arg) {
   return billing_pb.GetBillingFrequencyListResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_GetLargeTrafficReq(arg) {
+  if (!(arg instanceof billing_pb.GetLargeTrafficReq)) {
+    throw new Error('Expected argument of type proto.GetLargeTrafficReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetLargeTrafficReq(buffer_arg) {
+  return billing_pb.GetLargeTrafficReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetLargeTrafficResp(arg) {
+  if (!(arg instanceof billing_pb.GetLargeTrafficResp)) {
+    throw new Error('Expected argument of type proto.GetLargeTrafficResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetLargeTrafficResp(buffer_arg) {
+  return billing_pb.GetLargeTrafficResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetUserInfoReq(arg) {
+  if (!(arg instanceof accounts_pb.GetUserInfoReq)) {
+    throw new Error('Expected argument of type proto.GetUserInfoReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetUserInfoReq(buffer_arg) {
+  return accounts_pb.GetUserInfoReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetUserInfoResp(arg) {
+  if (!(arg instanceof accounts_pb.GetUserInfoResp)) {
+    throw new Error('Expected argument of type proto.GetUserInfoResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetUserInfoResp(buffer_arg) {
+  return accounts_pb.GetUserInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_ListDocumentsReq(arg) {
   if (!(arg instanceof document_pb.ListDocumentsReq)) {
     throw new Error('Expected argument of type proto.ListDocumentsReq');
@@ -1102,8 +1146,24 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
     responseSerialize: serialize_proto_SetNextBillingFrequencyResp,
     responseDeserialize: deserialize_proto_SetNextBillingFrequencyResp,
   },
+  // Obtain the list of large traffic usages
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  getLargeTraffic: {
+    path: '/proto.StrongDocService/GetLargeTraffic',
+    requestStream: false,
+    responseStream: false,
+    requestType: billing_pb.GetLargeTrafficReq,
+    responseType: billing_pb.GetLargeTrafficResp,
+    requestSerialize: serialize_proto_GetLargeTrafficReq,
+    requestDeserialize: deserialize_proto_GetLargeTrafficReq,
+    responseSerialize: serialize_proto_GetLargeTrafficResp,
+    responseDeserialize: deserialize_proto_GetLargeTrafficResp,
+  },
   // Obtain information about the account
   //
+  // Requires Administrator privilege
   // Requires Login
   getAccountInfo: {
     path: '/proto.StrongDocService/GetAccountInfo',
@@ -1115,6 +1175,20 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
     requestDeserialize: deserialize_proto_GetAccountInfoReq,
     responseSerialize: serialize_proto_GetAccountInfoResp,
     responseDeserialize: deserialize_proto_GetAccountInfoResp,
+  },
+  // Obtain information about logged user
+  //
+  // Requires Login
+  getUserInfo: {
+    path: '/proto.StrongDocService/GetUserInfo',
+    requestStream: false,
+    responseStream: false,
+    requestType: accounts_pb.GetUserInfoReq,
+    responseType: accounts_pb.GetUserInfoResp,
+    requestSerialize: serialize_proto_GetUserInfoReq,
+    requestDeserialize: deserialize_proto_GetUserInfoReq,
+    responseSerialize: serialize_proto_GetUserInfoResp,
+    responseDeserialize: deserialize_proto_GetUserInfoResp,
   },
 };
 

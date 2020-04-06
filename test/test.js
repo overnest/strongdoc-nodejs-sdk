@@ -127,6 +127,18 @@ describe('Document', function(){
 
 describe('Accounts', function(){
   describe('Account actions', function() {
+
+    it('Returns user account info', async function() {
+      const userInfo = await accounts.getUserInfo(client);
+      assert.equal(typeof userInfo.userId === 'string' && userInfo.userId.length > 1, true);
+    })
+
+    it('returns account info', async function() {
+      const accountInfo = await accounts.getAccountInfo(client);
+      console.log('account ifno: ', accountInfo);
+      assert.equal(typeof accountInfo.orgId == 'string' && accountInfo.orgId.length > 1, true);
+    })
+
     it('should complete account actions', async function() {
         const userID = await accounts.registerUser(client, user1.name, user1.password, user1.email, false);
         assert.equal(userID.length > 0, true);
@@ -193,6 +205,12 @@ describe('Billing', function() {
     const periodEnd = new Date(billingDetails.periodEnd)
     const billFreq = await billing.setNextBillingFrequency(client, 2, periodEnd)
     assert.equal(billFreq.frequency, 2)
+  })
+
+  it.skip('returns large traffic data', async function() {
+    const largeTraffic = await billing.getLargeTraffic(client, new Date());
+    console.log('large traffic: ', largeTraffic);
+    assert.equal(!!largeTraffic.periodStart, true)
   })
 });
 

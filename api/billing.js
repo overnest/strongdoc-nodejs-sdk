@@ -134,7 +134,39 @@ const setNextBillingFrequency = async (client, timeIntervalFrequency, validFromD
     return new BillingFrequency(resp.getNextbillingfrequency())
 }
 
+const getLargeTraffic = async (client, at) => {
+    misc.checkClient(client, true);
+    const req = new msg.GetLargeTrafficReq();
+    req.setAt(toRpcTimestamp(at));
+    const result = await client.getLargeTraffic(req, client.getAuthMeta());
+
+    const resp = new msg.GetLargeTrafficResp(result.array);
+    return {
+        largeTraffic: resp.getLargetrafficList().map(rpc => toLargeTraffic(rpc)),
+        periodStart: toDate(resp.getPeriodstart()),
+        periodEnd: toDate(resp.getPeriodend())
+    }
+}
+
+const toLargeTraffic = (rpc) => ({
+    time: toDate(rpc.getTime()),
+    userId: rpc.getUserid(),
+    method: rpc.getMethod(),
+    URI: rpc.getUri(),
+    incoming: rpc.getIncoming(),
+    outgoing: rpc.getOutgoing()
+})
+
+const toRpcTimestamp = (jsDate) => {
+    const timestamp = new global.proto.google.protobuf.Timestamp()
+    timestamp.fromDate(jsDate)
+    return timestamp;
+}
+
+const toDate = (rpcDate) => rpcDate && rpcDate.toDate()
+
 
 exports.getBillingDetails = getBillingDetails;
 exports.getBillingFrequencyList = getBillingFrequencyList;
 exports.setNextBillingFrequency = setNextBillingFrequency;
+exports.getLargeTraffic = getLargeTraffic;

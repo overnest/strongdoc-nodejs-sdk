@@ -249,8 +249,16 @@ class User {
         return this._userid;
     }
 
-    get admin() {
+    get isAdmin() {
         return this._admin;
+    }
+
+    get orgId() {
+        return this._orgId;
+    }
+
+    get email() {
+        return this._email;
     }
     /**
      * @constructs
@@ -274,6 +282,47 @@ class User {
     }
 }
 
+const getUserInfo = async (client) => {
+    misc.checkClient(client, true);
+    const req = new msg.GetUserInfoReq();
+    const result = await client.getUserInfoSync(req, client.getAuthMeta());
+    resp = new msg.GetUserInfoResp(result.array);
+
+    return {
+        userId: resp.getUserid(),
+        email: resp.getEmail(),
+        userName: resp.getUsername(),
+        orgId: resp.getOrgid(),
+        isAdmin: resp.getIsadmin()
+    }
+}
+
+const getAccountInfo = async (client) => {
+    misc.checkClient(client, true);
+    const req = new msg.GetAccountInfoReq();
+    const result = await client.getAccountInfoSync(req, client.getAuthMeta());
+    const resp = new msg.GetAccountInfoResp(result.array);
+
+    return {
+        orgId: resp.getOrgid(),
+        subscription: resp.getSubscription(),
+        payments: resp.getPaymentsList().map(rcpPay => toPayment(rcpPay)),
+        orgAddress: resp.getOrgaddress(),
+        multiLevelShare: resp.getMultilevelshare(),
+        sharableOrgs: resp.getSharableorgsList()
+    }
+}
+
+const toPayment = pay => ({
+    billedAt: toDate(pay.getBilledat()),
+    periodStart: toDate(pay.getPeriodstart()),
+    periodEnd: toDate(pay.getPeriodend()),
+    amount: pay.getAmount(),
+    status: pay.getStatus()
+})
+
+const toDate = (rpcDate) => rpcDate && rpcDate.toDate()
+
 exports.registerOrganization = registerOrganization;
 exports.removeOrganization = removeOrganization;
 exports.registerUser = registerUser;
@@ -284,3 +333,5 @@ exports.listUsers = listUsers;
 exports.addSharableOrg = addSharableOrg;
 exports.removeSharableOrg = removeSharableOrg;
 exports.setMultiLevelSharing = setMultiLevelSharing;
+exports.getUserInfo = getUserInfo;
+exports.getAccountInfo = getAccountInfo;
