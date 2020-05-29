@@ -11,6 +11,28 @@ var search_pb = require('./search_pb.js');
 var accounts_pb = require('./accounts_pb.js');
 var billing_pb = require('./billing_pb.js');
 
+function serialize_proto_AddPaymentMethodReq(arg) {
+  if (!(arg instanceof billing_pb.AddPaymentMethodReq)) {
+    throw new Error('Expected argument of type proto.AddPaymentMethodReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_AddPaymentMethodReq(buffer_arg) {
+  return billing_pb.AddPaymentMethodReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_AddPaymentMethodResp(arg) {
+  if (!(arg instanceof billing_pb.AddPaymentMethodResp)) {
+    throw new Error('Expected argument of type proto.AddPaymentMethodResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_AddPaymentMethodResp(buffer_arg) {
+  return billing_pb.AddPaymentMethodResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_AddSharableOrgReq(arg) {
   if (!(arg instanceof accounts_pb.AddSharableOrgReq)) {
     throw new Error('Expected argument of type proto.AddSharableOrgReq');
@@ -31,6 +53,28 @@ function serialize_proto_AddSharableOrgResp(arg) {
 
 function deserialize_proto_AddSharableOrgResp(buffer_arg) {
   return accounts_pb.AddSharableOrgResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_ChangeUserPasswordReq(arg) {
+  if (!(arg instanceof accounts_pb.ChangeUserPasswordReq)) {
+    throw new Error('Expected argument of type proto.ChangeUserPasswordReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_ChangeUserPasswordReq(buffer_arg) {
+  return accounts_pb.ChangeUserPasswordReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_ChangeUserPasswordResp(arg) {
+  if (!(arg instanceof accounts_pb.ChangeUserPasswordResp)) {
+    throw new Error('Expected argument of type proto.ChangeUserPasswordResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_ChangeUserPasswordResp(buffer_arg) {
+  return accounts_pb.ChangeUserPasswordResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_DecryptDocReq(arg) {
@@ -297,6 +341,28 @@ function deserialize_proto_GetUserInfoResp(buffer_arg) {
   return accounts_pb.GetUserInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_ListCreditCardsReq(arg) {
+  if (!(arg instanceof billing_pb.ListCreditCardsReq)) {
+    throw new Error('Expected argument of type proto.ListCreditCardsReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_ListCreditCardsReq(buffer_arg) {
+  return billing_pb.ListCreditCardsReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_ListCreditCardsResp(arg) {
+  if (!(arg instanceof billing_pb.ListCreditCardsResp)) {
+    throw new Error('Expected argument of type proto.ListCreditCardsResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_ListCreditCardsResp(buffer_arg) {
+  return billing_pb.ListCreditCardsResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_ListDocumentsReq(arg) {
   if (!(arg instanceof document_pb.ListDocumentsReq)) {
     throw new Error('Expected argument of type proto.ListDocumentsReq');
@@ -495,6 +561,28 @@ function deserialize_proto_RemoveOrganizationResp(buffer_arg) {
   return accounts_pb.RemoveOrganizationResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_RemovePaymentMethodReq(arg) {
+  if (!(arg instanceof billing_pb.RemovePaymentMethodReq)) {
+    throw new Error('Expected argument of type proto.RemovePaymentMethodReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_RemovePaymentMethodReq(buffer_arg) {
+  return billing_pb.RemovePaymentMethodReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_RemovePaymentMethodResp(arg) {
+  if (!(arg instanceof billing_pb.RemovePaymentMethodResp)) {
+    throw new Error('Expected argument of type proto.RemovePaymentMethodResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_RemovePaymentMethodResp(buffer_arg) {
+  return billing_pb.RemovePaymentMethodResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_RemoveSharableOrgReq(arg) {
   if (!(arg instanceof accounts_pb.RemoveSharableOrgReq)) {
     throw new Error('Expected argument of type proto.RemoveSharableOrgReq');
@@ -561,6 +649,50 @@ function deserialize_proto_SearchResp(buffer_arg) {
   return search_pb.SearchResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_SetAccountInfoReq(arg) {
+  if (!(arg instanceof accounts_pb.SetAccountInfoReq)) {
+    throw new Error('Expected argument of type proto.SetAccountInfoReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetAccountInfoReq(buffer_arg) {
+  return accounts_pb.SetAccountInfoReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetAccountInfoResp(arg) {
+  if (!(arg instanceof accounts_pb.SetAccountInfoResp)) {
+    throw new Error('Expected argument of type proto.SetAccountInfoResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetAccountInfoResp(buffer_arg) {
+  return accounts_pb.SetAccountInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetDefaultPaymentMethodReq(arg) {
+  if (!(arg instanceof billing_pb.SetDefaultPaymentMethodReq)) {
+    throw new Error('Expected argument of type proto.SetDefaultPaymentMethodReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetDefaultPaymentMethodReq(buffer_arg) {
+  return billing_pb.SetDefaultPaymentMethodReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetDefaultPaymentMethodResp(arg) {
+  if (!(arg instanceof billing_pb.SetDefaultPaymentMethodResp)) {
+    throw new Error('Expected argument of type proto.SetDefaultPaymentMethodResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetDefaultPaymentMethodResp(buffer_arg) {
+  return billing_pb.SetDefaultPaymentMethodResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_SetMultiLevelSharingReq(arg) {
   if (!(arg instanceof accounts_pb.SetMultiLevelSharingReq)) {
     throw new Error('Expected argument of type proto.SetMultiLevelSharingReq');
@@ -603,6 +735,28 @@ function serialize_proto_SetNextBillingFrequencyResp(arg) {
 
 function deserialize_proto_SetNextBillingFrequencyResp(buffer_arg) {
   return billing_pb.SetNextBillingFrequencyResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetUserInfoReq(arg) {
+  if (!(arg instanceof accounts_pb.SetUserInfoReq)) {
+    throw new Error('Expected argument of type proto.SetUserInfoReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetUserInfoReq(buffer_arg) {
+  return accounts_pb.SetUserInfoReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetUserInfoResp(arg) {
+  if (!(arg instanceof accounts_pb.SetUserInfoResp)) {
+    throw new Error('Expected argument of type proto.SetUserInfoResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetUserInfoResp(buffer_arg) {
+  return accounts_pb.SetUserInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_ShareDocumentReq(arg) {
@@ -702,6 +856,22 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
   // Does not require Login
   registerOrganization: {
     path: '/proto.StrongDocService/RegisterOrganization',
+    requestStream: false,
+    responseStream: false,
+    requestType: accounts_pb.RegisterOrganizationReq,
+    responseType: accounts_pb.RegisterOrganizationResp,
+    requestSerialize: serialize_proto_RegisterOrganizationReq,
+    requestDeserialize: deserialize_proto_RegisterOrganizationReq,
+    responseSerialize: serialize_proto_RegisterOrganizationResp,
+    responseDeserialize: deserialize_proto_RegisterOrganizationResp,
+  },
+  // Reactivate an organization that was unsubscribed via aws
+  //
+  // The user reactivating the organization becomes the administrator
+  //
+  // Does not require login
+  reactivateOrganization: {
+    path: '/proto.StrongDocService/ReactivateOrganization',
     requestStream: false,
     responseStream: false,
     requestType: accounts_pb.RegisterOrganizationReq,
@@ -1101,6 +1271,21 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
     responseSerialize: serialize_proto_SetMultiLevelSharingResp,
     responseDeserialize: deserialize_proto_SetMultiLevelSharingResp,
   },
+  // Update the organization's account info
+  //
+  // Requires Administrator privilege.
+  // Requires Login
+  setAccountInfo: {
+    path: '/proto.StrongDocService/SetAccountInfo',
+    requestStream: false,
+    responseStream: false,
+    requestType: accounts_pb.SetAccountInfoReq,
+    responseType: accounts_pb.SetAccountInfoResp,
+    requestSerialize: serialize_proto_SetAccountInfoReq,
+    requestDeserialize: deserialize_proto_SetAccountInfoReq,
+    responseSerialize: serialize_proto_SetAccountInfoResp,
+    responseDeserialize: deserialize_proto_SetAccountInfoResp,
+  },
   // List all items of the cost breakdown and also other details such as the billing frequency
   //
   // Requires Administrator privilege
@@ -1176,7 +1361,7 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
     responseSerialize: serialize_proto_GetAccountInfoResp,
     responseDeserialize: deserialize_proto_GetAccountInfoResp,
   },
-  // Obtain information about logged user
+  // Obtain information about logged in user
   //
   // Requires Login
   getUserInfo: {
@@ -1189,6 +1374,94 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
     requestDeserialize: deserialize_proto_GetUserInfoReq,
     responseSerialize: serialize_proto_GetUserInfoResp,
     responseDeserialize: deserialize_proto_GetUserInfoResp,
+  },
+  // Change the password of a logged in user
+  //
+  // Requires Login
+  changeUserPassword: {
+    path: '/proto.StrongDocService/ChangeUserPassword',
+    requestStream: false,
+    responseStream: false,
+    requestType: accounts_pb.ChangeUserPasswordReq,
+    responseType: accounts_pb.ChangeUserPasswordResp,
+    requestSerialize: serialize_proto_ChangeUserPasswordReq,
+    requestDeserialize: deserialize_proto_ChangeUserPasswordReq,
+    responseSerialize: serialize_proto_ChangeUserPasswordResp,
+    responseDeserialize: deserialize_proto_ChangeUserPasswordResp,
+  },
+  // Set information about a logged in user
+  //
+  // Requires Login
+  setUserInfo: {
+    path: '/proto.StrongDocService/SetUserInfo',
+    requestStream: false,
+    responseStream: false,
+    requestType: accounts_pb.SetUserInfoReq,
+    responseType: accounts_pb.SetUserInfoResp,
+    requestSerialize: serialize_proto_SetUserInfoReq,
+    requestDeserialize: deserialize_proto_SetUserInfoReq,
+    responseSerialize: serialize_proto_SetUserInfoResp,
+    responseDeserialize: deserialize_proto_SetUserInfoResp,
+  },
+  // Obtain a list of the org's credit cards
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  listCreditCards: {
+    path: '/proto.StrongDocService/ListCreditCards',
+    requestStream: false,
+    responseStream: false,
+    requestType: billing_pb.ListCreditCardsReq,
+    responseType: billing_pb.ListCreditCardsResp,
+    requestSerialize: serialize_proto_ListCreditCardsReq,
+    requestDeserialize: deserialize_proto_ListCreditCardsReq,
+    responseSerialize: serialize_proto_ListCreditCardsResp,
+    responseDeserialize: deserialize_proto_ListCreditCardsResp,
+  },
+  // Add a payment method to the customer and validate the payment method
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  addPaymentMethod: {
+    path: '/proto.StrongDocService/AddPaymentMethod',
+    requestStream: false,
+    responseStream: false,
+    requestType: billing_pb.AddPaymentMethodReq,
+    responseType: billing_pb.AddPaymentMethodResp,
+    requestSerialize: serialize_proto_AddPaymentMethodReq,
+    requestDeserialize: deserialize_proto_AddPaymentMethodReq,
+    responseSerialize: serialize_proto_AddPaymentMethodResp,
+    responseDeserialize: deserialize_proto_AddPaymentMethodResp,
+  },
+  // Set the default payment method for a stripe customer
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  setDefaultPaymentMethod: {
+    path: '/proto.StrongDocService/SetDefaultPaymentMethod',
+    requestStream: false,
+    responseStream: false,
+    requestType: billing_pb.SetDefaultPaymentMethodReq,
+    responseType: billing_pb.SetDefaultPaymentMethodResp,
+    requestSerialize: serialize_proto_SetDefaultPaymentMethodReq,
+    requestDeserialize: deserialize_proto_SetDefaultPaymentMethodReq,
+    responseSerialize: serialize_proto_SetDefaultPaymentMethodResp,
+    responseDeserialize: deserialize_proto_SetDefaultPaymentMethodResp,
+  },
+  // Remove a payment method for a stripe customer
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  removePaymentMethod: {
+    path: '/proto.StrongDocService/RemovePaymentMethod',
+    requestStream: false,
+    responseStream: false,
+    requestType: billing_pb.RemovePaymentMethodReq,
+    responseType: billing_pb.RemovePaymentMethodResp,
+    requestSerialize: serialize_proto_RemovePaymentMethodReq,
+    requestDeserialize: deserialize_proto_RemovePaymentMethodReq,
+    responseSerialize: serialize_proto_RemovePaymentMethodResp,
+    responseDeserialize: deserialize_proto_RemovePaymentMethodResp,
   },
 };
 

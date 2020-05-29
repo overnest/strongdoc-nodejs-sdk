@@ -25,11 +25,13 @@ const registerOrganization = async (client, orgName, orgAddr, adminName,
     req.setOrgaddr(orgAddr);
     req.setUsername(adminName);
     req.setPassword(adminPassword);
-    req.setEmail(adminEmail);
+    req.setAdminemail(adminEmail);
     req.setSharableorgsList(null);
     req.setMultilevelshare(false);
     req.setSource(source);
     req.setSourcedata(sourceData);
+    req.setOrgemail(adminEmail);
+    req.setPmid(null);
     
 
     const result = await client.registerOrganizationSync(req);

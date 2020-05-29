@@ -4,7 +4,8 @@
   "description": "StrongDoc SDK",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "update-proto": "cp -R $GOPATH/src/github.com/overnest/strongdoc/client/nodejs/src/proto/* ./proto"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
     "mocha": "^7.1.1",
     "np": "^6.1.0",
     "proto": "^1.0.19"
+  },
+  "devDependencies": {
+    "superagent": "^5.2.2"
   }
 }

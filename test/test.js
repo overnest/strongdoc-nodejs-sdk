@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const stream = require('stream');
 const bluebird = require('bluebird');
+const sa = require('superagent');
 
 const { admin1, admin2, user1, org1, org2} = require('./testdocs/userData');
 const {StrongDoc, auth, accounts, document, billing, search} = require('../index')
@@ -23,7 +24,7 @@ before(async function() {
   //   console.log('error creating test orgs. Removing orgs and trying again.');
   // }
 
-  // await removeTestOrgs()
+  //await removeTestOrgs()
   await createTestOrgs()
 })
 
@@ -141,6 +142,8 @@ describe('Accounts', function(){
 
     it('should complete account actions', async function() {
         const userID = await accounts.registerUser(client, user1.name, user1.password, user1.email, false);
+        user1.userID = userID
+    
         assert.equal(userID.length > 0, true);
 
         const addSharableOrgRes = await accounts.addSharableOrg(client, org2.name);
@@ -151,25 +154,27 @@ describe('Accounts', function(){
 
         const removeSharableOrgRes = await accounts.removeSharableOrg(client, org2.name);
         assert.equal(removeSharableOrgRes, true);
+    })
+    it('should complete account sharing actions', async function() {
 
         const data = fs.readFileSync(filepath);
         const resp = await document.uploadDocument(client, 'docforsharing.pdf', data);
         const uploadDocId = resp.getDocID()
 
-        const shareDocumentRes = await document.shareDocument(client, uploadDocId, user1.email);
+        const shareDocumentRes = await document.shareDocument(client, uploadDocId, user1.userID);
         assert.equal(shareDocumentRes, true);
 
-        const unshareDocumentRes = await document.unshareDocument(client, uploadDocId, user1.email);
+        const unshareDocumentRes = await document.unshareDocument(client, uploadDocId, user1.userID);
         assert.equal(unshareDocumentRes, true);
 
         // todo: change userEmail back to userID
-        const promoteUserRes = await accounts.promoteUser(client, user1.email);
+        const promoteUserRes = await accounts.promoteUser(client, user1.userID);
         assert.equal(promoteUserRes, 1);
 
-        const demoteUserRes = await accounts.demoteUser(client, user1.email);
+        const demoteUserRes = await accounts.demoteUser(client, user1.userID);
         assert.equal(demoteUserRes, 1);
 
-        const removeUserRes = await accounts.removeUser(client, user1.email);
+        const removeUserRes = await accounts.removeUser(client, user1.userID);
         assert.equal(removeUserRes, 1)
 
         const users = await accounts.listUsers(client);
@@ -238,6 +243,15 @@ const createTestOrgs = async () => {
 
 const removeTestOrgs = async () => {
   await wait(1100);
+
+  //total cleanup of org. Must be superuser
+  // try {
+  // let res = await sa.delete(`http://localhost:8081/v1/account/removeOrganization/{${org1.name}}`)
+  // let res2 = await sa.delete(`http://localhost:8081/v1/account/removeOrganization/{${org1.name}}`)
+  // //console.log(res, res2)
+  // } catch(err) {
+  //   console.log('remove org err: ', err)
+  // }
 
   try {
     client = new StrongDoc(SERVER);
