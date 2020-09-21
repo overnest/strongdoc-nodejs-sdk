@@ -89,12 +89,25 @@ class StreamWrapper {
   }
 
   write(...args){
-    this.stream.write(...args)
+    await(writeToStream(this.stream, ...args))
   }
 
   end() {
     this.stream.end()
     return this.promise
+  }
+
+  writeToStream(stream, ...args) {
+    new Promise((resolve, reject) => {
+      if(!stream.write(...args)) {
+            stream.once('drain', () => {
+            stream.write(...args)
+            resolve()
+        })
+      }else{
+          resolve()
+      }
+    })
   }
 }
 
