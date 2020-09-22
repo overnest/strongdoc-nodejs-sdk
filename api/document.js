@@ -40,7 +40,7 @@ const uploadDocument = async (client, docName, plaintext) => {
         // Send the document name first
         const req = new msg.UploadDocStreamReq();
         req.setDocname(docName);
-        stream.write(req);
+        await stream.write(req);
 
         blockSize = 10000;
         // Send the plaintext in chunks
@@ -51,7 +51,7 @@ const uploadDocument = async (client, docName, plaintext) => {
             } else {
                 req.setPlaintext(plaintext.slice(i, i+blockSize));
             }
-            stream.write(req);
+            await stream.write(req);
         }
         stream.end();
         resp = await promise;
@@ -124,7 +124,7 @@ const uploadDocumentStream = async (client, docName, dataStream) => {
         // Send the document name first
         const req = new msg.UploadDocStreamReq();
         req.setDocname(docName);
-        stream.write(req);
+        await stream.write(req);
 
         // Send the data
         for await (let chunk of dataStream) {
@@ -133,7 +133,7 @@ const uploadDocumentStream = async (client, docName, dataStream) => {
             }
             const req = new msg.UploadDocStreamReq();
             req.setPlaintext(chunk);
-            stream.write(req);
+            await stream.write(req);
         }
 
         resp = await stream.end();
