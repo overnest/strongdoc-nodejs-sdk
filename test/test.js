@@ -16,16 +16,28 @@ var client, token;
 
 before(async function() {
   client = new StrongDoc(SERVER);
-
-  // try {
-  //   await createTestOrgs()
-  //   return
-  // } catch(err) {
-  //   console.log('error creating test orgs. Removing orgs and trying again.');
-  // }
-
-  //await removeTestOrgs()
   await createTestOrgs()
+})
+
+const hardDeleteOrgs = async () => {
+  const resp = await sa.get('http://localhost:8081/v1/account/login').query({userid: 'zach@strongsalt.com', passwd: 'dS6T6UrTjDbje92m'})
+  if (!resp.body.Token) throw new Error('Super Admin login failed')
+
+  const headers = {Authorization: `Bearer ${resp.body.Token}`}
+  const delResp1 = await sa.del(`http://localhost:8081/v1/organization/${org1.name}`).set(headers)
+  if (delResp1.status !== 200) throw new Error('hard delete test org1 failed')
+
+  const delResp2 = await sa.del(`http://localhost:8081/v1/organization/${org2.name}`).set(headers)
+  if (delResp2.status !== 200) throw new Error('hard delete test org1 failed')
+
+  console.log('Hard Delete Test Org Success', delResp2.status)
+}
+
+describe.skip('Super admin remove orgs', function() {
+  this.timeout(10000)
+  it('should delete orgs', async function() {
+    await hardDeleteOrgs()
+  })
 })
 
 
@@ -229,8 +241,8 @@ describe('Logout', function() {
 
 
 after(async function() {
-  console.log('Done. removing accounts and test data');
-  return removeTestOrgs()
+  console.log('Done. removing test accounts and test data');
+  return hardDeleteOrgs()
 })
 
 const createTestOrgs = async () => {

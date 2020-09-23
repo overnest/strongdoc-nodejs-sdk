@@ -26,6 +26,8 @@ var accounts_pb = require('./accounts_pb.js');
 goog.object.extend(proto, accounts_pb);
 var billing_pb = require('./billing_pb.js');
 goog.object.extend(proto, billing_pb);
+var encryption_pb = require('./encryption_pb.js');
+goog.object.extend(proto, encryption_pb);
 goog.exportSymbol('proto.proto.GetConfigurationReq', null, global);
 goog.exportSymbol('proto.proto.GetConfigurationResp', null, global);
 /**

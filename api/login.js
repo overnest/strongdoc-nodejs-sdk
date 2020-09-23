@@ -1,6 +1,6 @@
 const misc = require('../util/misc');
 const msg = require('../proto/accounts_pb');
-
+const SSK = require('../../strongsalt-crypto-js/index')
 /**
  * Verifies the user and organization identity, and returns a JWT token for future API use.
  * 

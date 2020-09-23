@@ -4,6 +4,7 @@ const promisify = require('../util/promisifyStream');
 const misc = require('../util/misc');
 const { Readable } = require('stream');
 const util = require('util');
+const {shareDocument, unshareDocument} = require('../api/document/share')
 
 /**
  * UploadDocument uploads a document to Strongdoc-provided storage.
@@ -459,45 +460,7 @@ const decryptDocumentStream = async (client, docID, cipherStream) => {
     }
 };
 
-/**
- * Shares a document with another user.
- *
- * @function
- * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!string} docID - The ID of the document.
- * @param {!string} userID - The ID of the user.
- * @return {!boolean} - The success message.
- */
-const shareDocument = async (client, docID, userID) => {
-    misc.checkClient(client, true);
-    const authMeta = client.getAuthMeta();
-    const req = new msg.ShareDocumentReq();
-    req.setDocid(docID);
-    req.setUserid(userID);
-    result = await client.shareDocumentSync(req, authMeta);
-    resp = new msg.ShareDocumentResp(result.array);
-    return resp.getSuccess();
-};
 
-/**
- * Unshares a document with another user.
- *
- * @function
- * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @param {!string} docID - The ID of the document.
- * @param {!string} userID - The ID of the user.
- * @return {!number} count - The number of documents unshared.
- */
-const unshareDocument = async (client, docID, userID) => {
-    misc.checkClient(client, true);
-    const authMeta = client.getAuthMeta();
-    const req = new msg.UnshareDocumentReq();
-    req.setDocid(docID);
-    req.setUserid(userID);
-    result = await client.unshareDocumentSync(req, authMeta);
-    resp = new msg.UnshareDocumentResp(result.array);
-    return resp.getCount();
-};
 
 /**
  * listDocuments returns a slice of Document objects, representing the documents accessible by the user.

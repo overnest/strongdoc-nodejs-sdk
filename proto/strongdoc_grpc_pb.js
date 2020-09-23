@@ -10,6 +10,7 @@ var documentNoStore_pb = require('./documentNoStore_pb.js');
 var search_pb = require('./search_pb.js');
 var accounts_pb = require('./accounts_pb.js');
 var billing_pb = require('./billing_pb.js');
+var encryption_pb = require('./encryption_pb.js');
 
 function serialize_proto_AddPaymentMethodReq(arg) {
   if (!(arg instanceof billing_pb.AddPaymentMethodReq)) {
@@ -143,6 +144,28 @@ function deserialize_proto_DemoteUserResp(buffer_arg) {
   return accounts_pb.DemoteUserResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_DownloadDocE2EReq(arg) {
+  if (!(arg instanceof document_pb.DownloadDocE2EReq)) {
+    throw new Error('Expected argument of type proto.DownloadDocE2EReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_DownloadDocE2EReq(buffer_arg) {
+  return document_pb.DownloadDocE2EReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_DownloadDocE2EResp(arg) {
+  if (!(arg instanceof document_pb.DownloadDocE2EResp)) {
+    throw new Error('Expected argument of type proto.DownloadDocE2EResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_DownloadDocE2EResp(buffer_arg) {
+  return document_pb.DownloadDocE2EResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_DownloadDocReq(arg) {
   if (!(arg instanceof document_pb.DownloadDocReq)) {
     throw new Error('Expected argument of type proto.DownloadDocReq');
@@ -185,6 +208,28 @@ function serialize_proto_DownloadDocStreamResp(arg) {
 
 function deserialize_proto_DownloadDocStreamResp(buffer_arg) {
   return document_pb.DownloadDocStreamResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_EnableE2EReq(arg) {
+  if (!(arg instanceof encryption_pb.EnableE2EReq)) {
+    throw new Error('Expected argument of type proto.EnableE2EReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_EnableE2EReq(buffer_arg) {
+  return encryption_pb.EnableE2EReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_EnableE2EResp(arg) {
+  if (!(arg instanceof encryption_pb.EnableE2EResp)) {
+    throw new Error('Expected argument of type proto.EnableE2EResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_EnableE2EResp(buffer_arg) {
+  return encryption_pb.EnableE2EResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_EncryptDocReq(arg) {
@@ -297,6 +342,72 @@ function deserialize_proto_GetBillingFrequencyListResp(buffer_arg) {
   return billing_pb.GetBillingFrequencyListResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_GetFileKeysE2eReq(arg) {
+  if (!(arg instanceof encryption_pb.GetFileKeysE2eReq)) {
+    throw new Error('Expected argument of type proto.GetFileKeysE2eReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetFileKeysE2eReq(buffer_arg) {
+  return encryption_pb.GetFileKeysE2eReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetFileKeysE2eResp(arg) {
+  if (!(arg instanceof encryption_pb.GetFileKeysE2eResp)) {
+    throw new Error('Expected argument of type proto.GetFileKeysE2eResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetFileKeysE2eResp(buffer_arg) {
+  return encryption_pb.GetFileKeysE2eResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetKeyE2eReq(arg) {
+  if (!(arg instanceof encryption_pb.GetKeyE2eReq)) {
+    throw new Error('Expected argument of type proto.GetKeyE2eReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetKeyE2eReq(buffer_arg) {
+  return encryption_pb.GetKeyE2eReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetKeyE2eResp(arg) {
+  if (!(arg instanceof encryption_pb.GetKeyE2eResp)) {
+    throw new Error('Expected argument of type proto.GetKeyE2eResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetKeyE2eResp(buffer_arg) {
+  return encryption_pb.GetKeyE2eResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetKeysE2eReq(arg) {
+  if (!(arg instanceof encryption_pb.GetKeysE2eReq)) {
+    throw new Error('Expected argument of type proto.GetKeysE2eReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetKeysE2eReq(buffer_arg) {
+  return encryption_pb.GetKeysE2eReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetKeysE2eResp(arg) {
+  if (!(arg instanceof encryption_pb.GetKeysE2eResp)) {
+    throw new Error('Expected argument of type proto.GetKeysE2eResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetKeysE2eResp(buffer_arg) {
+  return encryption_pb.GetKeysE2eResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_GetLargeTrafficReq(arg) {
   if (!(arg instanceof billing_pb.GetLargeTrafficReq)) {
     throw new Error('Expected argument of type proto.GetLargeTrafficReq');
@@ -319,6 +430,28 @@ function deserialize_proto_GetLargeTrafficResp(buffer_arg) {
   return billing_pb.GetLargeTrafficResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_GetOwnKeysReq(arg) {
+  if (!(arg instanceof encryption_pb.GetOwnKeysReq)) {
+    throw new Error('Expected argument of type proto.GetOwnKeysReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetOwnKeysReq(buffer_arg) {
+  return encryption_pb.GetOwnKeysReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GetOwnKeysResp(arg) {
+  if (!(arg instanceof encryption_pb.GetOwnKeysResp)) {
+    throw new Error('Expected argument of type proto.GetOwnKeysResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GetOwnKeysResp(buffer_arg) {
+  return encryption_pb.GetOwnKeysResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_GetUserInfoReq(arg) {
   if (!(arg instanceof accounts_pb.GetUserInfoReq)) {
     throw new Error('Expected argument of type proto.GetUserInfoReq');
@@ -339,6 +472,28 @@ function serialize_proto_GetUserInfoResp(arg) {
 
 function deserialize_proto_GetUserInfoResp(buffer_arg) {
   return accounts_pb.GetUserInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GiveUsersOrgKeyReq(arg) {
+  if (!(arg instanceof encryption_pb.GiveUsersOrgKeyReq)) {
+    throw new Error('Expected argument of type proto.GiveUsersOrgKeyReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GiveUsersOrgKeyReq(buffer_arg) {
+  return encryption_pb.GiveUsersOrgKeyReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_GiveUsersOrgKeyResp(arg) {
+  if (!(arg instanceof encryption_pb.GiveUsersOrgKeyResp)) {
+    throw new Error('Expected argument of type proto.GiveUsersOrgKeyResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_GiveUsersOrgKeyResp(buffer_arg) {
+  return encryption_pb.GiveUsersOrgKeyResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_ListCreditCardsReq(arg) {
@@ -383,6 +538,28 @@ function serialize_proto_ListDocumentsResp(arg) {
 
 function deserialize_proto_ListDocumentsResp(buffer_arg) {
   return document_pb.ListDocumentsResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_ListPaymentsReq(arg) {
+  if (!(arg instanceof billing_pb.ListPaymentsReq)) {
+    throw new Error('Expected argument of type proto.ListPaymentsReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_ListPaymentsReq(buffer_arg) {
+  return billing_pb.ListPaymentsReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_ListPaymentsResp(arg) {
+  if (!(arg instanceof billing_pb.ListPaymentsResp)) {
+    throw new Error('Expected argument of type proto.ListPaymentsResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_ListPaymentsResp(buffer_arg) {
+  return billing_pb.ListPaymentsResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_ListUsersReq(arg) {
@@ -449,6 +626,50 @@ function serialize_proto_LogoutResp(arg) {
 
 function deserialize_proto_LogoutResp(buffer_arg) {
   return accounts_pb.LogoutResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_PrepareDownloadDocReq(arg) {
+  if (!(arg instanceof document_pb.PrepareDownloadDocReq)) {
+    throw new Error('Expected argument of type proto.PrepareDownloadDocReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_PrepareDownloadDocReq(buffer_arg) {
+  return document_pb.PrepareDownloadDocReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_PrepareDownloadDocResp(arg) {
+  if (!(arg instanceof document_pb.PrepareDownloadDocResp)) {
+    throw new Error('Expected argument of type proto.PrepareDownloadDocResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_PrepareDownloadDocResp(buffer_arg) {
+  return document_pb.PrepareDownloadDocResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_PrepareShareDocumentReq(arg) {
+  if (!(arg instanceof document_pb.PrepareShareDocumentReq)) {
+    throw new Error('Expected argument of type proto.PrepareShareDocumentReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_PrepareShareDocumentReq(buffer_arg) {
+  return document_pb.PrepareShareDocumentReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_PrepareShareDocumentResp(arg) {
+  if (!(arg instanceof document_pb.PrepareShareDocumentResp)) {
+    throw new Error('Expected argument of type proto.PrepareShareDocumentResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_PrepareShareDocumentResp(buffer_arg) {
+  return document_pb.PrepareShareDocumentResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_PromoteUserReq(arg) {
@@ -737,6 +958,50 @@ function deserialize_proto_SetNextBillingFrequencyResp(buffer_arg) {
   return billing_pb.SetNextBillingFrequencyResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_SetOrgAsymKeyReq(arg) {
+  if (!(arg instanceof encryption_pb.SetOrgAsymKeyReq)) {
+    throw new Error('Expected argument of type proto.SetOrgAsymKeyReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetOrgAsymKeyReq(buffer_arg) {
+  return encryption_pb.SetOrgAsymKeyReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetOrgAsymKeyResp(arg) {
+  if (!(arg instanceof encryption_pb.SetOrgAsymKeyResp)) {
+    throw new Error('Expected argument of type proto.SetOrgAsymKeyResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetOrgAsymKeyResp(buffer_arg) {
+  return encryption_pb.SetOrgAsymKeyResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetUserAsymKeyReq(arg) {
+  if (!(arg instanceof encryption_pb.SetUserAsymKeyReq)) {
+    throw new Error('Expected argument of type proto.SetUserAsymKeyReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetUserAsymKeyReq(buffer_arg) {
+  return encryption_pb.SetUserAsymKeyReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetUserAsymKeyResp(arg) {
+  if (!(arg instanceof encryption_pb.SetUserAsymKeyResp)) {
+    throw new Error('Expected argument of type proto.SetUserAsymKeyResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetUserAsymKeyResp(buffer_arg) {
+  return encryption_pb.SetUserAsymKeyResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_SetUserInfoReq(arg) {
   if (!(arg instanceof accounts_pb.SetUserInfoReq)) {
     throw new Error('Expected argument of type proto.SetUserInfoReq');
@@ -757,6 +1022,28 @@ function serialize_proto_SetUserInfoResp(arg) {
 
 function deserialize_proto_SetUserInfoResp(buffer_arg) {
   return accounts_pb.SetUserInfoResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetUserKdfMetadataReq(arg) {
+  if (!(arg instanceof encryption_pb.SetUserKdfMetadataReq)) {
+    throw new Error('Expected argument of type proto.SetUserKdfMetadataReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetUserKdfMetadataReq(buffer_arg) {
+  return encryption_pb.SetUserKdfMetadataReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_SetUserKdfMetadataResp(arg) {
+  if (!(arg instanceof encryption_pb.SetUserKdfMetadataResp)) {
+    throw new Error('Expected argument of type proto.SetUserKdfMetadataResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_SetUserKdfMetadataResp(buffer_arg) {
+  return encryption_pb.SetUserKdfMetadataResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_ShareDocumentReq(arg) {
@@ -801,6 +1088,72 @@ function serialize_proto_UnshareDocumentResp(arg) {
 
 function deserialize_proto_UnshareDocumentResp(buffer_arg) {
   return document_pb.UnshareDocumentResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_UpdateE2EKeyReq(arg) {
+  if (!(arg instanceof encryption_pb.UpdateE2EKeyReq)) {
+    throw new Error('Expected argument of type proto.UpdateE2EKeyReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_UpdateE2EKeyReq(buffer_arg) {
+  return encryption_pb.UpdateE2EKeyReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_UpdateE2EKeyResp(arg) {
+  if (!(arg instanceof encryption_pb.UpdateE2EKeyResp)) {
+    throw new Error('Expected argument of type proto.UpdateE2EKeyResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_UpdateE2EKeyResp(buffer_arg) {
+  return encryption_pb.UpdateE2EKeyResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_UpdateEncryptedKeysReq(arg) {
+  if (!(arg instanceof encryption_pb.UpdateEncryptedKeysReq)) {
+    throw new Error('Expected argument of type proto.UpdateEncryptedKeysReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_UpdateEncryptedKeysReq(buffer_arg) {
+  return encryption_pb.UpdateEncryptedKeysReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_UpdateEncryptedKeysResp(arg) {
+  if (!(arg instanceof encryption_pb.UpdateEncryptedKeysResp)) {
+    throw new Error('Expected argument of type proto.UpdateEncryptedKeysResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_UpdateEncryptedKeysResp(buffer_arg) {
+  return encryption_pb.UpdateEncryptedKeysResp.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_UpdateFileKeysE2eReq(arg) {
+  if (!(arg instanceof encryption_pb.UpdateFileKeysE2eReq)) {
+    throw new Error('Expected argument of type proto.UpdateFileKeysE2eReq');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_UpdateFileKeysE2eReq(buffer_arg) {
+  return encryption_pb.UpdateFileKeysE2eReq.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_UpdateFileKeysE2eResp(arg) {
+  if (!(arg instanceof encryption_pb.UpdateFileKeysE2eResp)) {
+    throw new Error('Expected argument of type proto.UpdateFileKeysE2eResp');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_UpdateFileKeysE2eResp(buffer_arg) {
+  return encryption_pb.UpdateFileKeysE2eResp.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_UploadDocReq(arg) {
@@ -1040,6 +1393,23 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
   },
   // This is not available through gRPC REST gateway,
   // since REST api does not support streaming protocol
+  // Upload document using end to end encryption
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  uploadDocumentE2EStream: {
+    path: '/proto.StrongDocService/UploadDocumentE2EStream',
+    requestStream: true,
+    responseStream: false,
+    requestType: document_pb.UploadDocStreamReq,
+    responseType: document_pb.UploadDocStreamResp,
+    requestSerialize: serialize_proto_UploadDocStreamReq,
+    requestDeserialize: deserialize_proto_UploadDocStreamReq,
+    responseSerialize: serialize_proto_UploadDocStreamResp,
+    responseDeserialize: deserialize_proto_UploadDocStreamResp,
+  },
+  // This is not available through gRPC REST gateway,
+  // since REST api does not support streaming protocol
   // Upload document
   //
   // User can upload document to the organization for storage
@@ -1063,6 +1433,23 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
   // Requires Login
   downloadDocumentStream: {
     path: '/proto.StrongDocService/DownloadDocumentStream',
+    requestStream: false,
+    responseStream: true,
+    requestType: document_pb.DownloadDocStreamReq,
+    responseType: document_pb.DownloadDocStreamResp,
+    requestSerialize: serialize_proto_DownloadDocStreamReq,
+    requestDeserialize: deserialize_proto_DownloadDocStreamReq,
+    responseSerialize: serialize_proto_DownloadDocStreamResp,
+    responseDeserialize: deserialize_proto_DownloadDocStreamResp,
+  },
+  // This is not available through gRPC REST gateway,
+  // since REST api does not support streaming protocol
+  // Download document using end to end encryption
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  downloadDocumentE2EStream: {
+    path: '/proto.StrongDocService/DownloadDocumentE2EStream',
     requestStream: false,
     responseStream: true,
     requestType: document_pb.DownloadDocStreamReq,
@@ -1462,6 +1849,301 @@ var StrongDocServiceService = exports.StrongDocServiceService = {
     requestDeserialize: deserialize_proto_RemovePaymentMethodReq,
     responseSerialize: serialize_proto_RemovePaymentMethodResp,
     responseDeserialize: deserialize_proto_RemovePaymentMethodResp,
+  },
+  // List payments for the organization
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  listPayments: {
+    path: '/proto.StrongDocService/ListPayments',
+    requestStream: false,
+    responseStream: false,
+    requestType: billing_pb.ListPaymentsReq,
+    responseType: billing_pb.ListPaymentsResp,
+    requestSerialize: serialize_proto_ListPaymentsReq,
+    requestDeserialize: deserialize_proto_ListPaymentsReq,
+    responseSerialize: serialize_proto_ListPaymentsResp,
+    responseDeserialize: deserialize_proto_ListPaymentsResp,
+  },
+  // Enable end to end encryption for the organization
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  enableE2EEncryption: {
+    path: '/proto.StrongDocService/EnableE2EEncryption',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.EnableE2EReq,
+    responseType: encryption_pb.EnableE2EResp,
+    requestSerialize: serialize_proto_EnableE2EReq,
+    requestDeserialize: deserialize_proto_EnableE2EReq,
+    responseSerialize: serialize_proto_EnableE2EResp,
+    responseDeserialize: deserialize_proto_EnableE2EResp,
+  },
+  // Download document using end to end encryption
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  downloadDocumentE2E: {
+    path: '/proto.StrongDocService/DownloadDocumentE2E',
+    requestStream: false,
+    responseStream: false,
+    requestType: document_pb.DownloadDocE2EReq,
+    responseType: document_pb.DownloadDocE2EResp,
+    requestSerialize: serialize_proto_DownloadDocE2EReq,
+    requestDeserialize: deserialize_proto_DownloadDocE2EReq,
+    responseSerialize: serialize_proto_DownloadDocE2EResp,
+    responseDeserialize: deserialize_proto_DownloadDocE2EResp,
+  },
+  // // Share E2E keys with other administrators
+  // //
+  // // Requires Administrator privilege
+  // // Requires Login
+  // rpc ShareKeysE2EE(ShareE2EKeysReq) returns (ShareE2EKeysResp) {
+  // option (google.api.http) = {
+  //                         post: "/v1/encrypt/shareKeysE2EE"
+  //                         body: "*"
+  //
+  //                     };
+  // option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+  //                           security: {
+  //                             security_requirement: {
+  //                                 key: "ApiKeyAuth";
+  // value: {};
+  // }
+  // };
+  // };
+  // }
+  //
+  // // Share E2E document with other users
+  // //
+  // // Requires Administrator privilege
+  // // Requires Login
+  // rpc ShareDocE2EE(ShareDocumentE2EReq) returns (ShareDocumentE2EResp) {
+  // option (google.api.http) = {
+  //                             post: "/v1/doc/shareDocE2EE"
+  //                             body: "*"
+  //
+  //                         };
+  // option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+  //                               security: {
+  //                                 security_requirement: {
+  //                                     key: "ApiKeyAuth";
+  // value: {};
+  // }
+  // };
+  // };
+  // }
+  //
+  // // Unshare E2E document
+  // //
+  // // Requires Administrator privilege
+  // // Requires Login
+  // rpc UnshareDocE2EE(UnshareDocumentE2EReq) returns (UnshareDocumentE2EResp) {
+  // option (google.api.http) = {
+  //                                 post: "/v1/doc/unshareDocE2EE"
+  //                                 body: "*"
+  //
+  //                             };
+  // option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+  //                                   security: {
+  //                                     security_requirement: {
+  //                                         key: "ApiKeyAuth";
+  // value: {};
+  // }
+  // };
+  // };
+  // }
+  //
+  // Get current E2EE keypair
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  getKeyE2EE: {
+    path: '/proto.StrongDocService/GetKeyE2EE',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.GetKeyE2eReq,
+    responseType: encryption_pb.GetKeyE2eResp,
+    requestSerialize: serialize_proto_GetKeyE2eReq,
+    requestDeserialize: deserialize_proto_GetKeyE2eReq,
+    responseSerialize: serialize_proto_GetKeyE2eResp,
+    responseDeserialize: deserialize_proto_GetKeyE2eResp,
+  },
+  // Get all E2E keypairs related to user
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  getKeysE2EE: {
+    path: '/proto.StrongDocService/GetKeysE2EE',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.GetKeysE2eReq,
+    responseType: encryption_pb.GetKeysE2eResp,
+    requestSerialize: serialize_proto_GetKeysE2eReq,
+    requestDeserialize: deserialize_proto_GetKeysE2eReq,
+    responseSerialize: serialize_proto_GetKeysE2eResp,
+    responseDeserialize: deserialize_proto_GetKeysE2eResp,
+  },
+  // Update user E2EE keypair
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  updateKeyE2EE: {
+    path: '/proto.StrongDocService/UpdateKeyE2EE',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.UpdateE2EKeyReq,
+    responseType: encryption_pb.UpdateE2EKeyResp,
+    requestSerialize: serialize_proto_UpdateE2EKeyReq,
+    requestDeserialize: deserialize_proto_UpdateE2EKeyReq,
+    responseSerialize: serialize_proto_UpdateE2EKeyResp,
+    responseDeserialize: deserialize_proto_UpdateE2EKeyResp,
+  },
+  // Get file keys encrypted by E2EE key
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  getFileKeysE2EE: {
+    path: '/proto.StrongDocService/GetFileKeysE2EE',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.GetFileKeysE2eReq,
+    responseType: encryption_pb.GetFileKeysE2eResp,
+    requestSerialize: serialize_proto_GetFileKeysE2eReq,
+    requestDeserialize: deserialize_proto_GetFileKeysE2eReq,
+    responseSerialize: serialize_proto_GetFileKeysE2eResp,
+    responseDeserialize: deserialize_proto_GetFileKeysE2eResp,
+  },
+  // Update E2EE file keys
+  //
+  // Requires Administrator privilege
+  // Requires Login
+  updateFileKeysE2EE: {
+    path: '/proto.StrongDocService/UpdateFileKeysE2EE',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.UpdateFileKeysE2eReq,
+    responseType: encryption_pb.UpdateFileKeysE2eResp,
+    requestSerialize: serialize_proto_UpdateFileKeysE2eReq,
+    requestDeserialize: deserialize_proto_UpdateFileKeysE2eReq,
+    responseSerialize: serialize_proto_UpdateFileKeysE2eResp,
+    responseDeserialize: deserialize_proto_UpdateFileKeysE2eResp,
+  },
+  // Gets data related to a user's encryption keys
+  //
+  // Requires Login
+  getOwnKeys: {
+    path: '/proto.StrongDocService/GetOwnKeys',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.GetOwnKeysReq,
+    responseType: encryption_pb.GetOwnKeysResp,
+    requestSerialize: serialize_proto_GetOwnKeysReq,
+    requestDeserialize: deserialize_proto_GetOwnKeysReq,
+    responseSerialize: serialize_proto_GetOwnKeysResp,
+    responseDeserialize: deserialize_proto_GetOwnKeysResp,
+  },
+  // Gets data needed to proceed with downloading a document
+  //
+  // Requires Login
+  prepareDownloadDoc: {
+    path: '/proto.StrongDocService/PrepareDownloadDoc',
+    requestStream: false,
+    responseStream: false,
+    requestType: document_pb.PrepareDownloadDocReq,
+    responseType: document_pb.PrepareDownloadDocResp,
+    requestSerialize: serialize_proto_PrepareDownloadDocReq,
+    requestDeserialize: deserialize_proto_PrepareDownloadDocReq,
+    responseSerialize: serialize_proto_PrepareDownloadDocResp,
+    responseDeserialize: deserialize_proto_PrepareDownloadDocResp,
+  },
+  // Gets data needed to proceed with sharing a document
+  //
+  // Requires Login
+  prepareShareDocument: {
+    path: '/proto.StrongDocService/PrepareShareDocument',
+    requestStream: false,
+    responseStream: false,
+    requestType: document_pb.PrepareShareDocumentReq,
+    responseType: document_pb.PrepareShareDocumentResp,
+    requestSerialize: serialize_proto_PrepareShareDocumentReq,
+    requestDeserialize: deserialize_proto_PrepareShareDocumentReq,
+    responseSerialize: serialize_proto_PrepareShareDocumentResp,
+    responseDeserialize: deserialize_proto_PrepareShareDocumentResp,
+  },
+  // Sets the user's kdf metadata for a new passwordKey
+  //
+  // Requires Login
+  setUserKdfMetadata: {
+    path: '/proto.StrongDocService/SetUserKdfMetadata',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.SetUserKdfMetadataReq,
+    responseType: encryption_pb.SetUserKdfMetadataResp,
+    requestSerialize: serialize_proto_SetUserKdfMetadataReq,
+    requestDeserialize: deserialize_proto_SetUserKdfMetadataReq,
+    responseSerialize: serialize_proto_SetUserKdfMetadataResp,
+    responseDeserialize: deserialize_proto_SetUserKdfMetadataResp,
+  },
+  // Updates encrypted keys which are being encrypted with a new key
+  //
+  // Requires Login
+  // May require administrator privilege, depending on the keys.
+  updateEncryptedKeys: {
+    path: '/proto.StrongDocService/UpdateEncryptedKeys',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.UpdateEncryptedKeysReq,
+    responseType: encryption_pb.UpdateEncryptedKeysResp,
+    requestSerialize: serialize_proto_UpdateEncryptedKeysReq,
+    requestDeserialize: deserialize_proto_UpdateEncryptedKeysReq,
+    responseSerialize: serialize_proto_UpdateEncryptedKeysResp,
+    responseDeserialize: deserialize_proto_UpdateEncryptedKeysResp,
+  },
+  // Sets a new asymmetric key for the user. Returns data that needs to be re-encrypted.
+  //
+  // Requires Login
+  setUserAsymKey: {
+    path: '/proto.StrongDocService/SetUserAsymKey',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.SetUserAsymKeyReq,
+    responseType: encryption_pb.SetUserAsymKeyResp,
+    requestSerialize: serialize_proto_SetUserAsymKeyReq,
+    requestDeserialize: deserialize_proto_SetUserAsymKeyReq,
+    responseSerialize: serialize_proto_SetUserAsymKeyResp,
+    responseDeserialize: deserialize_proto_SetUserAsymKeyResp,
+  },
+  // Sets a new asymmetric key for the org. Returns data that needs to be re-encrypted.
+  //
+  // Requires Login
+  // Requires administrator privilege
+  setOrgAsymKey: {
+    path: '/proto.StrongDocService/SetOrgAsymKey',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.SetOrgAsymKeyReq,
+    responseType: encryption_pb.SetOrgAsymKeyResp,
+    requestSerialize: serialize_proto_SetOrgAsymKeyReq,
+    requestDeserialize: deserialize_proto_SetOrgAsymKeyReq,
+    responseSerialize: serialize_proto_SetOrgAsymKeyResp,
+    responseDeserialize: deserialize_proto_SetOrgAsymKeyResp,
+  },
+  // Gives an org's private key to multiple users
+  //
+  // Requires Login
+  // Requires administrator privilege
+  giveUsersOrgKey: {
+    path: '/proto.StrongDocService/GiveUsersOrgKey',
+    requestStream: false,
+    responseStream: false,
+    requestType: encryption_pb.GiveUsersOrgKeyReq,
+    responseType: encryption_pb.GiveUsersOrgKeyResp,
+    requestSerialize: serialize_proto_GiveUsersOrgKeyReq,
+    requestDeserialize: deserialize_proto_GiveUsersOrgKeyReq,
+    responseSerialize: serialize_proto_GiveUsersOrgKeyResp,
+    responseDeserialize: deserialize_proto_GiveUsersOrgKeyResp,
   },
 };
 
