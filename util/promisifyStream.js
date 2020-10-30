@@ -88,13 +88,13 @@ class StreamWrapper {
     else this.resolve(response)
   }
 
-  write(...args){
-    return writeToStream(this.stream, ...args)
-  }
-
   end() {
     this.stream.end()
     return this.promise
+  }
+
+  write(...args){
+    return this.writeToStream(this.stream, ...args)
   }
 
   writeToStream(stream, ...args) {

@@ -21,11 +21,15 @@ class StrongDoc extends service.StrongDocServiceClient {
      * @readonly
      * @static
      * @property {object} DEFAULT - The default service location, which is the production cluster.
+     * @property {object} SANDBOX - The sandbox location. This is a test cluster that does not require payment.
      * @property {object} LOCAL - This is for testing only. Should not be used.
      */
     static ServciceLocation = {
         DEFAULT: {
             host: "api.strongsalt.com:9090",
+            cert: "../cert/ssca.cert.pem"},
+        SANDBOX: {
+            host: "api.sandbox.strongsalt.com:9090",
             cert: "../cert/ssca.cert.pem"},
         LOCAL: {
             host: "localhost:9090",
