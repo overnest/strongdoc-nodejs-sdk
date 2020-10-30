@@ -9,6 +9,8 @@ const pipeline = bluebird.promisify(stream.pipeline);
 
 const rand = Math.floor(Math.random() * 1000)
 
+const location = StrongDoc.ServciceLocation.LOCAL
+
 const adminName     = "adminUserName" + rand,
       adminPassword = "adminUserPassword" + rand,
       adminEmail    = `adminUserName${rand}@somewhere.com`;
@@ -33,7 +35,7 @@ async function main() {
 
     try {
         console.log(StrongDoc)
-        client = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
+        client = new StrongDoc(location);
         
         console.log('client')
         resp = await accounts.registerOrganization(client, organization, "",
@@ -142,7 +144,7 @@ async function main() {
         console.log("promoteUser: " + promoteUserRes);
         let demoteUserRes = await accounts.demoteUser(client, userEmail);
         console.log("demoteUser: " + demoteUserRes);
-        let removeUserRes = await accounts.removeUser(client, userEmail);
+        let removeUserRes = await accounts.removeUser(client, userID);
         console.log("removeUserRes: " + removeUserRes);
         // let billingDetailsRes = await billing.getBillingDetails(client);
         // console.log("billingDetailsRes: " + billingDetailsRes.totalCost);
@@ -172,7 +174,7 @@ async function main() {
         console.log("logout status: ", status);
         console.log('waiting 2 seconds');
         await wait(2);
-        var client2 = new StrongDoc(StrongDoc.ServciceLocation.LOCAL);
+        var client2 = new StrongDoc(location);
         var token2 = await auth.login(client2, adminEmail, adminPassword, organization);
         console.log('logged in for account deletion')
 
