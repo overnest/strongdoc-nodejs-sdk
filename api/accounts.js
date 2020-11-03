@@ -220,13 +220,12 @@ const setMultiLevelSharing = async (client, isEnable) => {
     return resp.getSuccess();
 };
 
-
 /**
  * Lists users in the organization.
  *
  * @function
  * @param {!StrongDoc} client - The StrongDoc client used to call this API.
- * @return {!array of User} - Array of objects containing data for each user in the organization.
+ * @return {!User[]} - Array of objects containing data for each user in the organization
  */
 const listUsers = async (client) => {
     misc.checkClient(client, true);

@@ -211,6 +211,7 @@ var DownStream = function(docID, grpcstream, options) {
     Readable.call(this, options); // pass through the options to the Readable constructor
     /**
      * @constructs
+     * //
      * @private
      * @param {!string} grpcstream - A stream object which yields the downloaded document data.
      * @param {!Buffer} docID - The ID of the document.

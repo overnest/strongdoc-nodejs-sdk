@@ -34,6 +34,7 @@ const bluebird = require('bluebird');
 const service = require('../proto/strongdoc_grpc_pb')
 const msg = require('../proto/accounts_pb');
 const misc = require('../util/misc');
+const { promisifyRequestStream } = require('../util/promisifyStream')
 
 /**
  * This is the StrongDoc client that implements all the StrongDoc services.
@@ -48,11 +49,15 @@ class StrongDoc extends service.StrongDocServiceClient {
      * @readonly
      * @static
      * @property {object} DEFAULT - The default service location, which is the production cluster.
+     * @property {object} SANDBOX - The sandbox location. This is a test cluster that does not require payment.
      * @property {object} LOCAL - This is for testing only. Should not be used.
      */
     static ServciceLocation = {
         DEFAULT: {
             host: "api.strongsalt.com:9090",
+            cert: "../cert/ssca.cert.pem"},
+        SANDBOX: {
+            host: "api.sandbox.strongsalt.com:9090",
             cert: "../cert/ssca.cert.pem"},
         LOCAL: {
             host: "localhost:9090",
@@ -73,12 +78,17 @@ class StrongDoc extends service.StrongDocServiceClient {
         super(location.host, ssl);
 
         for (var method in this.$method_definitions) {
+            //console.log(method)
             var def = this.$method_definitions[method];
             if (def.requestStream === false &amp;&amp; def.responseStream === false) {
                 // For non-streaming API functions(uni-directional), use bluebird to promisify 
                 // it. The new function name will be the original function name plus "Sync".
                 // The new functions will return a promise, and the calling code must use "await".
                 this[method+"Sync"] = bluebird.promisify(this[method], {context: this});
+            }
+
+            if (def.requestStream === true) {
+                this[method+"Async"] = promisifyRequestStream(this[method], this);
             }
         }
     }
@@ -94,12 +104,12 @@ class StrongDoc extends service.StrongDocServiceClient {
      * @return {string} - The JWT token used to authenticate user/org when using StrongDoc APIs
      */
     async loginInternal(userID, password, orgID) {
-        const req = new msg.LoginRequest();
+        const req = new msg.LoginReq();
         req.setUserid(userID);
         req.setPassword(password);
         req.setOrgid(orgID);
-        result = await this.loginSync(req);
-        const resp = new msg.LoginResponse(result.array);
+        let result = await this.loginSync(req);
+        const resp = new msg.LoginResp(result.array);
         if (resp &amp;&amp; resp.getToken()) {
             this.authMeta = misc.getAuthMeta(resp.getToken());
             return resp.getToken();
@@ -107,6 +117,7 @@ class StrongDoc extends service.StrongDocServiceClient {
 
         return null;
     }
+
 
     /**
      * Returns the authentication meta data header. If the user logged in using the
@@ -120,7 +131,7 @@ class StrongDoc extends service.StrongDocServiceClient {
     }
 }
 
-exports.StrongDoc = StrongDoc;</code></pre>
+module.exports = StrongDoc;</code></pre>
         </article>
     </section>
 
@@ -130,13 +141,13 @@ exports.StrongDoc = StrongDoc;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="DocumentResult.html">DocumentResult</a></li><li><a href="EncryptDocumentResponse.html">EncryptDocumentResponse</a></li><li><a href="RegisterOrganizationResponse.html">RegisterOrganizationResponse</a></li><li><a href="SearchResponse.html">SearchResponse</a></li><li><a href="StrongDoc.html">StrongDoc</a></li><li><a href="UploadDocumentResponse.html">UploadDocumentResponse</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decryptDocument">decryptDocument</a></li><li><a href="global.html#downloadDocument">downloadDocument</a></li><li><a href="global.html#encryptDocument">encryptDocument</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#registerOrganization">registerOrganization</a></li><li><a href="global.html#removeOrganization">removeOrganization</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#uploadDocument">uploadDocument</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BillingFrequency.html">BillingFrequency</a></li><li><a href="DocumentResult.html">DocumentResult</a></li><li><a href="DownStream.html">DownStream</a></li><li><a href="EncryptDocumentResponse.html">EncryptDocumentResponse</a></li><li><a href="EncryptStreamResponse.html">EncryptStreamResponse</a></li><li><a href="ListDocumentsResp.html">ListDocumentsResp</a></li><li><a href="RegisterOrganizationResponse.html">RegisterOrganizationResponse</a></li><li><a href="SearchResponse.html">SearchResponse</a></li><li><a href="StrongDoc.html">StrongDoc</a></li><li><a href="UploadDocumentResponse.html">UploadDocumentResponse</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addSharableOrg">addSharableOrg</a></li><li><a href="global.html#decryptDocument">decryptDocument</a></li><li><a href="global.html#decryptDocumentStream">decryptDocumentStream</a></li><li><a href="global.html#demoteUser">demoteUser</a></li><li><a href="global.html#downloadDocument">downloadDocument</a></li><li><a href="global.html#downloadDocumentStream">downloadDocumentStream</a></li><li><a href="global.html#encryptDocument">encryptDocument</a></li><li><a href="global.html#encryptDocumentStream">encryptDocumentStream</a></li><li><a href="global.html#getBillingFrequencyList">getBillingFrequencyList</a></li><li><a href="global.html#getConfiguration">getConfiguration</a></li><li><a href="global.html#getDocumentCosts">getDocumentCosts</a></li><li><a href="global.html#getLargeTraffic">getLargeTraffic</a></li><li><a href="global.html#getSearchCosts">getSearchCosts</a></li><li><a href="global.html#getTrafficCosts">getTrafficCosts</a></li><li><a href="global.html#listDocuments">listDocuments</a></li><li><a href="global.html#listUsers">listUsers</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#promoteUser">promoteUser</a></li><li><a href="global.html#registerOrganization">registerOrganization</a></li><li><a href="global.html#registerUser">registerUser</a></li><li><a href="global.html#removeDocument">removeDocument</a></li><li><a href="global.html#removeOrganization">removeOrganization</a></li><li><a href="global.html#removeSharableOrg">removeSharableOrg</a></li><li><a href="global.html#removeUser">removeUser</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#setMultiLevelSharing">setMultiLevelSharing</a></li><li><a href="global.html#setNextBillingFrequency">setNextBillingFrequency</a></li><li><a href="global.html#shareDocument">shareDocument</a></li><li><a href="global.html#unshareDocument">unshareDocument</a></li><li><a href="global.html#uploadDocument">uploadDocument</a></li><li><a href="global.html#uploadDocumentStream">uploadDocumentStream</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Feb 21 2020 14:53:55 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Nov 03 2020 10:23:10 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
