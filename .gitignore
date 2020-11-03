@@ -10,3 +10,5 @@ test/testdocs/encrypted_doc
 
 #temporary for troubleshoot race condition
 local.js
+
+.vscode
