@@ -307,7 +307,9 @@ const getAccountInfo = async (client) => {
 
     return {
         orgId: resp.getOrgid(),
-        subscription: resp.getSubscription(),
+        subscription: {
+            type: resp.getSubscription().getType(),
+            status: resp.getSubscription().getStatus()},
         payments: resp.getPaymentsList().map(rcpPay => toPayment(rcpPay)),
         orgAddress: resp.getOrgaddress(),
         multiLevelShare: resp.getMultilevelshare(),

@@ -146,8 +146,17 @@ async function main() {
         console.log("demoteUser: " + demoteUserRes);
         let removeUserRes = await accounts.removeUser(client, userID);
         console.log("removeUserRes: " + removeUserRes);
-        // let billingDetailsRes = await billing.getBillingDetails(client);
-        // console.log("billingDetailsRes: " + billingDetailsRes.totalCost);
+        const billingDetailsRes = await billing.getBillingDetails(client);
+        console.log("billingDetailsRes: ", billingDetailsRes);
+
+        const billingFrequencyListResp = await billing.getBillingFrequencyList(client);
+        billingFrequencyListResp.map(x => console.log("billingFrequencyListResp: ", x));
+
+        let setNextBillingFrequencyResp = await billing.setNextBillingFrequency(client, billing.TimeInterval.MONTHLY, new Date());
+        console.log("setNextBillingFrequencyResp: ", setNextBillingFrequencyResp);
+
+        let getLargeTrafficResp = await billing.getLargeTraffic(client, new Date());
+        console.log("getLargeTrafficResp: ", getLargeTrafficResp);
 
         const users = await accounts.listUsers(client);
         users.forEach(user => {
@@ -169,6 +178,19 @@ async function main() {
         let removeDocRes = await document.removeDocument(client, upDocId);
         console.log("removeDocRes: " + removeDocRes);
         console.log("Done!")
+
+        const account = await accounts.getAccountInfo(client);
+        console.log("Account Info: ", 
+            account.orgId, 
+            account.orgAddress, 
+            account.subscription, 
+            account.multiLevelShare, 
+            account.sharableOrgs, 
+            account.payments)
+        account.payments.map(x => 
+            console.log("Payment: ", x.billedAt, x.periodStart, x.periodEnd, x.amount, x.status))
+        account.sharableOrgs.map(x => console.log("Sharable Org: ", x))
+
 
         let status = await auth.logout(client, token);
         console.log("logout status: ", status);

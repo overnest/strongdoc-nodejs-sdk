@@ -1,5 +1,6 @@
 const msg = require('../proto/strongdoc_pb');
 const misc = require('../util/misc');
+const bill = require('../proto/billing_pb');
 
 /**
  * Ends session and retires JWT token.
@@ -94,7 +95,10 @@ const getSearchCosts = (protoSearchResp) => ({
   })
 
 
-
+/**
+ * 
+ * @param {StrongDoc} client 
+ */
 const getBillingFrequencyList = async (client) => {
     misc.checkClient(client, true);
     const authMeta = client.getAuthMeta();
@@ -114,10 +118,11 @@ class BillingFrequency {
         this.validTo = bf.getValidto() && bf.getValidto().toDate();
     }
 }
+
 /**
  * 
  * @param {StrongDoc} client 
- * @param {number} timeIntervalFrequency 
+ * @param {bill.TimeInterval} timeIntervalFrequency 
  * @param {Date} validFromDate 
  */
 const setNextBillingFrequency = async (client, timeIntervalFrequency, validFromDate) => {
@@ -134,11 +139,17 @@ const setNextBillingFrequency = async (client, timeIntervalFrequency, validFromD
     return new BillingFrequency(resp.getNextbillingfrequency())
 }
 
+/**
+ * 
+ * @param {StrongDoc} client 
+ * @param {Date} at 
+ */
 const getLargeTraffic = async (client, at) => {
     misc.checkClient(client, true);
+    const authMeta = client.getAuthMeta();
     const req = new msg.GetLargeTrafficReq();
     req.setAt(toRpcTimestamp(at));
-    const result = await client.getLargeTraffic(req, client.getAuthMeta());
+    const result = await client.getLargeTrafficSync(req, authMeta);
 
     const resp = new msg.GetLargeTrafficResp(result.array);
     return {
@@ -170,3 +181,4 @@ exports.getBillingDetails = getBillingDetails;
 exports.getBillingFrequencyList = getBillingFrequencyList;
 exports.setNextBillingFrequency = setNextBillingFrequency;
 exports.getLargeTraffic = getLargeTraffic;
+exports.TimeInterval = bill.TimeInterval;
